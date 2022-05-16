@@ -28,4 +28,6 @@
 
 // minishell functions
 
+void	sig_handler(int signum);
+
 #endif

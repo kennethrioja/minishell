@@ -1,6 +1,8 @@
 # mac
 .DS_Store
 *test*
+minishell
+.vscode
 
 # Prerequisites
 *.d

@@ -25,10 +25,10 @@ all:			$(NAME)
 
 $(OBJ_DIR)%.o :	$(SRC_DIR)%.c
 				@mkdir -p $(OBJ_DIR)
-				$(CC) -c $(CFLAGS) -I include/ $< -o $@
+				$(CC) -c $(CFLAGS) -I inc/ $< -o $@
 
 $(OBJ_DIR)%.o :	$(GNL_DIR)%.c
-				$(CC) -c $(CFLAGS) -I include/ $< -o $@
+				$(CC) -c $(CFLAGS) -I inc/ $< -o $@
 
 $(NAME):		$(OBJS)
 				#$(MAKE) $(LIBFT_DIR)

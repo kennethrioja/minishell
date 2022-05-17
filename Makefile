@@ -1,7 +1,10 @@
 NAME		=	minishell
 
 SRC_DIR 	= 	src/
-SRCS		=	main.c			   						\
+SRCS		=	signal.c\
+				prompt.c\
+				print.c\
+				main.c
 
 #FT_DIR		=	ft_functions/
 #LIBFT_DIR	=	$(FT_DIR)libft
@@ -11,6 +14,11 @@ SRCS		=	main.c			   						\
 #GNL_DIR	=	$(FT_DIR)get_next_line/
 #SRCS_GNL	=	get_next_line.c							\
 #				get_next_line_utils.c
+
+READLINE_DIR=	~/.brew/Cellar/readline/8.1.2/
+READLINE_LIB=	$(READLINE_DIR)lib
+READLINE_INC=	$(READLINE_DIR)include
+INC_READLINE=	-I $(READLINE_INC) -L $(READLINE_LIB) -lreadline
 
 OBJ_DIR		= 	obj/
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o) $(SRCS_GNL:.c=.o))
@@ -25,7 +33,7 @@ all:			$(NAME)
 
 $(OBJ_DIR)%.o :	$(SRC_DIR)%.c
 				@mkdir -p $(OBJ_DIR)
-				$(CC) -c $(CFLAGS) -I inc/ $< -o $@
+				$(CC) -c $(CFLAGS) -Iinc -I $(READLINE_INC) $< -o $@
 
 $(OBJ_DIR)%.o :	$(GNL_DIR)%.c
 				$(CC) -c $(CFLAGS) -I inc/ $< -o $@
@@ -33,7 +41,7 @@ $(OBJ_DIR)%.o :	$(GNL_DIR)%.c
 $(NAME):		$(OBJS)
 				#$(MAKE) $(LIBFT_DIR)
 				#$(MAKE) $(PRINTF_DIR)
-				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) #$(INC_LIBFT) $(INC_PRINTF)
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) #$(INC_LIBFT) $(INC_PRINTF)
 
 l:				$(OBJS)
 				source ~/goinfre/.zshrc

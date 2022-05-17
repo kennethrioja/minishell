@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:51 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/16 17:48:27 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/17 11:42:29 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("\n");
+		put_str("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (signum == SIGTERM)
-	{
-		printf("quit ??\n");
-		exit(EXIT_SUCCESS);
-	}
 	if (signum == SIGQUIT)
 	{
-		printf("\n");
+		put_str("\n");
 	}
-		// printf("quit ??\n");
+}
+
+void	get_signal(void)
+{
+	signal(SIGQUIT, sig_handler);
+	signal(SIGINT, sig_handler);
 }

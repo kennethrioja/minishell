@@ -3,6 +3,7 @@
 *test*
 minishell
 .vscode
+*.swp
 
 # Prerequisites
 *.d

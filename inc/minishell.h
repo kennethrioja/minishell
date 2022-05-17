@@ -2,8 +2,8 @@
 # define MINISHELL_H
 
 // 42 libraries
+# include "../src/ft_printf/ft_printf.h"
 //# include "../ft_functions/libft/libft.h"
-//# include "../ft_functions/ft_printf/ft_printf.h"
 //# include "../ft_functions/get_next_line/get_next_line.h"
 
 // .h libraries

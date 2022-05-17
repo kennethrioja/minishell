@@ -9,13 +9,17 @@ SRCS		=	signal.c\
 #FT_DIR		=	ft_functions/
 #LIBFT_DIR	=	$(FT_DIR)libft
 #INC_LIBFT	=	-I $(LIBFT_DIR) -L $(LIBFT_DIR) -lft
-#PRINTF_DIR	=	$(FT_DIR)ft_printf
-#INC_PRINTF	=	-I $(PRINTF_DIR) -L $(PRINTF_DIR) -lftprintf
+PRINTF_DIR	=	$(SRC_DIR)ft_printf
+INC_PRINTF	=	-I $(PRINTF_DIR) -L $(PRINTF_DIR) -lftprintf
 #GNL_DIR	=	$(FT_DIR)get_next_line/
 #SRCS_GNL	=	get_next_line.c							\
 #				get_next_line_utils.c
 
-READLINE_DIR=	~/.brew/Cellar/readline/8.1.2/
+ifeq ($(shell env | grep HOME | cut -b 6-), /Users/krioja)
+	READLINE_DIR	=	~/goinfre/homebrew/Cellar/readline/8.1.2/
+else ifeq ($(shell env | grep HOME | cut -b 6-), /Users/tpinto-m)
+	READLINE_DIR	=	~/.brew/Cellar/readline/8.1.2/
+endif
 READLINE_LIB=	$(READLINE_DIR)lib
 READLINE_INC=	$(READLINE_DIR)include
 INC_READLINE=	-I $(READLINE_INC) -L $(READLINE_LIB) -lreadline
@@ -41,18 +45,18 @@ $(OBJ_DIR)%.o :	$(GNL_DIR)%.c
 $(NAME):		$(OBJS)
 				#$(MAKE) $(LIBFT_DIR)
 				#$(MAKE) $(PRINTF_DIR)
-				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) #$(INC_LIBFT) $(INC_PRINTF)
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) #$(INC_LIBFT) 
 
 l:				$(OBJS)
 				source ~/goinfre/.zshrc
 				which clang
-				clang $(LEAKS) $(OBJS) -o $(NAME) #$(INC_LIBFT) $(INC_PRINTF)
+				clang $(LEAKS) $(OBJS) -o $(NAME) $(INC_PRINTF) #$(INC_LIBFT)
 
 clean:
 				$(RM) $(OBJ_DIR)
 				$(RM) $(OBJS)
+				$(MAKE) $(PRINTF_DIR) clean
 				#$(MAKE) $(LIBFT_DIR) clean
-				#$(MAKE) $(PRINTF_DIR) clean
 
 fclean:			clean
 				$(RM) $(NAME)

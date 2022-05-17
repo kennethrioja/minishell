@@ -6,16 +6,19 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/17 11:45:03 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/17 20:25:01 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	char	*line;
 
+	(void)ac;
+	(void)av;
+	(void)env;
 	while (1)
 	{
 		line = get_line();

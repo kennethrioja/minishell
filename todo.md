@@ -1,7 +1,7 @@
 # MiniShell
 ## Todo
-- [ ] Afficher un **prompt** en l’attente d’une nouvelle commande.
-- [ ] Posséder un **historique** fonctionnel.
+- [x] Afficher un **prompt** en l’attente d’une nouvelle commande.
+- [x] Posséder un **historique** fonctionnel.
 - [ ] Chercher et lancer le bon exécutable (en se basant sur la variable d’environnement
 *PATH*, ou sur un chemin relatif ou absolu).
 - [ ] Ne pas utiliser **plus d’une variable globale**. Réfléchissez-y car vous devrez justifier son utilisation.
@@ -17,11 +17,11 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] Implémenter les **pipes** (caractère |). La sortie de chaque commande de la pipeline est connectée à l’entrée de la commande suivante grâce à un pipe.
 - [ ] Gérer les **variables d’environnement** (un $ suivi d’une séquence de caractères) qui doivent être substituées par leur contenu.
 - [ ] Gérer $? qui doit être substitué par le statut de sortie de la dernière pipeline exécutée au premier plan.
-- [ ] Gérer ctrl-C, ctrl-D et ctrl-\ qui doivent fonctionner comme dans bash.
+- [x] Gérer ctrl-C, ctrl-D et ctrl-\ qui doivent fonctionner comme dans bash.
 - En mode interactif :
-	- [ ] ctrl-C affiche un nouveau prompt sur une nouvelle ligne.
-	- [ ] ctrl-D quitte le shell.
-	- [ ] ctrl-\ ne fait rien.
+	- [x] ctrl-C affiche un nouveau prompt sur une nouvelle ligne.
+	- [x] ctrl-D quitte le shell.
+	- [x] ctrl-\ ne fait rien.
 - Votre shell doit implémenter les **builtins** suivantes :
 	- [ ] echo et l’option -n
 	- [ ] cd uniquement avec un chemin relatif ou absolu
@@ -32,6 +32,8 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 	- [ ] exit sans aucune option
 - [ ] Leaks
 - [ ] Gestion d'erreurs
+- [ ] Ajouter ft_printf
+- [ ] Enlever put_str
 
 
 ## Bonus

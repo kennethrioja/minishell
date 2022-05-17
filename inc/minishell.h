@@ -29,5 +29,11 @@
 // minishell functions
 
 void	sig_handler(int signum);
+void	get_signal(void);
+
+char	*get_line(void);
+
+int		ft_strlen(char *str);
+void	put_str(char *str);
 
 #endif

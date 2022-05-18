@@ -28,12 +28,14 @@
 
 // minishell functions
 
+//* prompt.c
+char	*get_line(void);
+
+//* signal.c
 void	sig_handler(int signum);
 void	get_signal(void);
 
-char	*get_line(void);
-
+//* utils.c
 int		ft_strlen(char *str);
-void	put_str(char *str);
 
 #endif

@@ -50,7 +50,7 @@ $(NAME):		$(OBJS)
 l:				$(OBJS)
 				source ~/goinfre/.zshrc
 				which clang
-				clang $(LEAKS) $(OBJS) -o $(NAME) $(INC_PRINTF) #$(INC_LIBFT)
+				clang $(LEAKS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) #$(INC_LIBFT)
 
 clean:
 				$(RM) $(OBJ_DIR)

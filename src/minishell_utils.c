@@ -6,18 +6,9 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:30:56 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/18 09:13:19 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 11:51:08 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		;
-	return (i);
-}

@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 11:23:17 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 11:48:50 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int		get_line(t_ad *ad);
 void	sig_handler(int signum);
 void	get_signal(void);
 
-//* utils.c
-int		ft_strlen(char *str);
+//* minishell_utils.c
 
 #endif

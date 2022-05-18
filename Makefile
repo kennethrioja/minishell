@@ -1,10 +1,9 @@
 NAME		=	minishell
 
 SRC_DIR 	= 	src/
-SRCS		=	signal.c\
-				prompt.c\
-				print.c\
-				main.c
+SRCS		=	main.c				\
+				prompt.c			\
+				signal.c			\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft

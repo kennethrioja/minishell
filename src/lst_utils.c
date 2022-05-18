@@ -6,44 +6,44 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:08:32 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 15:30:51 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 16:26:25 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_lstnew(t_pp *pp)
+void	ms_lstnew(t_pa *pa)
 {
-	pp = malloc(sizeof(t_pp));
-	if (!pp)
+	pa = malloc(sizeof(t_pa));
+	if (!pa)
 		return (NULL);
-	pp->next = NULL;
-	return (pp);
+	pa->next = NULL;
+	return (pa);
 }
 
-t_pp	*ms_lstlast(t_pp *pp)
+t_pa	*ms_lstlast(t_pa *pa)
 {
-	while (pp)
+	while (pa)
 	{
-		if (pp->next == NULL)
+		if (pa->next == NULL)
 			break ;
-		pp = lst->next;
+		pa = lst->next;
 	}
-	return (pp);
+	return (pa);
 }
 
-void	ms_lstadd_back(t_pp **pp, t_pp *ppnew)
+void	ms_lstadd_back(t_pa **pa, t_pa *panew)
 {
-	t_pp	*last;
+	t_pa	*last;
 
-	if (*pp)
+	if (*pa)
 	{
-		last = ms_lstlast(*pp);
-		last->next = ppnew;
+		last = ms_lstlast(*pa);
+		last->next = panew;
 	}
 	else
 	{
-		*pp = ppnew;
+		*pa = panew;
 	}
 	return ;
 }

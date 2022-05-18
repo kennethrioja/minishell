@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 16:05:09 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 16:25:44 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,19 @@ typedef struct s_redir
 	struct s_redir	*next;
 }					t_redir;
 
-typedef struct s_pp
+typedef struct s_pa
 {
-	char			*cmd;
 	char			*path;
-	char			**params;
-	int				i;
-	struct s_pp		*prev;
-	struct s_pp		*next;
-}					t_pp;
+	char			**args;
+	struct s_pa		*prev;
+	struct s_pa		*next;
+}					t_pa;
 
 typedef struct s_ad
 {
 	char			*line;
 	t_redir			*redir;
-	t_pp			*pp;
+	t_pa			*pa;
 }					t_ad;
 
 // minishell functions
@@ -87,15 +85,15 @@ int		get_line(t_ad *ad);
 //*	get_redir.c
 void	get_redir(t_ad *ad);
 
-//* get_pp.c
-void	get_pp(char **env, t_ad *ad);
+//* get_pa.c
+void	get_pa(char **env, t_ad *ad);
 
 //* ms_utils.c
 
 //* lst_utils.c
-t_pp	*ms_lstnew(void *content);
-t_pp	*ms_lstlast(t_pp *pp);
-void	ms_lstadd_back(t_pp **pp, t_pp *ppnew);
+t_pa	*ms_lstnew(void *content);
+t_pa	*ms_lstlast(t_pa *pa);
+void	ms_lstadd_back(t_pa **pa, t_pa *panew);
 
 //* signal.c
 void	sig_handler(int signum);

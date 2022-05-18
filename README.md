@@ -1,9 +1,11 @@
 # MiniShell
-## Todo
+
+**This project is currently under construction and shared with [Kenneth Rioja](https://github.com/kennethrioja)**
+
+## Todo list
 - [x] Afficher un **prompt** en l’attente d’une nouvelle commande.
 - [x] Posséder un **historique** fonctionnel.
-- [ ] Chercher et lancer le bon exécutable (en se basant sur la variable d’environnement
-*PATH*, ou sur un chemin relatif ou absolu).
+- [ ] KR - Chercher et lancer le bon exécutable (en se basant sur la variable d’environnement *PATH*, ou sur un chemin relatif ou absolu).
 - [ ] Ne pas utiliser **plus d’une variable globale**. Réfléchissez-y car vous devrez justifier son utilisation.
 - [ ] Ne pas interpréter de quotes (guillemets) non fermés ou de caractères spéciaux non demandés dans le sujet, tels que \ (le *backslash*) ou ; (le *point-virgule*).
 - [ ] Gérer ’ (*single quote*) qui doit empêcher le shell d’interpréter les méta-caractères présents dans la séquence entre guillemets.
@@ -45,4 +47,6 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 
 ## Kenneth
 - [x] Mettre le Makefile + .h
-- [ ]
+- [ ] get_redir : stocker toutes les redirections dans t_redir tout en updatant ad.line
+- [ ] get_pa : stocker toutes les commandes et les arguments dans t_pa pour pouvoir utiliser execve() qui prend en arguments path et une liste d'arguments
+

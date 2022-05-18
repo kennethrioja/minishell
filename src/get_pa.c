@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_pp.c                                           :+:      :+:    :+:   */
+/*   get_pa.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:59:59 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 15:42:31 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 16:26:11 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**add_prefix(char ***params, char **path, char *prefix)
+static char	**add_prefix(char ***args, char **path, char *prefix)
 {
 	int	i;
 	int	j;
@@ -21,30 +21,30 @@ static char	**add_prefix(char ***params, char **path, char *prefix)
 	j = -1;
 	if (prefix[1] == 'b')
 	{
-		*path = malloc(sizeof(char) * (word_length((*params)[0], 0) + 5 + 1));
+		*path = malloc(sizeof(char) * (word_length((*args)[0], 0) + 5 + 1));
 		while (prefix[++i])
 			(*path)[i] = prefix[i];
-		while ((*params)[0][++j])
-			(*path)[i++] = (*params)[0][j];
+		while ((*args)[0][++j])
+			(*path)[i++] = (*args)[0][j];
 		(*path)[i] = '\0';
 		return (path);
 	}
-	*path = malloc(sizeof(char) * (word_length((*params)[0], 0) + 9 + 1));
+	*path = malloc(sizeof(char) * (word_length((*args)[0], 0) + 9 + 1));
 	while (prefix[++i])
 		(*path)[i] = prefix[i];
-	while ((*params)[0][++j])
-		(*path)[i++] = (*params)[0][j];
+	while ((*args)[0][++j])
+		(*path)[i++] = (*args)[0][j];
 	(*path)[i] = '\0';
 	return (path);
 }
 
-static void	get_path(char ***params, char **path)
+static void	get_path(char ***args, char **path)
 {
-	path = add_prefix(params, path, "/bin/");
+	path = add_prefix(args, path, "/bin/");
 	if (access(*path, F_OK) == -1)
 	{
 		free(*path);
-		path = add_prefix(params, path, "/usr/bin/");
+		path = add_prefix(args, path, "/usr/bin/");
 		if (access(*path, F_OK) == -1)
 		{
 			free(*path);
@@ -53,12 +53,12 @@ static void	get_path(char ***params, char **path)
 	}
 }
 
-static void	get_params(char **env, t_ad *ad)
+static void	get_args(char **env, t_ad *ad)
 {
 	int	i;
 
 	i = -1;
-	ms_lstnew(ad->pp);
+	ms_lstnew(ad->pa);
 	while (ad->line[++i])
 	{
 	//////////// il faut virer les redir de line en premier !!!	
@@ -75,17 +75,17 @@ static void	get_params(char **env, t_ad *ad)
 			{
 				j = 0;
 				++n;
-				(*params)[n] = malloc(sizeof(char) * word_length(argvx, n) + 1);
+				(*args)[n] = malloc(sizeof(char) * word_length(argvx, n) + 1);
 			}
-			(*params)[n][j] = argvx[i];
+			(*args)[n][j] = argvx[i];
 			++j;
 		}
 	}
-	(*params)[++n] = NULL;
+	(*args)[++n] = NULL;
 }
 
-void	get_pp(char **env, t_ad *ad)
+void	get_pa(char **env, t_ad *ad)
 {
-	get_params(env, ad);
+	get_args(env, ad);
 	get_path(env, ad);
 }

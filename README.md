@@ -32,11 +32,10 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 	- [ ] unset sans aucune option
 	- [ ] env sans aucune option ni argument
 	- [ ] exit sans aucune option
+
 - [ ] Leaks
 - [ ] Gestion d'erreurs
-- [ ] Ajouter ft_printf
-- [ ] Enlever put_str
-
+- [x] Ajouter ft_printf & Enlever put_str
 
 ## Bonus
 - [ ] && et || avec des parenthèses pour les priorités.

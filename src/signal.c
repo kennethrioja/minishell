@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:51 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/17 11:42:29 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/18 09:11:16 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,13 @@ void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		put_str("\n");
+		ft_printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (signum == SIGQUIT)
-	{
-		put_str("\n");
-	}
+		ft_printf("\n");
 }
 
 void	get_signal(void)

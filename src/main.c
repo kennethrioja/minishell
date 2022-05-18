@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/17 20:25:01 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 09:09:24 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int	main(int ac, char **av, char **env)
 		line = get_line();
 		if (!line)
 			break ;
-		put_str(line);
-		put_str("\n");
+		ft_printf("%s\n", line);
 	}
 	return (EXIT_SUCCESS);
 }

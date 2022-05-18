@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 17:41:29 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 17:53:24 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_ad
 int		get_line(t_ad *ad);
 
 //*	get_redir.c
-void	get_redir(t_ad *ad);
+int	get_redir(t_ad *ad);
 
 //* get_pa.c
 void	get_pa(char **env, t_ad *ad);

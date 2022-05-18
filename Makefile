@@ -6,18 +6,15 @@ SRCS		=	signal.c\
 				print.c\
 				main.c
 
-#FT_DIR		=	ft_functions/
-#LIBFT_DIR	=	$(FT_DIR)libft
-#INC_LIBFT	=	-I $(LIBFT_DIR) -L $(LIBFT_DIR) -lft
-PRINTF_DIR	=	$(SRC_DIR)ft_printf
+FT_DIR		=	ft/
+LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft
+INC_LIBFT	=	-I $(LIBFT_DIR) -L $(LIBFT_DIR) -lft
+PRINTF_DIR	=	$(SRC_DIR)$(FT_DIR)ft_printf
 INC_PRINTF	=	-I $(PRINTF_DIR) -L $(PRINTF_DIR) -lftprintf
-#GNL_DIR	=	$(FT_DIR)get_next_line/
-#SRCS_GNL	=	get_next_line.c							\
-#				get_next_line_utils.c
 
-ifeq ($(shell env | grep HOME | cut -b 6-), /Users/krioja)
+ifeq ($(shell env | grep USER= | cut -b 6-), krioja)
 	READLINE_DIR	=	~/goinfre/homebrew/Cellar/readline/8.1.2/
-else ifeq ($(shell env | grep HOME | cut -b 6-), /Users/tpinto-m)
+else ifeq ($(shell env | grep USER= | cut -b 6-), tpinto-m)
 	READLINE_DIR	=	~/.brew/Cellar/readline/8.1.2/
 endif
 READLINE_LIB=	$(READLINE_DIR)lib

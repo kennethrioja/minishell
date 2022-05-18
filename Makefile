@@ -2,8 +2,9 @@ NAME		=	minishell
 
 SRC_DIR 	= 	src/
 SRCS		=	main.c				\
-				prompt.c			\
+				get_line.c			\
 				signal.c			\
+				free_all.c			\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft
@@ -39,20 +40,22 @@ $(OBJ_DIR)%.o :	$(GNL_DIR)%.c
 				$(CC) -c $(CFLAGS) -I inc/ $< -o $@
 
 $(NAME):		$(OBJS)
-				#$(MAKE) $(LIBFT_DIR)
-				#$(MAKE) $(PRINTF_DIR)
-				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) #$(INC_LIBFT) 
+				$(MAKE) $(LIBFT_DIR)
+				$(MAKE) $(PRINTF_DIR)
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) $(INC_LIBFT) 
 
 l:				$(OBJS)
 				source ~/goinfre/.zshrc
 				which clang
-				clang $(LEAKS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) #$(INC_LIBFT)
+				$(MAKE) $(LIBFT_DIR)
+				$(MAKE) $(PRINTF_DIR)
+				clang $(LEAKS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) $(INC_LIBFT)
 
 clean:
 				$(RM) $(OBJ_DIR)
 				$(RM) $(OBJS)
 				$(MAKE) $(PRINTF_DIR) clean
-				#$(MAKE) $(LIBFT_DIR) clean
+				$(MAKE) $(LIBFT_DIR) clean
 
 fclean:			clean
 				$(RM) $(NAME)

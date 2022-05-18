@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 11:48:50 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/18 16:05:09 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // 42 libraries
 # include "../src/ft/ft_printf/ft_printf.h"
-# include "../src/ft//libft/libft.h"
+# include "../src/ft/libft/libft.h"
 
 // .h libraries
 # include <curses.h>				
@@ -54,33 +54,54 @@
 
 // typedef, struct & vars
 
+typedef struct s_redir
+{
+	char			*op;
+	char			*file;
+	struct s_redir	*prev;
+	struct s_redir	*next;
+}					t_redir;
+
 typedef struct s_pp
 {
-	char		*cmd;
-	char		*path;
-	char		**params;
-	int			i;
-	struct s_pp	*prev;
-	struct s_pp	*next;
-}				t_pp;
+	char			*cmd;
+	char			*path;
+	char			**params;
+	int				i;
+	struct s_pp		*prev;
+	struct s_pp		*next;
+}					t_pp;
 
 typedef struct s_ad
 {
-	char	*line;
-	t_pp	*pp;
-}				t_ad;
+	char			*line;
+	t_redir			*redir;
+	t_pp			*pp;
+}					t_ad;
 
 // minishell functions
 
-//* prompt.c
+//* get_line.c
 int		get_line(t_ad *ad);
 
-//* get_path_and_params.c
+//*	get_redir.c
+void	get_redir(t_ad *ad);
+
+//* get_pp.c
+void	get_pp(char **env, t_ad *ad);
+
+//* ms_utils.c
+
+//* lst_utils.c
+t_pp	*ms_lstnew(void *content);
+t_pp	*ms_lstlast(t_pp *pp);
+void	ms_lstadd_back(t_pp **pp, t_pp *ppnew);
 
 //* signal.c
 void	sig_handler(int signum);
 void	get_signal(void);
 
-//* minishell_utils.c
+//* free_all.c
+void	free_all(t_ad *ad);
 
 #endif

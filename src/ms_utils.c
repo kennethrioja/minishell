@@ -1,32 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/18 16:02:27 by krioja           ###   ########.fr       */
+/*   Created: 2022/05/17 11:30:56 by tpinto-m          #+#    #+#             */
+/*   Updated: 2022/05/18 16:05:33 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	main(int ac, char **av, char **env)
-{
-	t_ad	ad;
-
-	(void)ac;
-	(void)av;
-	while (1)
-	{
-		if (!get_line(&ad))
-			break ;
-		//get_redir(&ad);
-		(void)env;
-		// get_pp(env, &ad);
-		ft_printf("%s\n", ad.line);
-	}
-	free_all(&ad);
-	return (EXIT_SUCCESS);
-}

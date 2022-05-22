@@ -5,6 +5,7 @@ SRCS		=	main.c				\
 				get_line.c			\
 				signal.c			\
 				free_all.c			\
+				ms_utils.c			\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft

@@ -6,8 +6,20 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:30:56 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/18 16:05:33 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/22 18:53:17 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] && s2[i])
+	{
+		i++;
+	}
+	return (s1[i] - s2[i]);
+}

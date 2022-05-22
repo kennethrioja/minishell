@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
+/*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 17:41:29 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/22 18:56:10 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,17 @@
 // write(), access(), read(), close(), fork(), getcwd(), chdir(),
 // unlink(), execve(), dup(), dup2(), pipe(), isatty(), ttyname(), ttyslot()
 
+// macro
+
+// * builtins
+# define MS_ECHO "echo"
+# define MS_CD "cd"
+# define MS_PWD "pwd"
+# define MS_EXPORT "export"
+# define MS_UNSET "unset"
+# define MS_ENV "env"
+# define MS_EXIT "exit"
+
 // typedef, struct & vars
 
 typedef struct s_redir
@@ -81,6 +92,7 @@ typedef struct s_ad
 
 //* get_line.c
 int		get_line(t_ad *ad);
+void	check_line(t_ad *ad);
 
 //*	get_redir.c
 void	get_redir(t_ad *ad);
@@ -89,6 +101,7 @@ void	get_redir(t_ad *ad);
 void	get_pa(char **env, t_ad *ad);
 
 //* ms_utils.c
+int		ft_strcmp(char *s1, char *s2);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);

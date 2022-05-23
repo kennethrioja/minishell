@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/22 18:54:29 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/23 16:17:01 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	get_line(t_ad *ad)
 		free(ad->line);
 		ad->line = NULL;
 	}
-	ad->line = readline("A&D Shell>");
+	ad->line = readline("adsh> ");
 	if (ad->line)
 		add_history(ad->line);
 	if (!ad->line)
@@ -28,14 +28,15 @@ int	get_line(t_ad *ad)
 }
 
 // TODO execve() pour les builtins et faire le parser en premier
+// changer var ad->line par ad->pa->cmd
 void	check_line(t_ad *ad)
 {
 	if (!ft_strncmp(MS_ECHO, ad->line, ft_strlen(MS_ECHO)))
-		ft_printf("builtins - echo\n");
-	else if (!ft_strcmp("cd", ad->line))
-		ft_printf("builtins - cd\n");
+		ft_echo(ad);
+	else if (!ft_strncmp(MS_CD, ad->line, ft_strlen(MS_CD)))
+		ft_cd(ad);
 	else if (!ft_strncmp(MS_PWD, ad->line, ft_strlen(MS_PWD)))
-		ft_printf("builtins - pwd\n");
+		ft_pwd();
 	else if (!ft_strncmp(MS_EXPORT, ad->line, ft_strlen(MS_EXPORT)))
 		ft_printf("builtins - export\n");
 	else if (!ft_strncmp(MS_UNSET, ad->line, ft_strlen(MS_UNSET)))

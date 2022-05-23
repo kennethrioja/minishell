@@ -1,11 +1,15 @@
 NAME		=	minishell
 
 SRC_DIR 	= 	src/
+B_INS_DIR 	= 	builtins/
 SRCS		=	main.c				\
 				get_line.c			\
 				signal.c			\
 				free_all.c			\
 				ms_utils.c			\
+				$(B_INS_DIR)echo.c	\
+				$(B_INS_DIR)pwd.c	\
+				$(B_INS_DIR)cd.c	\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft
@@ -35,6 +39,7 @@ all:			$(NAME)
 
 $(OBJ_DIR)%.o :	$(SRC_DIR)%.c
 				@mkdir -p $(OBJ_DIR)
+				@mkdir -p $(OBJ_DIR)/$(B_INS_DIR)
 				$(CC) -c $(CFLAGS) -Iinc -I $(READLINE_INC) $< -o $@
 
 $(OBJ_DIR)%.o :	$(GNL_DIR)%.c

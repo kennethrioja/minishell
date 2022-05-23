@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/22 18:56:10 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/23 16:14:40 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@
 # define MS_ENV "env"
 # define MS_EXIT "exit"
 
+# define PATH_MAX 1024
+
 // typedef, struct & vars
 
 typedef struct s_redir
@@ -75,7 +77,7 @@ typedef struct s_redir
 
 typedef struct s_pa
 {
-	char			*path;
+	char			*cmd;
 	char			**args;
 	struct s_pa		*prev;
 	struct s_pa		*next;
@@ -114,5 +116,16 @@ void	get_signal(void);
 
 //* free_all.c
 void	free_all(t_ad *ad);
+
+//* builtins
+
+//** builtins/echo.c
+void	ft_echo(t_ad *ad);
+
+// ** builtins/pwd.c
+void	ft_pwd(void);
+
+// ** builtins/cd.c
+void	ft_cd(t_ad *ad);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/23 16:14:40 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/23 19:56:40 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@
 # define MS_ENV "env"
 # define MS_EXIT "exit"
 
-# define PATH_MAX 1024
+# ifndef PATH_MAX
+#  define PATH_MAX 1024
+# endif
 
 // typedef, struct & vars
 
@@ -123,7 +125,7 @@ void	free_all(t_ad *ad);
 void	ft_echo(t_ad *ad);
 
 // ** builtins/pwd.c
-void	ft_pwd(void);
+void	ft_pwd(t_ad *ad);
 
 // ** builtins/cd.c
 void	ft_cd(t_ad *ad);

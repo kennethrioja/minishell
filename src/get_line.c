@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/23 16:17:01 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/23 19:56:59 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	check_line(t_ad *ad)
 	else if (!ft_strncmp(MS_CD, ad->line, ft_strlen(MS_CD)))
 		ft_cd(ad);
 	else if (!ft_strncmp(MS_PWD, ad->line, ft_strlen(MS_PWD)))
-		ft_pwd();
+		ft_pwd(ad);
 	else if (!ft_strncmp(MS_EXPORT, ad->line, ft_strlen(MS_EXPORT)))
 		ft_printf("builtins - export\n");
 	else if (!ft_strncmp(MS_UNSET, ad->line, ft_strlen(MS_UNSET)))

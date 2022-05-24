@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/24 10:27:02 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/24 23:19:06 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	get_line(t_ad *ad)
 {
-	if (ad->line)
-	{
-		free(ad->line);
-		ad->line = NULL;
-	}
+	// if (ad->line)
+	// {
+	// 	free(ad->line);
+	// 	ad->line = NULL;
+	// }
 	ad->line = readline("adsh> ");
 	if (ad->line)
 		add_history(ad->line);

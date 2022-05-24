@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/23 19:56:59 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/24 10:27:02 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	check_line(t_ad *ad)
 	else if (!ft_strncmp(MS_UNSET, ad->line, ft_strlen(MS_UNSET)))
 		ft_printf("builtins - unset\n");
 	else if (!ft_strncmp(MS_ENV, ad->line, ft_strlen(MS_ENV)))
-		ft_printf("builtins - env\n");
+		ft_env(ad);
 	else if (!ft_strncmp(MS_EXIT, ad->line, ft_strlen(MS_EXIT)))
 	{
 		// TODO do function exit and free

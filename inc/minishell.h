@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/23 19:56:40 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/24 13:46:45 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // .h libraries
 # include <curses.h>				
 // tgetent(), tgetflag(), tgetnum(), tgetstr(), tgoto(), tputs()
-# include <dirent.h>				
+# include <dirent.h>
 // opendir(), readdir(), closedir()
 # include <fcntl.h>					
 // open()
@@ -88,6 +88,7 @@ typedef struct s_pa
 typedef struct s_ad
 {
 	char			*line;
+	char			**env;
 	t_redir			*redir;
 	t_pa			*pa;
 }					t_ad;
@@ -106,6 +107,8 @@ void	get_pa(char **env, t_ad *ad);
 
 //* ms_utils.c
 int		ft_strcmp(char *s1, char *s2);
+int		ft_arrlen(char **arr);
+int		ft_strlen_c(char *str, char c);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
@@ -129,5 +132,10 @@ void	ft_pwd(t_ad *ad);
 
 // ** builtins/cd.c
 void	ft_cd(t_ad *ad);
+
+// ** builtins/env.c
+void	ft_env(t_ad *ad);
+void	init_env(t_ad *ad, char	**env);
+void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite);
 
 #endif

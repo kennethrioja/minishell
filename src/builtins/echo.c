@@ -20,15 +20,24 @@ void	ft_echo(t_ad *ad)
 	n_option = 0;
 	if (!ft_strncmp(ad->line, "echo -n", 7))
 		n_option = 1;
-	if (!n_option)
-		ft_printf("%s\n", ad->line + 5);
-	else if (n_option)
-		ft_printf("%s", ad->line + 8);
-	// if (!ft_strcmp(ad->pa->args[1], "-n"))
-	// 	n_option = 1;
-	// i = 1 + n_option;
-	// while (ad->pa->args[i])
-	// 	ft_printf("%s", ad->pa->args[i]);
-	// if (!n_option)
-	// 	ft_printf("\n");
+	if (n_option)
+		if (ad->line[8] == '$')
+			ft_printf("%s\n", getenv(ad->line + 9));
+		else
+			ft_printf("%s", ad->line + 8);
+	else
+		if (ad->line[5] == '$')
+			ft_printf("%s\n", getenv(ad->line + 6));
+		else
+			ft_printf("%s\n", ad->line + 5);
+//	 if (!ft_strcmp(ad->pa->args[1], "-n"))
+//	 	n_option = 1;
+//	 i = 1 + n_option;
+//	if (ad->pa->args[i][0] == '$')
+//		ft_printf("%s\n", getenv(ad->pa->args[i]));
+//	else
+//		while (ad->pa->args[i])
+//	 		ft_printf("%s", ad->pa->args[i]);
+//	 if (!n_option)
+//	 	ft_printf("\n");
 }

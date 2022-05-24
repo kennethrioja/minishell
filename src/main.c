@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/23 15:48:32 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/24 10:51:24 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_ad	ad;
 
+	init_env(&ad, env);
 	while (1)
 	{
 		if (!get_line(&ad))

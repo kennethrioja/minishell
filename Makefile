@@ -10,6 +10,7 @@ SRCS		=	main.c				\
 				$(B_INS_DIR)echo.c	\
 				$(B_INS_DIR)pwd.c	\
 				$(B_INS_DIR)cd.c	\
+				$(B_INS_DIR)env.c	\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft

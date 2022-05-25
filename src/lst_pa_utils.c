@@ -1,49 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_utils.c                                        :+:      :+:    :+:   */
+/*   lst_pa_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/18 15:08:32 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 16:26:25 by krioja           ###   ########.fr       */
+/*   Created: 2022/05/23 15:30:15 by krioja            #+#    #+#             */
+/*   Updated: 2022/05/25 16:32:40 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_lstnew(t_pa *pa)
+t_pa	*pa_lstnew(struct s_pa *previous)
 {
+	t_pa	*pa;
+	
 	pa = malloc(sizeof(t_pa));
 	if (!pa)
 		return (NULL);
+	pa->cmd = NULL;
+	pa->path = NULL;
+	pa->args = NULL;
+	if (previous)
+		pa->prev = previous;
+	else
+		pa->prev = NULL;
 	pa->next = NULL;
 	return (pa);
 }
 
-t_pa	*ms_lstlast(t_pa *pa)
+void	pa_lst_fst_or_lst(t_pa **pa, int flag)
 {
-	while (pa)
+	if (flag == 0)
 	{
-		if (pa->next == NULL)
-			break ;
-		pa = lst->next;
-	}
-	return (pa);
-}
-
-void	ms_lstadd_back(t_pa **pa, t_pa *panew)
-{
-	t_pa	*last;
-
-	if (*pa)
-	{
-		last = ms_lstlast(*pa);
-		last->next = panew;
+		while (*pa)
+		{
+			if ((*pa)->prev == NULL)
+				break ;
+			*pa = (*pa)->prev;
+		}
 	}
 	else
 	{
-		*pa = panew;
+		while (*pa)
+		{
+			if ((*pa)->next == NULL)
+				break ;
+			*pa = (*pa)->next;
+		}
 	}
-	return ;
+}
+
+void	pa_lstadd_back(t_pa **alst, t_pa *next)
+{
+	if (*alst)
+	{
+		pa_lst_fst_or_lst(alst, 1);
+		(*alst)->next = next;
+	}
+	else
+		*alst = next;
 }

@@ -24,9 +24,9 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-int	ft_arrlen(char **arr)
+size_t	ft_arrlen(char **arr)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (arr[i])
@@ -34,9 +34,9 @@ int	ft_arrlen(char **arr)
 	return (i);
 }
 
-int	ft_strlen_c(char *str, char c)
+size_t	ft_strlen_c(char *str, char c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (str[i] && str[i] != c)

@@ -38,7 +38,7 @@ void	check_line(t_ad *ad)
 	else if (!ft_strncmp(MS_PWD, ad->line, ft_strlen(MS_PWD)))
 		ft_pwd(ad);
 	else if (!ft_strncmp(MS_EXPORT, ad->line, ft_strlen(MS_EXPORT)))
-		ft_printf("builtins - export\n");
+		ft_export(ad);
 	else if (!ft_strncmp(MS_UNSET, ad->line, ft_strlen(MS_UNSET)))
 		ft_printf("builtins - unset\n");
 	else if (!ft_strncmp(MS_ENV, ad->line, ft_strlen(MS_ENV)))

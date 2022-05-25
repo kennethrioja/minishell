@@ -88,7 +88,7 @@ typedef struct s_pa
 typedef struct s_ad
 {
 	char			*line;
-	char			**env;
+	char			***env;
 	t_redir			*redir;
 	t_pa			*pa;
 }					t_ad;
@@ -107,8 +107,8 @@ void	get_pa(char **env, t_ad *ad);
 
 //* ms_utils.c
 int		ft_strcmp(char *s1, char *s2);
-int		ft_arrlen(char **arr);
-int		ft_strlen_c(char *str, char c);
+size_t		ft_arrlen(char **arr);
+size_t		ft_strlen_c(char *str, char c);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
@@ -136,6 +136,9 @@ void	ft_cd(t_ad *ad);
 // ** builtins/env.c
 void	ft_env(t_ad *ad);
 void	init_env(t_ad *ad, char	**env);
+
+// ** builtins/export.c
+void	ft_export(t_ad *ad);
 void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite);
 
 #endif

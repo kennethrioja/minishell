@@ -22,7 +22,11 @@ void	sig_handler(int signum)
 		rl_redisplay();
 	}
 	if (signum == SIGQUIT)
-		ft_printf("\n");
+	{
+		ft_printf("\r");
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 void	get_signal(void)

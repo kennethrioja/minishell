@@ -19,9 +19,9 @@ int	main(int ac, char **av, char **env)
 	init_env(&ad, env);
 	while (1)
 	{
+		get_signal();
 		if (!get_line(&ad))
 			break ;
-		get_signal();
 		check_line(&ad);
 		// get_redir(&ad);
 		// get_pp(env, &ad);

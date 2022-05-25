@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/25 10:18:52 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/25 18:19:32 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_pa
 	char			**args;
 	struct s_pa		*prev;
 	struct s_pa		*next;
+//	t_redir			*redir;
 }					t_pa;
 
 typedef struct s_ad
@@ -94,6 +95,7 @@ void	redir_lstadd_back(t_redir **alst, t_redir *next);
 //* lst_pa_utils.c
 t_pa	*pa_lstnew(struct s_pa *previous);
 void	pa_lst_fst_or_lst(t_pa **pa, int flag);
+void	pa_lstadd_back(t_pa **alst, t_pa *next);
 
 //* ms_utils.c
 

@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 15:30:15 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/24 22:13:28 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/25 16:32:40 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,20 @@ void	pa_lst_fst_or_lst(t_pa **pa, int flag)
 	{
 		while (*pa)
 		{
-		if ((*pa)->next == NULL)
-			break ;
-		*pa = (*pa)->next;
+			if ((*pa)->next == NULL)
+				break ;
+			*pa = (*pa)->next;
 		}
 	}
+}
+
+void	pa_lstadd_back(t_pa **alst, t_pa *next)
+{
+	if (*alst)
+	{
+		pa_lst_fst_or_lst(alst, 1);
+		(*alst)->next = next;
+	}
+	else
+		*alst = next;
 }

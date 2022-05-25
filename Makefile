@@ -1,10 +1,13 @@
 NAME		=	minishell
 
 SRC_DIR 	= 	src/
-SRCS		=	main.c				\
-				get_line.c			\
-				signal.c			\
-				free_all.c			\
+SRCS		=	main.c					\
+				get_line.c				\
+				ms_utils_split.c		\
+				lst_redir_utils.c		\
+				lst_pa_utils.c			\
+				signal.c				\
+				free_all.c				\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft

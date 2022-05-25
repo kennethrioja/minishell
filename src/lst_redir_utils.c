@@ -6,13 +6,13 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 18:09:23 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/18 18:58:59 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/25 10:21:42 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_redir	*redir_lstnew(s_redir *previous)
+t_redir	*redir_lstnew(struct s_redir *previous)
 {
 	t_redir	*redir;
 	
@@ -21,46 +21,43 @@ t_redir	*redir_lstnew(s_redir *previous)
 		return (NULL);
 	redir->op = NULL;
 	redir->file = NULL;
-	if (!previous)
-		redir->prev = NULL;
+	if (previous)
+		redir->prev = previous;
 	else
-		redir->prev = prev;
+		redir->prev = NULL;
 	redir->next = NULL;
 	return (redir);
 }
 
-t_redir	*redir_lstlast(t_redir *redir)
+void	redir_lst_fst_or_lst(t_redir **redir, int flag)
 {
-	while (redir)
+	if (flag == 0)
 	{
-		if (redir->next == NULL)
-			break ;
-		redir = lst->next;
-	}
-	return (redir);
-}
-
-void	redir_lstfirst(t_redir *redir)
-{
-	while (redir)
-	{
-		if (redir->prev == NULL)
-			break ;
-		redir = lst->prev;
-	}
-}
-
-void	redir_lstadd_back(t_redir **redir, t_redir *redirnew)
-{
-	t_redir	*last;
-
-	if (*redir)
-	{
-		last = redir_lstlast(*redir);
-		last->next = redirnew;
+		while (*redir)
+		{
+			if ((*redir)->prev == NULL)
+				break ;
+			*redir = (*redir)->prev;
+		}
 	}
 	else
 	{
-		*redir = redirnew;
+		while (*redir)
+		{
+			if ((*redir)->next == NULL)
+				break ;
+			*redir = (*redir)->next;
+		}
 	}
+}
+
+void	redir_lstadd_back(t_redir **alst, t_redir *next)
+{
+	if (*alst)
+	{
+		redir_lst_fst_or_lst(alst, 1);
+		(*alst)->next = next;
+	}
+	else
+		*alst = next;
 }

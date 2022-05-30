@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/30 10:42:14 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/30 14:33:31 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int		get_line(t_ad *ad);
 int		ms_split(t_ad *ad);
 
 //* ms_split_utils.c
-int		ft_strlen_sp(const char	*s);
+int		ft_strlen_op(t_ad *ad, const char *s);
+int		ft_strlen_sp(const char	*s, int flag);
 int		ft_count_args(const char *s);
 
 //* ms_split_redir_utils.c

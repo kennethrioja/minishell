@@ -3,9 +3,10 @@ NAME		=	minishell
 SRC_DIR 	= 	src/
 SRCS		=	main.c					\
 				get_line.c				\
-				ms_utils_split.c		\
-				lst_redir_utils.c		\
-				lst_pa_utils.c			\
+				ms_split.c				\
+				ms_split_utils.c		\
+				ms_split_redir_utils.c	\
+				ms_split_pa_utils.c		\
 				signal.c				\
 				free_all.c				\
 

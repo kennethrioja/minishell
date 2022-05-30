@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/25 18:22:03 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/30 10:46:52 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ int	main(int ac, char **av, char **env)
 	{
 		if (!get_line(&ad))
 			break ;
-//		if (ms_split(&ad)) // put ! to check for leaks
-//			break ;
+		if (ms_split(&ad))
+			break ;
 		(void)env;
 		ft_printf("%s\n", ad.line);
 	}
 	free_all(&ad);
 	return (EXIT_SUCCESS);
 }
+// put !ms_split to check for leaks

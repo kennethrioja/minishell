@@ -6,11 +6,17 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 16:00:41 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/24 21:02:05 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/30 10:25:49 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	my_exit(t_ad *ad, int flag)
+{
+	free_all(ad);
+	exit(flag);
+}
 
 static void	free_redir(t_ad *ad)
 {

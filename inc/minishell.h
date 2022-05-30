@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/25 18:19:32 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/30 14:33:31 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ typedef struct s_pa
 	char			**args;
 	struct s_pa		*prev;
 	struct s_pa		*next;
-//	t_redir			*redir;
 }					t_pa;
+//	t_redir			*redir;
 
 typedef struct s_ad
 {
@@ -84,15 +84,20 @@ typedef struct s_ad
 //* get_line.c
 int		get_line(t_ad *ad);
 
-//* ms_utils_split.c
+//* ms_split.c
 int		ms_split(t_ad *ad);
 
-//* lst_redir_utils.c
+//* ms_split_utils.c
+int		ft_strlen_op(t_ad *ad, const char *s);
+int		ft_strlen_sp(const char	*s, int flag);
+int		ft_count_args(const char *s);
+
+//* ms_split_redir_utils.c
 t_redir	*redir_lstnew(struct s_redir *previous);
 void	redir_lst_fst_or_lst(t_redir **redir, int flag);
 void	redir_lstadd_back(t_redir **alst, t_redir *next);
 
-//* lst_pa_utils.c
+//* ms_split_pa_utils.c
 t_pa	*pa_lstnew(struct s_pa *previous);
 void	pa_lst_fst_or_lst(t_pa **pa, int flag);
 void	pa_lstadd_back(t_pa **alst, t_pa *next);
@@ -104,6 +109,7 @@ void	sig_handler(int signum);
 void	get_signal(void);
 
 //* free_all.c
+void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 
 #endif

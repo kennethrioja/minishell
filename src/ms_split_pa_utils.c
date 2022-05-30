@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_pa_utils.c                                     :+:      :+:    :+:   */
+/*   ms_split_pa_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 15:30:15 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/25 16:32:40 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/30 10:41:43 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_pa	*pa_lstnew(struct s_pa *previous)
 {
 	t_pa	*pa;
-	
+
 	pa = malloc(sizeof(t_pa));
 	if (!pa)
 		return (NULL);
@@ -58,6 +58,7 @@ void	pa_lstadd_back(t_pa **alst, t_pa *next)
 	{
 		pa_lst_fst_or_lst(alst, 1);
 		(*alst)->next = next;
+		pa_lst_fst_or_lst(alst, 1);
 	}
 	else
 		*alst = next;

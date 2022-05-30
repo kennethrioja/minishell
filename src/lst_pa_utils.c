@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 15:30:15 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/25 16:32:40 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:29:10 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_pa	*pa_lstnew(struct s_pa *previous)
 {
 	t_pa	*pa;
-	
+
 	pa = malloc(sizeof(t_pa));
 	if (!pa)
 		return (NULL);

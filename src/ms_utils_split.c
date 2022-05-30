@@ -6,13 +6,26 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/25 18:07:11 by krioja           ###   ########.fr       */
+/*   Updated: 2022/05/30 09:53:53 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// return len of word + spaces before and after, e.g. s = "    ls  la " will return 8
+//static int	has_op(const char *s)
+//{
+//	int i;
+//
+//	i = -1;
+//	while (s[++i])
+//	{
+//		if (s[i] == '>' || s[i] == '<' || s[i] == '|')
+//			return (1);
+//	}
+//	return (0);
+//}
+
+// len of word + spaces before & after, if "    ls  la " will return 8
 static int	ft_strlen_sp(const char	*s)
 {
 	int	i;
@@ -23,11 +36,7 @@ static int	ft_strlen_sp(const char	*s)
 	while (!ft_isspace(s[i]) && s[i])
 		++i;
 	while (ft_isspace(s[i]) && s[i])
-	{
 		++i;
-//		ft_printf("ft_isspace(s[i])=%d, s[i=%d]=%d\n",ft_isspace(s[i]),i,s[i]);
-	}
-//	ft_printf("i = %d\n", i);
 	return (i);
 }
 
@@ -43,17 +52,16 @@ static int	ft_count_args(const char *s)
 	while (s[i] != '|' && s[i] != '>' && s[i] != '<' && s[i])
 	{
 		if (!ft_isspace(s[i]) && (ft_isspace(s[i + 1]) || s[i + 1] == '\0'))
-		++count;
+			++count;
 		++i;
 	}
 	return (count);
 }
 
-// strtrim(substr) > source of leaks??
 static int	populate_pa(t_ad *ad, const char *l)
 {
 	int	n;
-	
+
 	n = 0;
 	while (*l)
 	{
@@ -75,14 +83,13 @@ static int	populate_pa(t_ad *ad, const char *l)
 			}
 			ad->pa->cmd = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l)), " ");
 			if (ad->pa->cmd == NULL)
-				return (1);
-			l += ft_strlen_sp(l);
+				return (write(2, "Error: Malloc (ad->pa->cmd)\n", 28));
 			ad->pa->args = malloc(sizeof(char *) * ft_count_args(l) + 1);
 			while (*l != '|' && *l != '>' && *l != '<' && *l)
 			{
 				ad->pa->args[n] = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l)), " ");
 				if (ad->pa->args[n] == NULL)
-					return (2);
+					return (write(2, "Error: Malloc (ad->pa->args)\n", 29));
 				l += ft_strlen_sp(l);
 				++n;
 			}
@@ -94,10 +101,10 @@ static int	populate_pa(t_ad *ad, const char *l)
 	n = 0;
 	while (ad->pa)
 	{
-		ft_printf("ad.pa.cmd=|%s|\n",ad->pa->cmd);
-		ft_printf("ad.pa.path=|%s|\n",ad->pa->path);
+		ft_printf("ad.pa.cmd=|%s|\n", ad->pa->cmd);
+		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
 		while (ad->pa->args[n++])
-			ft_printf("ad.pa.args[%d]=|%s|\n",n - 1,ad->pa->args[n - 1]);
+			ft_printf("ad.pa.args[%d]=|%s|\n", n - 1, ad->pa->args[n - 1]);
 		ad->pa = ad->pa->next;
 		n = 0;
 	}
@@ -120,21 +127,24 @@ static int	populate_redir(t_ad *ad, const char *l)
 			}
 			ad->redir->op = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l)), " ");
 			if (ad->redir->op == NULL)
-				return (1);
+				return (write(2, "Error: Malloc (ad->redir->op)\n", 30));
 			l += ft_strlen_sp(l);
+			if (*l == '>' || *l == '<' || *l == '|')
+				return (write(2, "Error: Redirection to a >, < or |\n", 34));
 			ad->redir->file = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l)), " ");
 			if (ad->redir->file == NULL)
-				return (2);
+				return (write(2, "Error: Malloc (ad->redir->file)\n", 32));
 			l += ft_strlen_sp(l);
 		}
 		else
 			++l;
 	}
+
 	redir_lst_fst_or_lst(&ad->redir, 0);
 	while (ad->redir)
 	{
-		ft_printf("ad.redir.op=|%s|\n",ad->redir->op);
-		ft_printf("ad.redir.file=|%s|\n",ad->redir->file);
+		ft_printf("ad.redir.op=|%s|\n", ad->redir->op);
+		ft_printf("ad.redir.file=|%s|\n", ad->redir->file);
 		ad->redir = ad->redir->next;
 	}
 	return (0);

@@ -96,8 +96,7 @@ typedef struct s_node
 typedef struct s_ad
 {
 	char			*line;
-	char			***env;
-	t_node			*env_s;
+	t_node			*env;
 	t_redir			*redir;
 	t_pa			*pa;
 }					t_ad;
@@ -151,5 +150,8 @@ void	ft_export(t_ad *ad);
 void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite);
 void	append_env(t_node **head_ref, char *key, char *value);
 void	delete_env(t_node **head_ref, t_node *del);
+
+// ** builtins/unset.c
+void	ft_unset(t_ad *ad);
 
 #endif

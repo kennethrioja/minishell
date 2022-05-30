@@ -27,8 +27,7 @@ int	get_line(t_ad *ad)
 	return (1);
 }
 
-// TODO execve() pour les builtins et faire le parser en premier
-// changer var ad->line par ad->pa->cmd
+// TODO changer var ad->line par ad->pa->cmd
 void	check_line(t_ad *ad)
 {
 	if (!ft_strncmp(MS_ECHO, ad->line, ft_strlen(MS_ECHO)))
@@ -40,12 +39,13 @@ void	check_line(t_ad *ad)
 	else if (!ft_strncmp(MS_EXPORT, ad->line, ft_strlen(MS_EXPORT)))
 		ft_export(ad);
 	else if (!ft_strncmp(MS_UNSET, ad->line, ft_strlen(MS_UNSET)))
-		ft_printf("builtins - unset\n");
+		ft_unset(ad);
 	else if (!ft_strncmp(MS_ENV, ad->line, ft_strlen(MS_ENV)))
 		ft_env(ad);
 	else if (!ft_strncmp(MS_EXIT, ad->line, ft_strlen(MS_EXIT)))
 	{
 		// TODO do function exit and free
+		ft_printf("exit\n");
 		exit(EXIT_SUCCESS);
 	}
 	// else

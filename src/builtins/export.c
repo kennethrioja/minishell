@@ -15,21 +15,24 @@
 void	ft_export(t_ad *ad)
 {
 	t_node	*tmp;
+	char	*key;
+	char	*value;
 
 	if (!ft_strcmp(ad->line, "export"))
 	{
-		tmp = ad->env_s;
+		tmp = ad->env;
 		while (tmp)
 		{
-			// ft_printf("declare -x %s=\"%s\"\n", ad->env[i][0], ad->env[i][1]);
 			ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 			tmp = tmp->next;
 		}
 	}
 	else
 	{
-//		ft_set_env(ad, );
-		ft_printf("export: %s: No such file or directory\n", ad->line + 4);
+		key = ft_substr(ad->line, 7, ft_strlen_c(ad->line, '=') - 7);
+		value = ft_strdup(ad->line + ft_strlen_c(ad->line, '=') + 1);
+		append_env(&ad->env, key, value);
+//		ft_printf("export: %s: No such file or directory\n", ad->line + 4);
 	}
 }
 
@@ -53,7 +56,6 @@ void	append_env(t_node **head_ref, char *key, char *value)
 		last = last->next;
 	last->next = new_node;
 	new_node->prev = last;
-	return ;
 }
 
 void	delete_env(t_node **head_ref, t_node *del)
@@ -67,7 +69,6 @@ void	delete_env(t_node **head_ref, t_node *del)
 	if (del->prev != NULL)
 		del->prev->next = del->next;
 	free(del);
-	return ;
 }
 
 //void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite)

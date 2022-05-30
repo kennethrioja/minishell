@@ -12,6 +12,7 @@ SRCS		=	main.c				\
 				$(B_INS_DIR)cd.c	\
 				$(B_INS_DIR)env.c	\
 				$(B_INS_DIR)export.c\
+				$(B_INS_DIR)unset.c	\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft

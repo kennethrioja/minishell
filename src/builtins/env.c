@@ -14,15 +14,18 @@
 
 void	ft_env(t_ad *ad)
 {
-	int	i;
+	int		i;
+	t_node	*tmp;
 
 	i = 0;
 	if (!ft_strcmp(ad->line, "env"))
 	{
-		while (ad->env[i])
+		tmp = ad->env;
+		while (tmp)
 		{
-			ft_printf("%s=%s\n", ad->env[i][0], ad->env[i][1]);
+			ft_printf("%s=%s\n", tmp->key, tmp->value);
 			i++;
+			tmp = tmp->next;
 		}
 	}
 	else
@@ -39,15 +42,15 @@ void	init_env(t_ad *ad, char	**env)
 	char	*value;
 
 	i = ft_arrlen(env);
-	ad->env_s = NULL;
+	ad->env = NULL;
 	j = 0;
 	while (j < i)
 	{
 		key = ft_substr(env[j], 0, ft_strlen_c(env[j], '='));
 		value = ft_strdup(env[j] + 1 + ft_strlen_c(env[j], '='));
-		append_env(&ad->env_s, key, value);
-		// free(key);
-		// free(value);
+		append_env(&ad->env, key, value);
+//		 free(key);
+//		 free(value);
 		j++;
 	}
 }

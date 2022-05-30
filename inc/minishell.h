@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/24 13:46:45 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/30 13:16:18 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,19 @@ typedef struct s_pa
 	struct s_pa		*next;
 }					t_pa;
 
+typedef struct s_node
+{
+	char			*key;
+	char			*value;
+	struct s_node	*next;
+	struct s_node	*prev;
+}					t_node;
+
 typedef struct s_ad
 {
 	char			*line;
 	char			***env;
+	t_node			*env_s;
 	t_redir			*redir;
 	t_pa			*pa;
 }					t_ad;
@@ -140,5 +149,7 @@ void	init_env(t_ad *ad, char	**env);
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
 void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite);
+void	append_env(t_node **head_ref, char *key, char *value);
+void	delete_env(t_node **head_ref, t_node *del);
 
 #endif

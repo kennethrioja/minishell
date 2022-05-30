@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:32:31 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/25 15:32:36 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/30 13:27:14 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void	ft_export(t_ad *ad)
 {
-	int	i;
+	t_node	*tmp;
 
-	i = 0;
 	if (!ft_strcmp(ad->line, "export"))
 	{
-		while (ad->env[i])
+		tmp = ad->env_s;
+		while (tmp)
 		{
-			ft_printf("declare -x %s=\"%s\"\n", ad->env[i][0], ad->env[i][1]);
-			i++;
+			// ft_printf("declare -x %s=\"%s\"\n", ad->env[i][0], ad->env[i][1]);
+			ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+			tmp = tmp->next;
 		}
 	}
 	else
@@ -30,6 +31,43 @@ void	ft_export(t_ad *ad)
 //		ft_set_env(ad, );
 		ft_printf("export: %s: No such file or directory\n", ad->line + 4);
 	}
+}
+
+void	append_env(t_node **head_ref, char *key, char *value)
+{
+	t_node	*new_node;
+	t_node	*last;
+
+	new_node = (t_node *)malloc(sizeof(t_node));
+	new_node->key = key;
+	new_node->value = value;
+	new_node->next = NULL;
+	if (*head_ref == NULL)
+	{
+		new_node->prev = NULL;
+		*head_ref = new_node;
+		return ;
+	}
+	last = *head_ref;
+	while (last->next != NULL)
+		last = last->next;
+	last->next = new_node;
+	new_node->prev = last;
+	return ;
+}
+
+void	delete_env(t_node **head_ref, t_node *del)
+{
+	if (*head_ref == NULL || del == NULL)
+		return ;
+	if (*head_ref == del)
+		*head_ref = del->next;
+	if (del->next != NULL)
+		del->next->prev = del->prev;
+	if (del->prev != NULL)
+		del->prev->next = del->next;
+	free(del);
+	return ;
 }
 
 //void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite)

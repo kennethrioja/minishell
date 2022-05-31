@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 18:56:41 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/30 18:56:43 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/31 22:34:18 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,23 @@
 
 void	ft_unset(t_ad *ad)
 {
-	//TODO wip doesn't work
 	t_node	*tmp;
+	int		size;
 
 	if (ft_strlen(ad->line) > 6)
 	{
 		tmp = ad->env;
-		while (tmp && tmp->next)
+		while (tmp)
 		{
-//			ft_printf("[%s]\n", ad->line + 6);
-			if (!ft_strncmp(tmp->key, ad->line + 6, ft_strlen(ad->line + 6)))
-				delete_env(&tmp, tmp);
+			if (ft_strlen(tmp->key) < ft_strlen(ad->line + 6))
+				size = ft_strlen(ad->line + 6);
+			else
+				size = ft_strlen(tmp->key);
+			if (!ft_strncmp(tmp->key, ad->line + 6, size))
+			{
+				delete_env(&ad->env, tmp);
+				break ;
+			}
 			tmp = tmp->next;
 		}
 	}

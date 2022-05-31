@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/24 10:51:24 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/31 20:35:51 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av, char **env)
 		if (!get_line(&ad))
 			break ;
 		check_line(&ad);
+		free(ad.line);
 		// get_redir(&ad);
 		// get_pp(env, &ad);
 		// ft_printf("%s\n", ad.line);

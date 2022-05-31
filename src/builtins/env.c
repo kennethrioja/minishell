@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:20:43 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/30 13:31:01 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/31 20:20:31 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	init_env(t_ad *ad, char	**env)
 		key = ft_substr(env[j], 0, ft_strlen_c(env[j], '='));
 		value = ft_strdup(env[j] + 1 + ft_strlen_c(env[j], '='));
 		append_env(&ad->env, key, value);
-//		 free(key);
-//		 free(value);
 		j++;
 	}
 }

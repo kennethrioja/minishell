@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:05:42 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/24 09:18:48 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/31 23:44:01 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	ft_cd(t_ad *ad)
 {
 	DIR	*dir;
 
+	if (!ft_strcmp(ad->line, "cd"))
+	{
+		chdir(getenv("HOME"));
+		return ;
+	}
 	dir = opendir(ad->line + 3);
 	if (dir)
 	{

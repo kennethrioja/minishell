@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:32:31 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/30 13:27:14 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/31 23:35:18 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	ft_export(t_ad *ad)
 	char	*key;
 	char	*value;
 
+	tmp = ad->env;
 	if (!ft_strcmp(ad->line, "export"))
 	{
-		tmp = ad->env;
 		while (tmp)
 		{
 			ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
@@ -31,9 +31,26 @@ void	ft_export(t_ad *ad)
 	{
 		key = ft_substr(ad->line, 7, ft_strlen_c(ad->line, '=') - 7);
 		value = ft_strdup(ad->line + ft_strlen_c(ad->line, '=') + 1);
+		while (tmp)
+		{
+			if (check_export(tmp->key, key))
+			{
+				free(tmp->value);
+				free(key);
+				tmp->value = value;
+				return ;
+			}
+			tmp = tmp->next;
+		}
 		append_env(&ad->env, key, value);
-//		ft_printf("export: %s: No such file or directory\n", ad->line + 4);
 	}
+}
+
+int	check_export(char *env, char *key)
+{
+	if (!ft_strcmp(env, key))
+		return (1);
+	return (0);
 }
 
 void	append_env(t_node **head_ref, char *key, char *value)
@@ -68,41 +85,7 @@ void	delete_env(t_node **head_ref, t_node *del)
 		del->next->prev = del->prev;
 	if (del->prev != NULL)
 		del->prev->next = del->next;
+	free(del->key);
+	free(del->value);
 	free(del);
 }
-
-//void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite)
-//{
-//	int		i;
-//	int		j;
-//	char	*ruleeq;
-//	char	**tmp;
-//
-//	j = -1;
-//	while (ad->env[++j])
-//	{
-//		if (!ft_strncmp(ad->env[j], rule, ft_strlen(rule)))
-//		{
-//			if (overwrite)
-//			{
-//				free(ad->env[j]);
-//				ruleeq = ft_strjoin(rule, "=");
-//				ad->env[j] = ft_strjoin(ruleeq, str);
-//			}
-//		}
-//		else
-//		{
-//			i = ft_arrlen(ad->env) + 1;
-//			tmp = ft_calloc(i + 1, sizeof(ad->env));
-//			j = 0;
-//			while (j < i - 1)
-//			{
-//				tmp[j] = ft_strdup(ad->env[j]);
-//				j++;
-//			}
-//			ruleeq = ft_strjoin(rule, "=");
-//			ad->env[j] = ft_strjoin(ruleeq, str);
-//			ad->env[j + 1] = NULL;
-//		}
-//	}
-//}

@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/30 13:16:18 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/05/31 23:26:02 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,9 @@ void	init_env(t_ad *ad, char	**env);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
-void	ft_set_env(t_ad *ad, char *rule, char *str, int overwrite);
 void	append_env(t_node **head_ref, char *key, char *value);
 void	delete_env(t_node **head_ref, t_node *del);
+int		check_export(char *env, char *key);
 
 // ** builtins/unset.c
 void	ft_unset(t_ad *ad);

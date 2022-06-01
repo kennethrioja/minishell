@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/30 15:06:21 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/01 18:44:23 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,27 @@ static int	populate_pa2(t_ad *ad, const char *l)
 		ad->pa = pa_lstnew(ad->pa);
 	else
 		pa_lstadd_back(&ad->pa, pa_lstnew(ad->pa));
-	ad->pa->cmd = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l, 1)), " ");
+	ad->pa->cmd = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l, 0)), " ");
 	if (ad->pa->cmd == NULL)
 		my_exit(ad, write(2, "Error: Malloc (ad->pa->cmd)\n", 28));
+	ft_printf("|%s|\n", l);
+	//ft_printf("***\\\n");
+	//ft_printf("args=%d:\"%s\"\n",ft_count_args(l), l);
 	ad->pa->args = malloc(sizeof(char *) * ft_count_args(l) + 1);
-	while (*l != '|' && *l != '>' && *l != '<' && *l)
+	//ft_printf("***/\n");
+	//ft_printf("%s\n",l);
+	//while (*l != '|' && *l != '>' && *l != '<' && *l)
+	while (*l != '|' && *l)
 	{
-		ad->pa->args[n] = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l, 1)), " ");
+		ad->pa->args[n] = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l, 0)), " ");
 		if (ad->pa->args[n] == NULL)
 			my_exit(ad, write(2, "Error: Malloc (ad->pa->args)\n", 29));
-		ret += ft_strlen_sp(l, 1);
-		l += ft_strlen_sp(l, 1);
+		ft_printf("BEFR.s=\"%s\"\n",l);
+		ret += ft_strlen_sp(l, 2);
+		l += ft_strlen_sp(l, 2);
+		ft_printf("arg[%d]=\"%s\"\n",n, ad->pa->args[n],l);
+		ft_printf("AFTR.s=\"%s\"\n",l);
+		//ft_printf("AFTR.s-1=\"%s\"s=\"%s\"s+1=\"%s\"\n",l-1,l,l+1);
 		++n;
 	}
 	ad->pa->args[n] = NULL;
@@ -49,14 +59,28 @@ static int	populate_pa(t_ad *ad, const char *l)
 	{
 		if (*l == '>' || *l == '<')
 		{
-			l += ft_strlen_sp(l, 1);
-			l += ft_strlen_sp(l, 1);
+			l += ft_strlen_op(ad, l);
+			l += ft_strlen_sp(l, 0);
 		}
 		else if (*l == '|')
 			++l;
 		else
 			l += populate_pa2(ad, l);
 	}
+	pa_lst_fst_or_lst(&ad->pa, 0);
+	n = 0;
+	while (ad->pa)
+	{
+		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
+		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
+		while (ad->pa->args[n++])
+			ft_printf("ad.pa.args[%d]=|%s|\n", n - 1, ad->pa->args[n - 1]);
+		ad->pa = ad->pa->next;
+		n = 0;
+	}
+	return (0);
+}
+/* to put before return (0) to check all redir structs
 	pa_lst_fst_or_lst(&ad->pa, 0);
 	n = 0;
 	while (ad->pa)
@@ -68,20 +92,7 @@ static int	populate_pa(t_ad *ad, const char *l)
 		ad->pa = ad->pa->next;
 		n = 0;
 	}
-	return (0);
-}
-// to put before return (0) to check all redir structs
-//	pa_lst_fst_or_lst(&ad->pa, 0);
-//	n = 0;
-//	while (ad->pa)
-//	{
-//		ft_printf("ad.pa.cmd=|%s|\n", ad->pa->cmd);
-//		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
-//		while (ad->pa->args[n++])
-//			ft_printf("ad.pa.args[%d]=|%s|\n", n - 1, ad->pa->args[n - 1]);
-//		ad->pa = ad->pa->next;
-//		n = 0;
-//	}
+*/
 
 static int	populate_redir(t_ad *ad, const char *l)
 {
@@ -112,20 +123,21 @@ static int	populate_redir(t_ad *ad, const char *l)
 	redir_lst_fst_or_lst(&ad->redir, 0);
 	while (ad->redir)
 	{
-		ft_printf("ad.redir.op=|%s|\n", ad->redir->op);
+		ft_printf("-ad.redir.op=|%s|\n", ad->redir->op);
 		ft_printf("ad.redir.file=|%s|\n", ad->redir->file);
 		ad->redir = ad->redir->next;
 	}
 	return (0);
 }
-// to put before return (0) to check all redir structs
-//	redir_lst_fst_or_lst(&ad->redir, 0);
-//	while (ad->redir)
-//	{
-//		ft_printf("ad.redir.op=|%s|\n", ad->redir->op);
-//		ft_printf("ad.redir.file=|%s|\n", ad->redir->file);
-//		ad->redir = ad->redir->next;
-//	}
+/* to put before return (0) to check all redir structs
+	redir_lst_fst_or_lst(&ad->redir, 0);
+	while (ad->redir)
+	{
+		ft_printf("ad.redir.op=|%s|\n", ad->redir->op);
+		ft_printf("ad.redir.file=|%s|\n", ad->redir->file);
+		ad->redir = ad->redir->next;
+	}
+*/
 
 int	ms_split(t_ad *ad)
 {

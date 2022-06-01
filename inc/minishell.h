@@ -80,10 +80,12 @@ typedef struct s_redir
 typedef struct s_pa
 {
 	char			*cmd;
+	char			*path;
 	char			**args;
 	struct s_pa		*prev;
 	struct s_pa		*next;
 }					t_pa;
+//	t_redir			*redir;
 
 typedef struct s_node
 {
@@ -107,11 +109,23 @@ typedef struct s_ad
 int		get_line(t_ad *ad);
 void	check_line(t_ad *ad);
 
-//*	get_redir.c
-void	get_redir(t_ad *ad);
+//* ms_split.c
+int		ms_split(t_ad *ad);
 
-//* get_pa.c
-void	get_pa(char **env, t_ad *ad);
+//* ms_split_utils.c
+int		ft_strlen_op(t_ad *ad, const char *s);
+int		ft_strlen_sp(const char	*s, int flag);
+int		ft_count_args(const char *s);
+
+//* ms_split_redir_utils.c
+t_redir	*redir_lstnew(struct s_redir *previous);
+void	redir_lst_fst_or_lst(t_redir **redir, int flag);
+void	redir_lstadd_back(t_redir **alst, t_redir *next);
+
+//* ms_split_pa_utils.c
+t_pa	*pa_lstnew(struct s_pa *previous);
+void	pa_lst_fst_or_lst(t_pa **pa, int flag);
+void	pa_lstadd_back(t_pa **alst, t_pa *next);
 
 //* ms_utils.c
 int		ft_strcmp(char *s1, char *s2);
@@ -128,6 +142,7 @@ void	sig_handler(int signum);
 void	get_signal(void);
 
 //* free_all.c
+void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 
 //* builtins

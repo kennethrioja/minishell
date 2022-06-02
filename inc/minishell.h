@@ -139,7 +139,7 @@ void	ms_lstadd_back(t_pa **pa, t_pa *panew);
 
 //* signal.c
 void	sig_handler(int signum);
-void	get_signal(void);
+void	handle_signal(void);
 
 //* free_all.c
 void	my_exit(t_ad *ad, int flag);

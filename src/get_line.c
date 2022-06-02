@@ -14,14 +14,17 @@
 
 int	get_line(t_ad *ad)
 {
-	// if (ad->line)
-	// {
-	// 	free(ad->line);
-	// 	ad->line = NULL;
-	// }
+	struct termios	saved;
+	struct termios	attributes;
+
+	tcgetattr(STDIN_FILENO, &saved);
+	tcgetattr(STDIN_FILENO, &attributes);
+	attributes.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
 	ad->line = readline("adsh> ");
 	if (ad->line)
 		add_history(ad->line);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);
 	if (!ad->line)
 		return (0);
 	return (1);

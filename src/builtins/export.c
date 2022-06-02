@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:32:31 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/31 23:35:18 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/02 20:53:13 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	ft_export(t_ad *ad)
 {
-	t_node	*tmp;
-	char	*key;
-	char	*value;
-	int		i;
+	// t_node	*dup;
+
 
 	if (!ft_strcmp(ad->line, "export"))
 	{
@@ -25,16 +23,26 @@ void	ft_export(t_ad *ad)
 	}
 	else
 	{
+		add_env(ad, NULL, NULL);
+	}
+}
+
+void	add_env(t_ad *ad, char *key, char *value)
+{
+	t_node	*tmp;
+	int		i;
+
+	if (!key)
 		key = ft_substr(ad->line, 7, ft_strlen_c(ad->line, '=') - 7);
+	if (!value)
 		value = ft_strdup(ad->line + ft_strlen_c(ad->line, '=') + 1);
-		i = get_i_env(ad, key);
-		if (i == -1)
-			append_env(&ad->env, key, value);
-		else
-		{
-			tmp = get_env(ad, i);
-			tmp->value = value;
-		}
+	i = get_i_env(ad, key);
+	if (i == -1)
+		append_env(&ad->env, key, value);
+	else
+	{
+		tmp = get_env(ad, i);
+		tmp->value = value;
 	}
 }
 

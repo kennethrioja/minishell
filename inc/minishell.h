@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/31 23:26:02 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/02 20:51:52 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	print_node(t_node	*node, int option);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
+void	add_env(t_ad *ad, char *key, char *value);
 void	append_env(t_node **head_ref, char *key, char *value);
 int		count_export(t_ad *ad);
 void	sort_export(t_ad *ad, int count);

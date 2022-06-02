@@ -129,8 +129,8 @@ void	pa_lstadd_back(t_pa **alst, t_pa *next);
 
 //* ms_utils.c
 int		ft_strcmp(char *s1, char *s2);
-size_t		ft_arrlen(char **arr);
-size_t		ft_strlen_c(char *str, char c);
+size_t	ft_arrlen(char **arr);
+size_t	ft_strlen_c(char *str, char c);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
@@ -159,14 +159,18 @@ void	ft_cd(t_ad *ad);
 // ** builtins/env.c
 void	ft_env(t_ad *ad);
 void	init_env(t_ad *ad, char	**env);
+int		get_i_env(t_ad *ad, char *key);
+t_node	*get_env(t_ad *ad, int i);
+void	print_node(t_node	*node, int option);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
 void	append_env(t_node **head_ref, char *key, char *value);
-void	delete_env(t_node **head_ref, t_node *del);
-int		check_export(char *env, char *key);
+int		count_export(t_ad *ad);
+void	sort_export(t_ad *ad, int count);
 
 // ** builtins/unset.c
 void	ft_unset(t_ad *ad);
+void	delete_env(t_node **head_ref, t_node *del);
 
 #endif

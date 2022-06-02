@@ -14,24 +14,41 @@
 
 void	ft_env(t_ad *ad)
 {
-	int		i;
-	t_node	*tmp;
-
-	i = 0;
 	if (!ft_strcmp(ad->line, "env"))
 	{
-		tmp = ad->env;
-		while (tmp)
-		{
-			ft_printf("%s=%s\n", tmp->key, tmp->value);
-			i++;
-			tmp = tmp->next;
-		}
+		print_node(ad->env, 'c');
 	}
 	else
 	{
-		ft_printf("env: %s: No such file or directory\n", ad->line + 4);
+		perror("env");
 	}
+}
+
+int	get_i_env(t_ad *ad, char *key)
+{
+	t_node	*tmp;
+	int		i;
+
+	tmp = ad->env;
+	i = 0;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, key))
+			return (i);
+		tmp = tmp->next;
+		i++;
+	}
+	return (-1);
+}
+
+t_node	*get_env(t_ad *ad, int i)
+{
+	t_node	*tmp;
+
+	tmp = ad->env;
+	while (i--)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 void	init_env(t_ad *ad, char	**env)
@@ -50,5 +67,17 @@ void	init_env(t_ad *ad, char	**env)
 		value = ft_strdup(env[j] + 1 + ft_strlen_c(env[j], '='));
 		append_env(&ad->env, key, value);
 		j++;
+	}
+}
+
+void	print_node(t_node	*node, int option)
+{
+	while (node)
+	{
+		if (option == 1)
+			ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		else
+			ft_printf("%s=%s\n", node->key, node->value);
+		node = node->next;
 	}
 }

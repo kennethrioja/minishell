@@ -29,7 +29,7 @@ void	sig_handler(int signum)
 	}
 }
 
-void	get_signal(void)
+void	handle_signal(void)
 {
 	signal(SIGQUIT, sig_handler);
 	signal(SIGINT, sig_handler);

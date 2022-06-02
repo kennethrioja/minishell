@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **env)
 	init_env(&ad, env);
 	while (1)
 	{
-		get_signal();
+		handle_signal();
 		if (!get_line(&ad))
 			break ;
 //		if (ms_split(&ad))

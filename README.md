@@ -44,7 +44,9 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] Les wildcards * doivent fonctionner pour le répertoire courant.
 
 ## Tiago
-- [ ] 
+- [ ] supprimer getenv pour tous sauf pwd
+- [ ] /bin/cat doit fonctionner et ^C doit etre affichier
+- [ ] changer opendir pour access afin de rendre le programme plus leger
 
 ## Kenneth
 - [x] Mettre le Makefile + .h

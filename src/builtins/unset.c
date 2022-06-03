@@ -19,19 +19,25 @@ void	ft_unset(t_ad *ad)
 
 	if (ft_strlen(ad->line) > 6)
 	{
-		tmp = ad->env;
-		while (tmp)
-		{
-			if (ft_strlen(tmp->key) < ft_strlen(ad->line + 6))
-				size = ft_strlen(ad->line + 6);
-			else
-				size = ft_strlen(tmp->key);
-			if (!ft_strncmp(tmp->key, ad->line + 6, size))
-			{
-				delete_env(&ad->env, tmp);
-				break ;
-			}
-			tmp = tmp->next;
-		}
+		size = get_i_env(ad, ad->line + 6);
+		if (size == -1)
+			return ;
+		tmp = get_env(ad, size);
+		delete_env(&ad->env, tmp);
 	}
+}
+
+void	delete_env(t_node **head_ref, t_node *del)
+{
+	if (*head_ref == NULL || del == NULL)
+		return ;
+	if (*head_ref == del)
+		*head_ref = del->next;
+	if (del->next != NULL)
+		del->next->prev = del->prev;
+	if (del->prev != NULL)
+		del->prev->next = del->next;
+	free(del->key);
+	free(del->value);
+	free(del);
 }

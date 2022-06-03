@@ -18,8 +18,10 @@ void	ft_pwd(t_ad *ad)
 
 	// if (!ad->pa->args[1])
 		if (getcwd(buf, PATH_MAX))
-			printf("%s\n", buf);
+			ft_printf("%s\n", buf);
 	// else
 	// 	ft_printf("pwd: too many arguments\n");
+	// or
+	// 	perror("pwd");
 	(void)ad;
 }

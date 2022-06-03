@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:32:31 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/31 23:35:18 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/02 20:53:13 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,37 @@
 
 void	ft_export(t_ad *ad)
 {
-	t_node	*tmp;
-	char	*key;
-	char	*value;
+	// t_node	*dup;
 
-	tmp = ad->env;
+
 	if (!ft_strcmp(ad->line, "export"))
 	{
-		while (tmp)
-		{
-			ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
-			tmp = tmp->next;
-		}
+		sort_export(ad, count_export(ad));
 	}
 	else
 	{
-		key = ft_substr(ad->line, 7, ft_strlen_c(ad->line, '=') - 7);
-		value = ft_strdup(ad->line + ft_strlen_c(ad->line, '=') + 1);
-		while (tmp)
-		{
-			if (check_export(tmp->key, key))
-			{
-				free(tmp->value);
-				free(key);
-				tmp->value = value;
-				return ;
-			}
-			tmp = tmp->next;
-		}
-		append_env(&ad->env, key, value);
+		add_env(ad, NULL, NULL);
 	}
 }
 
-int	check_export(char *env, char *key)
+void	add_env(t_ad *ad, char *key, char *value)
 {
-	if (!ft_strcmp(env, key))
-		return (1);
-	return (0);
+	t_node	*tmp;
+	int		i;
+
+	if (!key)
+		key = ft_substr(ad->line, 7, ft_strlen_c(ad->line, '=') - 7);
+	if (!value)
+		value = ft_strdup(ad->line + ft_strlen_c(ad->line, '=') + 1);
+	i = get_i_env(ad, key);
+	if (i == -1)
+		append_env(&ad->env, key, value);
+	else
+	{
+		tmp = get_env(ad, i);
+		free(tmp->value);
+		tmp->value = ft_strdup(value);
+	}
 }
 
 void	append_env(t_node **head_ref, char *key, char *value)
@@ -75,17 +69,46 @@ void	append_env(t_node **head_ref, char *key, char *value)
 	new_node->prev = last;
 }
 
-void	delete_env(t_node **head_ref, t_node *del)
+int	count_export(t_ad *ad)
 {
-	if (*head_ref == NULL || del == NULL)
-		return ;
-	if (*head_ref == del)
-		*head_ref = del->next;
-	if (del->next != NULL)
-		del->next->prev = del->prev;
-	if (del->prev != NULL)
-		del->prev->next = del->next;
-	free(del->key);
-	free(del->value);
-	free(del);
+	int		i;
+	t_node	*tmp;
+
+	i = 0;
+	tmp = ad->env;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+void	sort_export(t_ad *ad, int count)
+{
+	t_node	*tmp;
+	int		i;
+	int		j;
+	char	*tmps;
+
+	i = 0;
+	while (i++ < count)
+	{
+		j = 0 + i;
+		tmp = ad->env;
+		while (j++ < count)
+		{
+			if (strcmp(tmp->key, tmp->next->key) > 0)
+			{
+				tmps = tmp->value;
+				tmp->value = tmp->next->value;
+				tmp->next->value = tmps;
+				tmps = tmp->key;
+				tmp->key = tmp->next->key;
+				tmp->next->key = tmps;
+			}
+			tmp = tmp->next;
+		}
+	}
+	print_node(tmp, 1);
 }

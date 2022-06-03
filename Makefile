@@ -11,6 +11,7 @@ SRCS		=	main.c					\
 				ms_split_utils.c		\
 				ms_split_redir_utils.c	\
 				ms_split_pa_utils.c		\
+				path.c					\
 				$(B_INS_DIR)echo.c		\
 				$(B_INS_DIR)pwd.c		\
 				$(B_INS_DIR)cd.c		\

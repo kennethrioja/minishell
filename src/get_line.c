@@ -51,6 +51,7 @@ void	check_line(t_ad *ad)
 		ft_printf("exit\n");
 		exit(EXIT_SUCCESS);
 	}
+	check_path(ad);
 	// else
 	// 	ft_printf("check[%s]\n", ad->line);
 }

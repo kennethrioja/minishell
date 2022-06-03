@@ -42,7 +42,8 @@ void	add_env(t_ad *ad, char *key, char *value)
 	else
 	{
 		tmp = get_env(ad, i);
-		tmp->value = value;
+		free(tmp->value);
+		tmp->value = ft_strdup(value);
 	}
 }
 

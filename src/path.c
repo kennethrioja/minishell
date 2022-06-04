@@ -6,43 +6,99 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:03:18 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/03 15:03:20 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/04 18:59:15 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node	*split_path(t_node *path)
+int	count_node(t_node *node)
 {
-	t_node	*new;
-	int		size;
-	char	*key;
+	t_node	*tmp;
+	int		i;
 
-	size = 0;
-	new = NULL;
-	while (ft_strlen_c(path->value + size, ':'))
+	tmp = node;
+	i = 0;
+	while (tmp)
 	{
-		//TODO use ft_split maybe ?????????
-		printf(":%zu size%d\n", ft_strlen_c(path->value + size, ':'), size);
-		key = ft_substr(path->value, size, ft_strlen_c(path->value + size, ':'));
-		ft_printf("%s\n", key);
-		path->value = path->value + size + 1;
-		size += ft_strlen_c(path->value, ':') + 1;
-		append_env(&new, key, NULL);
-		printf(":%zu size%d\n", ft_strlen_c(path->value + size, ':'), size);
+		i++;
+		tmp = tmp->next;
 	}
-//	while (new)
-//	{
-//		ft_printf("%s\n", new->key);
-//		new = new->next;
-//	}
-	return (new);
+	return (i);
+}
+
+char	**get_env2d(t_node *env)
+{
+	char	**env2d;
+	int		size;
+	int		i;
+	char	*tmp;
+
+	size = count_node(env);
+	env2d = ft_calloc(sizeof(char **), size + 1);
+	i = -1;
+	while (++i < size)
+	{
+		tmp = ft_strjoin(env->key, "=");
+		env2d[i] = ft_strjoin(tmp, env->value);
+		free(tmp);
+	}
+	return (env2d);
 }
 
 void	check_path(t_ad *ad)
 {
-	t_node	*path;
+	char	**path;
+	char	**exec;
+	int		size;
+	int		size2;
+	char	*dir;
+	char	*check;
+	int		err;
+	char	**env;
+	int		i;
+	// pid_t	child_pid;
 
-	path = split_path(get_env(ad, get_i_env(ad, "PATH")));
-//	split_path();
+	// child_pid = fork();
+	// if (child_pid != 0)
+	// {
+	// 	return ;
+	// }
+	// else
+	// {
+		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
+		size = ft_arrlen(path);
+		env = get_env2d(ad->env);
+		while (size--)
+		{
+			dir = ft_strjoin(path[size], "/");
+			exec = ft_split(ad->line, ' ');
+			// check exec
+			i = 0;
+			while (exec[++i])
+			{
+				if (exec[i][0] != '-')
+				{
+					free(exec[i]);
+					exec[i] = NULL;
+				}
+			}
+			check = ft_strjoin(dir, exec[0]);
+			free(dir);
+			if (!access(check, F_OK))
+			{
+				size2 = ft_arrlen(exec);
+				err = execve(check, exec, env);
+				while (size2--)
+					free(exec[size2]);
+				free(exec);
+				if (err)
+					perror("execve");
+			}
+			free(path[size]);
+			free(check);
+		}
+		free(path);
+		// exit(0);
+	// }
 }

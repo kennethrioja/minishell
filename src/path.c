@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:03:18 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/04 18:59:15 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/06 12:11:53 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**get_env2d(t_node *env)
 	char	*tmp;
 
 	size = count_node(env);
-	env2d = ft_calloc(sizeof(char **), size + 1);
+	env2d = ft_calloc(sizeof(char **), size);
 	i = -1;
 	while (++i < size)
 	{
@@ -46,59 +46,51 @@ char	**get_env2d(t_node *env)
 	return (env2d);
 }
 
+void	get_path_bin(t_ad *ad, char ***path, int size, char ***av)
+{
+	char	**argv;
+	char	*dir;
+	int		i;
+
+	dir = ft_strjoin((*path)[size], "/");
+	argv = ft_split(ad->line, ' ');
+	i = 0;
+	while (argv[++i])
+	{
+		if (argv[i][0] != '-')
+		{
+			free(argv[i]);
+			argv[i] = NULL;
+		}
+	}
+	*av = argv;
+	**path = ft_strjoin(dir, argv[0]);
+}
+
 void	check_path(t_ad *ad)
 {
 	char	**path;
-	char	**exec;
+	char	**av;
 	int		size;
 	int		size2;
-	char	*dir;
-	char	*check;
 	int		err;
-	char	**env;
-	int		i;
-	// pid_t	child_pid;
 
-	// child_pid = fork();
-	// if (child_pid != 0)
-	// {
-	// 	return ;
-	// }
-	// else
-	// {
-		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
-		size = ft_arrlen(path);
-		env = get_env2d(ad->env);
-		while (size--)
+	path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
+	size = ft_arrlen(path);
+	while (size--)
+	{
+		get_path_bin(ad, &path, size, &av);
+		if (!access(*path, F_OK))
 		{
-			dir = ft_strjoin(path[size], "/");
-			exec = ft_split(ad->line, ' ');
-			// check exec
-			i = 0;
-			while (exec[++i])
-			{
-				if (exec[i][0] != '-')
-				{
-					free(exec[i]);
-					exec[i] = NULL;
-				}
-			}
-			check = ft_strjoin(dir, exec[0]);
-			free(dir);
-			if (!access(check, F_OK))
-			{
-				size2 = ft_arrlen(exec);
-				err = execve(check, exec, env);
-				while (size2--)
-					free(exec[size2]);
-				free(exec);
-				if (err)
-					perror("execve");
-			}
-			free(path[size]);
-			free(check);
+			size2 = ft_arrlen(av);
+			err = execve(*path, av, get_env2d(ad->env));
+			while (size2--)
+				free(av[size2]);
+			free(av);
+			if (err)
+				perror("execve");
 		}
-		free(path);
-		// exit(0);
-	// }
+	}
+	free(path[size]);
+	free(path);
 }

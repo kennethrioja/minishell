@@ -148,7 +148,7 @@ void	check_path(t_ad *ad);
 void	ft_echo(t_ad *ad);
 
 // ** builtins/pwd.c
-void	ft_pwd(t_ad *ad);
+void	ft_pwd(void);
 
 // ** builtins/cd.c
 void	ft_cd(t_ad *ad);

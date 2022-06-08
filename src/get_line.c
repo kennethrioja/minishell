@@ -38,8 +38,8 @@ void	check_line(t_ad *ad)
 		ft_echo(ad);
 	else if (!ft_strcmp("cd", ad->pa->cmd))
 		ft_cd(ad);
-//	else if (!ft_strcmp("pwd", ad->pa->cmd))
-//		ft_pwd(ad);
+	else if (!ft_strcmp("pwd", ad->pa->cmd))
+		ft_pwd(ad);
 	else
 	{
 		write(2, "adsh: ", 6);

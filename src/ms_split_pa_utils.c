@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 15:30:15 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/30 10:41:43 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/08 15:40:59 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_pa	*pa_lstnew(struct s_pa *previous)
 		pa->prev = previous;
 	else
 		pa->prev = NULL;
+	pa->redir = NULL;
 	pa->next = NULL;
 	return (pa);
 }
@@ -52,7 +53,7 @@ void	pa_lst_fst_or_lst(t_pa **pa, int flag)
 	}
 }
 
-void	pa_lstadd_back(t_pa **alst, t_pa *next)
+void	pa_lstadd_next(t_pa **alst, t_pa *next)
 {
 	if (*alst)
 	{

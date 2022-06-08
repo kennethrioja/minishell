@@ -26,7 +26,7 @@ static int	populate_pa2(t_ad *ad, const char *l)
 	ad->pa->cmd = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l, 0)), " ");
 	if (ad->pa->cmd == NULL)
 		my_exit(ad, write(2, "Error: Malloc (ad->pa->cmd)\n", 28));
-	ad->pa->args = malloc(sizeof(char *) * ft_count_args(l) + 1);
+	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while (*l != '|' && *l)
 	{
 		ad->pa->args[n] = ft_strtrim(ft_substr(l, 0, ft_strlen_sp(l, 0)), " ");

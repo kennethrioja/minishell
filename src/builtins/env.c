@@ -51,7 +51,7 @@ t_node	*get_env(t_ad *ad, int i)
 	return (tmp);
 }
 
-void	init_env(t_ad *ad, char	**env)
+void	init(t_ad *ad, char	**env)
 {
 	size_t	i;
 	size_t	j;
@@ -68,6 +68,8 @@ void	init_env(t_ad *ad, char	**env)
 		append_env(&ad->env, key, value);
 		j++;
 	}
+	ad->redir = NULL;
+	ad->pa = NULL;
 }
 
 void	print_node(t_node	*node, int option)

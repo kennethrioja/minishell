@@ -159,7 +159,7 @@ void	ft_cd(t_ad *ad);
 
 // ** builtins/env.c
 void	ft_env(t_ad *ad);
-void	init_env(t_ad *ad, char	**env);
+void	init(t_ad *ad, char	**env);
 int		get_i_env(t_ad *ad, char *key);
 t_node	*get_env(t_ad *ad, int i);
 void	print_node(t_node	*node, int option);

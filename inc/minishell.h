@@ -114,8 +114,9 @@ int		ms_split(t_ad *ad);
 
 //* ms_split_utils.c
 int		ft_strlen_op(t_ad *ad, const char *s);
-int		ft_strlen_sp(const char	*s, int flag);
 int		ft_count_args(const char *s);
+int		ft_strlen_sp(const char	*s, int flag);
+int		ft_skip_op(const char *s);
 
 //* ms_split_redir_utils.c
 t_redir	*redir_lstnew(struct s_redir *previous);

@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/24 23:19:06 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:34:17 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	check_line(t_ad *ad)
 		ft_printf("exit\n");
 		exit(EXIT_SUCCESS);
 	}
-	// else
-	// 	ft_printf("check[%s]\n", ad->line);
+	else
+		check_path(ad);
+	// 	write(2, "adsh: command not found\n", 25);
 }

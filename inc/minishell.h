@@ -146,6 +146,9 @@ void	handle_signal(void);
 void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 
+//* path.c
+void	check_path(t_ad *ad);
+
 //* builtins
 
 //** builtins/echo.c

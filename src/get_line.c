@@ -30,28 +30,27 @@ int	get_line(t_ad *ad)
 	return (1);
 }
 
-// TODO changer var ad->line par ad->pa->cmd
 void	check_line(t_ad *ad)
 {
-	if (!ft_strncmp(MS_ECHO, ad->line, ft_strlen(MS_ECHO)))
+//	printf("%s\n", ad->pa->cmd);
+	if (!ft_strcmp("echo", ad->pa->cmd))
 		ft_echo(ad);
-	else if (!ft_strncmp(MS_CD, ad->line, ft_strlen(MS_CD)))
-		ft_cd(ad);
-	else if (!ft_strncmp(MS_PWD, ad->line, ft_strlen(MS_PWD)))
-		ft_pwd(ad);
-	else if (!ft_strncmp(MS_EXPORT, ad->line, ft_strlen(MS_EXPORT)))
-		ft_export(ad);
-	else if (!ft_strncmp(MS_UNSET, ad->line, ft_strlen(MS_UNSET)))
-		ft_unset(ad);
-	else if (!ft_strncmp(MS_ENV, ad->line, ft_strlen(MS_ENV)))
-		ft_env(ad);
-	else if (!ft_strncmp(MS_EXIT, ad->line, ft_strlen(MS_EXIT)))
-	{
-		// TODO do function exit and free
-		ft_printf("exit\n");
-		exit(EXIT_SUCCESS);
-	}
-	else
-		check_path(ad);
+//	else if (!ft_strcmp("cd", ad->pa->cmd))
+//		ft_cd(ad);
+//	else if (!ft_strcmp("pwd", ad->pa->cmd))
+//		ft_pwd(ad);
+//	else if (!ft_strcmp("export", ad->pa->cmd))
+//		ft_export(ad);
+//	else if (!ft_strcmp("unset", ad->pa->cmd))
+//		ft_unset(ad);
+//	else if (!ft_strcmp("env", ad->pa->cmd))
+//		ft_env(ad);
+//	else if (!ft_strcmp("exit", ad->pa->cmd))
+//	{
+//		ft_printf("exit\n");
+//		exit(EXIT_SUCCESS);
+//	}
+//	else
+//		check_path(ad);
 	// 	write(2, "adsh: command not found\n", 25);
 }

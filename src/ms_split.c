@@ -42,9 +42,8 @@ static int	populate_pa2(t_ad *ad, const char *l)
 
 static int	populate_pa(t_ad *ad, const char *l)
 {
-	int	n;
+//	int	n;
 
-	n = 0;
 	while (*l)
 	{
 		if (*l == '>' || *l == '<')
@@ -58,16 +57,16 @@ static int	populate_pa(t_ad *ad, const char *l)
 			l += populate_pa2(ad, l);
 	}
 	pa_lst_fst_or_lst(&ad->pa, 0);
-	n = 0;
-	while (ad->pa)
-	{
-		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
-		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
-		while (ad->pa->args[n++])
-			ft_printf("ad.pa.args[%d]=|%s|\n", n - 1, ad->pa->args[n - 1]);
-		ad->pa = ad->pa->next;
-		n = 0;
-	}
+//	n = 0;
+//	while (ad->pa)
+//	{
+//		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
+//		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
+//		while (ad->pa->args[n++])
+//			ft_printf("ad.pa.args[%d]=|%s|\n", n - 1, ad->pa->args[n - 1]);
+//		ad->pa = ad->pa->next;
+//		n = 0;
+//	}
 	return (0);
 }
 /* to put before return (0) to check all redir structs

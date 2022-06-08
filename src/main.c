@@ -25,7 +25,7 @@ int	main(int ac, char **av, char **env)
 		if (ms_split(&ad))
 			break ;
 		check_line(&ad);
-		free(ad.line);
+		free_cmd(&ad);
 	}
 	free_all(&ad);
 	(void)ac;

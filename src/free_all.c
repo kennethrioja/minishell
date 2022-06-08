@@ -51,6 +51,15 @@ static void	free_pa(t_ad *ad)
 	free(ad->pa);
 }
 
+void	free_cmd(t_ad *ad)
+{
+	free(ad->line);
+	free_redir(ad);
+	free_pa(ad);
+	ad->pa = NULL;
+	ad->redir = NULL;
+}
+
 void	free_all(t_ad *ad)
 {
 	while (ad->env && ad->env->next)
@@ -63,7 +72,4 @@ void	free_all(t_ad *ad)
 	free(ad->env->key);
 	free(ad->env->value);
 	free(ad->env);
-	free(ad->line);
-	free_redir(ad);
-	free_pa(ad);
 }

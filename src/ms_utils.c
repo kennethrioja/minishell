@@ -43,3 +43,13 @@ size_t	ft_strlen_c(char *str, char c)
 		i++;
 	return (i);
 }
+
+char	*ft_strtolower(char *str)
+{
+	int	i;
+
+	i = ft_strlen(str);
+	while (i--)
+		str[i] = ft_tolower(str[i]);
+	return (str);
+}

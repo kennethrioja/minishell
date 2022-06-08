@@ -54,15 +54,6 @@
 
 // macro
 
-// * builtins
-# define MS_ECHO "echo"
-# define MS_CD "cd"
-# define MS_PWD "pwd"
-# define MS_EXPORT "export"
-# define MS_UNSET "unset"
-# define MS_ENV "env"
-# define MS_EXIT "exit"
-
 # ifndef PATH_MAX
 #  define PATH_MAX 1024
 # endif
@@ -132,6 +123,7 @@ void	pa_lstadd_back(t_pa **alst, t_pa *next);
 int		ft_strcmp(char *s1, char *s2);
 size_t	ft_arrlen(char **arr);
 size_t	ft_strlen_c(char *str, char c);
+char	*ft_strtolower(char *str);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
@@ -145,6 +137,7 @@ void	handle_signal(void);
 //* free_all.c
 void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
+void	free_cmd(t_ad *ad);
 
 //* path.c
 void	check_path(t_ad *ad);

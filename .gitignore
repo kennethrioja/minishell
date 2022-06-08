@@ -1,4 +1,5 @@
 # mac
+.idea
 .DS_Store
 *test*
 minishell

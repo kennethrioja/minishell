@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/31 20:35:51 by tpinto-m         ###   ########.fr       */
+/*   Created: 2022/05/23 15:35:22 by tpinto-m          #+#    #+#             */
+/*   Updated: 2022/05/23 20:01:20 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	ft_pwd(t_ad *ad)
 {
-	t_ad	ad;
+	char	buf[PATH_MAX];
 
-	init_env(&ad, env);
-	while (1)
-	{
-		handle_signal();
-		if (!get_line(&ad))
-			break ;
-//		if (ms_split(&ad))
-//			break ;
-		check_line(&ad);
-		free(ad.line);
-//		get_redir(&ad);
-//		get_pp(env, &ad);
-//		ft_printf("%s\n", ad.line);
-//		ft_printf("%s\n", ad.line);
-	}
-	free_all(&ad);
-	(void)ac;
-	(void)av;
-	return (EXIT_SUCCESS);
+	// if (!ad->pa->args[1])
+		if (getcwd(buf, PATH_MAX))
+			ft_printf("%s\n", buf);
+	// else
+	// 	ft_printf("pwd: too many arguments\n");
+	// or
+	// 	perror("pwd");
+	(void)ad;
 }
-// put !ms_split to check for leaks

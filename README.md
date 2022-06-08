@@ -24,14 +24,16 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 	- [x] ctrl-C affiche un nouveau prompt sur une nouvelle ligne.
 	- [x] ctrl-D quitte le shell.
 	- [x] ctrl-\ ne fait rien.
+	- [ ] ajouter les modif termios
 - Votre shell doit implémenter les **builtins** suivantes :
-	- [ ] echo et l’option -n
-	- [ ] cd uniquement avec un chemin relatif ou absolu
-	- [ ] pwd sans aucune option
-	- [ ] export sans aucune option
-	- [ ] unset sans aucune option
-	- [ ] env sans aucune option ni argument
-	- [ ] exit sans aucune option
+	- [x] echo et l’option -n
+	- [x] cd uniquement avec un chemin relatif ou absolu
+	- [x] pwd sans aucune option
+	- [x] export sans aucune option
+	- [x] unset sans aucune option
+	- [x] env sans aucune option ni argument
+	- [x] exit sans aucune option
+	- [ ] a controler avec le nouveau parser
 
 - [ ] Leaks
 - [ ] Gestion d'erreurs
@@ -42,7 +44,9 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] Les wildcards * doivent fonctionner pour le répertoire courant.
 
 ## Tiago
-- [ ] 
+- [ ] supprimer getenv pour tous sauf pwd
+- [ ] /bin/cat doit fonctionner et ^C doit etre affichier
+- [ ] changer opendir pour access afin de rendre le programme plus leger
 
 ## Kenneth
 - [x] Mettre le Makefile + .h

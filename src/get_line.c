@@ -32,13 +32,21 @@ int	get_line(t_ad *ad)
 
 void	check_line(t_ad *ad)
 {
-//	printf("%s\n", ad->pa->cmd);
+	if (!ad->pa)
+		return ;
 	if (!ft_strcmp("echo", ad->pa->cmd))
 		ft_echo(ad);
-//	else if (!ft_strcmp("cd", ad->pa->cmd))
-//		ft_cd(ad);
+	else if (!ft_strcmp("cd", ad->pa->cmd))
+		ft_cd(ad);
 //	else if (!ft_strcmp("pwd", ad->pa->cmd))
 //		ft_pwd(ad);
+	else
+	{
+		write(2, "adsh: ", 6);
+		write(2, ad->pa->cmd, ft_strlen(ad->pa->cmd));
+		write(2, ": command not found\n", 20);
+	}
+
 //	else if (!ft_strcmp("export", ad->pa->cmd))
 //		ft_export(ad);
 //	else if (!ft_strcmp("unset", ad->pa->cmd))
@@ -52,5 +60,4 @@ void	check_line(t_ad *ad)
 //	}
 //	else
 //		check_path(ad);
-	// 	write(2, "adsh: command not found\n", 25);
 }

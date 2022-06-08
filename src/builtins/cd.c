@@ -18,13 +18,11 @@ void	ft_cd(t_ad *ad)
 	char	buf[PATH_MAX];
 
 	add_env(ad, "OLDPWD", getcwd(buf, PATH_MAX));
-	if (!ft_strcmp(ad->line, "cd"))
+	if (!ad->pa->args[1])
 	{
 		chdir(get_env(ad, get_i_env(ad, "HOME"))->value);
 	}
-//	dir = opendir(ad->line + 3);
-//	add_env(ad, "OLDPWD", get_env(ad, get_i_env(ad, "PWD"))->value);
-	else if (chdir(ad->line + 3))
+	else if (chdir(ad->pa->args[1]))
 	{
 		perror("cd");
 //		chdir(ad->line + 3);

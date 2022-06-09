@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/09 13:59:09 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/09 18:19:45 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static int	populate_pa(t_ad *ad, const char *l)
 	n = 0;
 	ret = 0;
 	ret += populate_redir(ad, l + ret);
-	ad->pa->cmd = ft_strtrim(ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
+	ad->pa->cmd = ft_strtrim(ft_substr(l + ret, 0,
+				ft_strlen_sp(l + ret, 0)), " ");
 	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
@@ -83,7 +84,7 @@ static int	parse_line(t_ad *ad, const char *l)
 			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
 		}
 	}
- 	pa_lst_fst_or_lst(&ad->pa, 0);
+	pa_lst_fst_or_lst(&ad->pa, 0);
 	while (ad->pa)
 	{
 		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
@@ -101,7 +102,7 @@ static int	parse_line(t_ad *ad, const char *l)
 			if (ad->pa->redir->next)
 				ad->pa->redir = ad->pa->redir->next;
 			else
-				break;
+				break ;
 		}
 		ad->pa = ad->pa->next;
 		n = 0;
@@ -136,7 +137,6 @@ static int	parse_line(t_ad *ad, const char *l)
 	ad->pa = ad->pa->next;
 	n = 0;
 */
-
 
 int	ms_split(t_ad *ad)
 {

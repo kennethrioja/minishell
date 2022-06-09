@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/09 18:19:45 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/09 18:38:20 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ static int	parse_line(t_ad *ad, const char *l)
 			l += populate_pa(ad, l);
 		else
 		{
-			l += ft_strlen_sp(l + 1, 0) + 1;
-			if (*l == '\0' || *l == '|' || *l == '\0')
-				my_exit(ad, write(2, "Error: pipe to nothing\n", 23));
+			++l;
+			while (ft_isspace(*l) && *l)
+				++l;
 			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
 		}
 	}

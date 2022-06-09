@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/31 20:35:51 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:27:36 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int ac, char **av, char **env)
 			break ;
 		if (ms_split(&ad))
 			break ;
-		check_line(&ad);
+		//check_line(&ad);
 		free(ad.line);
 	}
 	free_all(&ad);

@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 18:09:23 by krioja            #+#    #+#             */
-/*   Updated: 2022/05/30 10:41:55 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/08 15:40:50 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	redir_lst_fst_or_lst(t_redir **redir, int flag)
 	}
 }
 
-void	redir_lstadd_back(t_redir **alst, t_redir *next)
+void	redir_lstadd_next(t_redir **alst, t_redir *next)
 {
 	if (*alst)
 	{

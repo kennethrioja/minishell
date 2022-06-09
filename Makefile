@@ -25,10 +25,8 @@ INC_LIBFT	=	-I $(LIBFT_DIR) -L $(LIBFT_DIR) -lft
 PRINTF_DIR	=	$(SRC_DIR)$(FT_DIR)ft_printf
 INC_PRINTF	=	-I $(PRINTF_DIR) -L $(PRINTF_DIR) -lftprintf
 
-ifeq ($(shell hostname | cut -b -6), c1r6s3)
-	READLINE_DIR	=	~/goinfre/homebrew/Cellar/readline/8.1.2/
-else ifeq ($(shell hostname | cut -b -6), c3r4s1)
-	READLINE_DIR	=	~/goinfre/.brew/Cellar/readline/8.1.2/
+ifeq ($(shell env | grep USER= | cut -b 6-), krioja)
+	READLINE_DIR	=	/System/Volumes/Data/mnt/sgoinfre/krioja/.brew/Cellar/readline/8.1.2/
 else ifeq ($(shell env | grep USER= | cut -b 6-), tpinto-m)
 	READLINE_DIR	=	~/.brew/Cellar/readline/8.1.2/
 endif

@@ -32,6 +32,7 @@ int	get_line(t_ad *ad)
 
 void	check_line(t_ad *ad)
 {
+	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
 	if (!ad->pa)
 		return ;
 	if (!ft_strcmp("echo", ad->pa->cmd))
@@ -39,20 +40,17 @@ void	check_line(t_ad *ad)
 	else if (!ft_strcmp("cd", ad->pa->cmd))
 		ft_cd(ad);
 	else if (!ft_strcmp("pwd", ad->pa->cmd))
-		ft_pwd(ad);
+		ft_pwd();
+	else if (!ft_strcmp("env", ad->pa->cmd))
+		ft_env(ad);
 	else
-	{
-		write(2, "adsh: ", 6);
-		write(2, ad->pa->cmd, ft_strlen(ad->pa->cmd));
-		write(2, ": command not found\n", 20);
-	}
+		custom_err(ad, 0, "Command not found");
 
 //	else if (!ft_strcmp("export", ad->pa->cmd))
 //		ft_export(ad);
 //	else if (!ft_strcmp("unset", ad->pa->cmd))
 //		ft_unset(ad);
-//	else if (!ft_strcmp("env", ad->pa->cmd))
-//		ft_env(ad);
+
 //	else if (!ft_strcmp("exit", ad->pa->cmd))
 //	{
 //		ft_printf("exit\n");

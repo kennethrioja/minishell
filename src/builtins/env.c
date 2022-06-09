@@ -14,14 +14,10 @@
 
 void	ft_env(t_ad *ad)
 {
-	if (!ft_strcmp(ad->line, "env"))
-	{
-		print_node(ad->env, 'c');
-	}
+	if (ad->pa->args[1])
+		custom_err(ad, 1, "No such file or directory");
 	else
-	{
-		perror("env");
-	}
+		print_node(ad->env, 'c');
 }
 
 int	get_i_env(t_ad *ad, char *key)

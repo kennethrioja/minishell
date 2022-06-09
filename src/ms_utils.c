@@ -53,3 +53,12 @@ char	*ft_strtolower(char *str)
 		str[i] = ft_tolower(str[i]);
 	return (str);
 }
+
+void	custom_err(t_ad *ad, int arg, char *str)
+{
+	write(2, "adsh: ", 6);
+	write(2, ad->pa->args[arg], ft_strlen(ad->pa->cmd));
+	write(2, ": ", 2);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
+}

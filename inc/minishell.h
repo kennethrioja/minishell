@@ -124,6 +124,7 @@ int		ft_strcmp(char *s1, char *s2);
 size_t	ft_arrlen(char **arr);
 size_t	ft_strlen_c(char *str, char c);
 char	*ft_strtolower(char *str);
+void	custom_err(t_ad *ad, int arg, char *str);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);

@@ -14,12 +14,21 @@
 
 void	ft_export(t_ad *ad)
 {
-	// t_node	*dup;
+	t_ad	dup;
+	t_node	*tmp;
 
-
-	if (!ft_strcmp(ad->line, "export"))
+	//TODO fix leaks here
+	if (ad->pa->args[0])
 	{
-		sort_export(ad, count_export(ad));
+		dup.env = NULL;
+		tmp = ad->env;
+		while (tmp)
+		{
+			add_env(&dup, tmp->key, tmp->value);
+			tmp = tmp->next;
+		}
+		sort_export(&dup, count_export(&dup));
+		free_env(&dup);
 	}
 	else
 	{

@@ -2,22 +2,23 @@ NAME		=	minishell
 
 SRC_DIR 	= 	src/
 B_INS_DIR 	= 	builtins/
-SRCS		=	main.c					\
-				get_line.c				\
-				signal.c				\
-				free_all.c				\
-				ms_utils.c				\
-				ms_split.c				\
-				ms_split_utils.c		\
-				ms_split_redir_utils.c	\
-				ms_split_pa_utils.c		\
-				path.c					\
-				$(B_INS_DIR)echo.c		\
-				$(B_INS_DIR)pwd.c		\
-				$(B_INS_DIR)cd.c		\
-				$(B_INS_DIR)env.c		\
-				$(B_INS_DIR)export.c	\
-				$(B_INS_DIR)unset.c		\
+SRCS		=	main.c						\
+				get_line.c					\
+				signal.c					\
+				free_all.c					\
+				ms_utils.c					\
+				ms_split.c					\
+				ms_split_utils.c			\
+				ms_split_redir_utils.c		\
+				ms_split_pa_utils.c			\
+				path.c						\
+				$(B_INS_DIR)echo.c			\
+				$(B_INS_DIR)pwd.c			\
+				$(B_INS_DIR)cd.c			\
+				$(B_INS_DIR)env.c			\
+				$(B_INS_DIR)export.c		\
+				$(B_INS_DIR)unset.c			\
+				$(B_INS_DIR)builtins_utils.c\
 
 FT_DIR		=	ft/
 LIBFT_DIR	=	$(SRC_DIR)$(FT_DIR)libft
@@ -40,7 +41,7 @@ OBJ_DIR		= 	obj/
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o) $(SRCS_GNL:.c=.o))
 
 CC			=	gcc
-LEAKS		=	-fsanitize=address #-fsanitize=leak
+LEAKS		=	#-fsanitize=address #-fsanitize=leak
 CFLAGS		=	-g -Wall -Wextra -Werror $(LEAKS)
 MAKE		=	make -C
 RM			=	rm -rf

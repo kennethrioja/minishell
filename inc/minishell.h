@@ -172,4 +172,7 @@ void	sort_export(t_ad *ad, int count);
 void	ft_unset(t_ad *ad);
 void	delete_env(t_node **head_ref, t_node *del);
 
+// ** builtins/cd.c
+void	free_env(t_ad *ad);
+
 #endif

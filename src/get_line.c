@@ -43,11 +43,12 @@ void	check_line(t_ad *ad)
 		ft_pwd();
 	else if (!ft_strcmp("env", ad->pa->cmd))
 		ft_env(ad);
+	else if (!ft_strcmp("export", ad->pa->cmd))
+		ft_export(ad);
 	else
 		custom_err(ad, 0, "Command not found");
 
-//	else if (!ft_strcmp("export", ad->pa->cmd))
-//		ft_export(ad);
+
 //	else if (!ft_strcmp("unset", ad->pa->cmd))
 //		ft_unset(ad);
 

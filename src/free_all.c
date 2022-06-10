@@ -49,15 +49,15 @@ static void	free_pa(t_ad *ad)
 		ad->pa = ad->pa->next;
 		free(ad->pa->prev);
 	}
-	n = -1;
-	if (ad->pa->cmd)
-		free(ad->pa->cmd);
-	if (ad->pa->path)
-		free(ad->pa->path);
-	while (ad->pa->args[++n])
-		free(ad->pa->args[n]);
-	free(ad->pa->args[n]);
-	free(ad->pa);
+//	n = -1;
+//	if (ad->pa->cmd)
+//		free(ad->pa->cmd);
+//	if (ad->pa->path)
+//		free(ad->pa->path);
+//	while (ad->pa->args[++n])
+//		free(ad->pa->args[n]);
+//	free(ad->pa->args[n]);
+//	free(ad->pa);
 }
 
 void	free_cmd(t_ad *ad)

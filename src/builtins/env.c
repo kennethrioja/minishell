@@ -73,9 +73,19 @@ void	print_node(t_node	*node, int option)
 	while (node)
 	{
 		if (option == 1)
-			ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		{
+			if (!node->value)
+				ft_printf("declare -x %s\n", node->key);
+			else
+				ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		}
 		else
-			ft_printf("%s=%s\n", node->key, node->value);
+		{
+			if (!node->value)
+				ft_printf("%s\n", node->key);
+			else
+				ft_printf("%s=%s\n", node->key, node->value);
+		}
 		node = node->next;
 	}
 }

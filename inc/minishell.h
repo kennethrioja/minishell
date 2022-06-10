@@ -163,7 +163,7 @@ void	print_node(t_node	*node, int option);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
-void	add_env(t_ad *ad, char *key, char *value);
+void	add_env(t_ad *ad, int arg, char *key, char *value);
 void	append_env(t_node **head_ref, char *key, char *value);
 int		count_export(t_ad *ad);
 void	sort_export(t_ad *ad, int count);

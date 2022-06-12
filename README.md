@@ -21,18 +21,18 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] *Gérer $? qui doit être substitué par le statut de sortie de la dernière pipeline exécutée au premier plan.
 - [x] Gérer ctrl-C, ctrl-D et ctrl-\ qui doivent fonctionner comme dans bash.
 - En mode interactif :
-	- [x] ctrl-C affiche un nouveau prompt sur une nouvelle ligne.
-	- [x] ctrl-D quitte le shell.
-	- [x] ctrl-\ ne fait rien.
-	- [x] ajouter les modif termios
+    - [x] ctrl-C affiche un nouveau prompt sur une nouvelle ligne.
+    - [x] ctrl-D quitte le shell.
+    - [x] ctrl-\ ne fait rien.
+    - [x] ajouter les modif termios
 - Votre shell doit implémenter les **builtins** suivantes :
-	- [ ] *echo et l’option -n
-	- [ ] *cd uniquement avec un chemin relatif ou absolu
-	- [ ] *pwd sans aucune option
-	- [ ] *export sans aucune option
-	- [ ] *unset sans aucune option
-	- [ ] *env sans aucune option ni argument
-	- [ ] *exit sans aucune option
+    - [x] *echo et l’option -n
+    - [x] *cd uniquement avec un chemin relatif ou absolu
+    - [x] *pwd sans aucune option
+    - [x] *export sans aucune option
+    - [x] *unset sans aucune option
+    - [x] *env sans aucune option ni argument
+    - [x] *exit sans aucune option
 
 - [ ] Leaks
 - [ ] Gestion d'erreurs

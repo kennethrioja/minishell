@@ -14,14 +14,10 @@
 
 void	ft_env(t_ad *ad)
 {
-	if (!ft_strcmp(ad->line, "env"))
-	{
-		print_node(ad->env, 'c');
-	}
+	if (ad->pa->args[1])
+		custom_err(ad, 1, "No such file or directory");
 	else
-	{
-		perror("env");
-	}
+		print_node(ad->env, 'c');
 }
 
 int	get_i_env(t_ad *ad, char *key)
@@ -77,9 +73,17 @@ void	print_node(t_node	*node, int option)
 	while (node)
 	{
 		if (option == 1)
-			ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		{
+			if (!ft_strcmp(node->value, "NULL"))
+				ft_printf("declare -x %s\n", node->key);
+			else
+				ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		}
 		else
-			ft_printf("%s=%s\n", node->key, node->value);
+		{
+			if (ft_strcmp(node->value, "NULL"))
+				ft_printf("%s=%s\n", node->key, node->value);
+		}
 		node = node->next;
 	}
 }

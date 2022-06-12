@@ -36,34 +36,42 @@ static void	free_pa(t_ad *ad)
 {
 	int	n;
 
-	n = -1;
 	while (ad->pa && ad->pa->next)
 	{
+		n = -1;
 		if (ad->pa->cmd)
 			free(ad->pa->cmd);
 		if (ad->pa->path)
 			free(ad->pa->path);
 		while (ad->pa->args[++n])
 			free(ad->pa->args[n]);
+		free(ad->pa->args[n]);
 		ad->pa = ad->pa->next;
 		free(ad->pa->prev);
 	}
-	free(ad->pa);
+//	n = -1;
+//	if (ad->pa->cmd)
+//		free(ad->pa->cmd);
+//	if (ad->pa->path)
+//		free(ad->pa->path);
+//	while (ad->pa->args[++n])
+//		free(ad->pa->args[n]);
+//	free(ad->pa->args[n]);
+//	free(ad->pa);
+}
+
+void	free_cmd(t_ad *ad)
+{
+	free(ad->line);
+	free_redir(ad);
+	free_pa(ad);
+	ad->pa = NULL;
+	ad->redir = NULL;
 }
 
 void	free_all(t_ad *ad)
 {
-	while (ad->env && ad->env->next)
-	{
-		free(ad->env->key);
-		free(ad->env->value);
-		ad->env = ad->env->next;
-		free(ad->env->prev);
-	}
-	free(ad->env->key);
-	free(ad->env->value);
-	free(ad->env);
-	free(ad->line);
+	free_env(ad);
 	free_redir(ad);
 	free_pa(ad);
 }

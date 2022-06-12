@@ -18,26 +18,23 @@ void	ft_export(t_ad *ad)
 	t_node	*tmp;
 	int		i;
 
-//	//TODO fix leaks here
 	if (!ad->pa->args[1])
 	{
 		dup.env = NULL;
 		tmp = ad->env;
 		while (tmp)
 		{
-			add_env(&dup, 1, tmp->key, tmp->value);
+			add_env(&dup, 1, ft_strdup(tmp->key), ft_strdup(tmp->value));
 			tmp = tmp->next;
 		}
 		sort_export(&dup, count_export(&dup));
-//		free_env(&dup);
+		free_env(&dup);
 	}
 	else
 	{
-//		key = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
 		i = 0;
 		while (ad->pa->args[++i])
 		{
-			printf("%s\n", ft_strchr(ad->pa->args[i], '='));
 			if (ft_strchr(ad->pa->args[i], '='))
 			{
 				if (ft_strlen(ft_strchr(ad->pa->args[i], '=')) > 1)
@@ -46,7 +43,7 @@ void	ft_export(t_ad *ad)
 					add_env(ad, i, NULL, ft_strdup(""));
 			}
 			else
-				add_env(ad, i, NULL, NULL);
+				add_env(ad, i, NULL, ft_strdup("NULL"));
 		}
 	}
 }
@@ -59,12 +56,7 @@ void	add_env(t_ad *ad, int arg, char *key, char *value)
 	if (!key)
 		key = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
 	if (!value)
-	{
-		if (ft_strchr(ad->pa->args[arg], '='))
-			value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg], '=') + 1);
-		else
-			value = NULL;
-	}
+		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg], '=') + 1);
 	i = get_i_env(ad, key);
 	if (i == -1)
 		append_env(&ad->env, key, value);

@@ -74,16 +74,14 @@ void	print_node(t_node	*node, int option)
 	{
 		if (option == 1)
 		{
-			if (!node->value)
+			if (!ft_strcmp(node->value, "NULL"))
 				ft_printf("declare -x %s\n", node->key);
 			else
 				ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
 		}
 		else
 		{
-			if (!node->value)
-				ft_printf("%s\n", node->key);
-			else
+			if (ft_strcmp(node->value, "NULL"))
 				ft_printf("%s=%s\n", node->key, node->value);
 		}
 		node = node->next;

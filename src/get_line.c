@@ -45,18 +45,17 @@ void	check_line(t_ad *ad)
 		ft_env(ad);
 	else if (!ft_strcmp("export", ad->pa->cmd))
 		ft_export(ad);
+	else if (!ft_strcmp("unset", ad->pa->cmd))
+		ft_unset(ad);
+	else if (!ft_strcmp("exit", ad->pa->cmd))
+	{
+		ft_printf("exit\n");
+		free_all(ad);
+		exit(EXIT_SUCCESS);
+	}
 	else
 		custom_err(ad, 0, "Command not found");
 
-
-//	else if (!ft_strcmp("unset", ad->pa->cmd))
-//		ft_unset(ad);
-
-//	else if (!ft_strcmp("exit", ad->pa->cmd))
-//	{
-//		ft_printf("exit\n");
-//		exit(EXIT_SUCCESS);
-//	}
 //	else
 //		check_path(ad);
 }

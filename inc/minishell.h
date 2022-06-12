@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/02 20:51:52 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:26:42 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ typedef struct s_pa
 	char			*cmd;
 	char			*path;
 	char			**args;
+	t_redir			*redir;
 	struct s_pa		*prev;
 	struct s_pa		*next;
 }					t_pa;
-//	t_redir			*redir;
 
 typedef struct s_node
 {
@@ -112,12 +112,12 @@ int		ft_skip_op(const char *s);
 //* ms_split_redir_utils.c
 t_redir	*redir_lstnew(struct s_redir *previous);
 void	redir_lst_fst_or_lst(t_redir **redir, int flag);
-void	redir_lstadd_back(t_redir **alst, t_redir *next);
+void	redir_lstadd_next(t_redir **alst, t_redir *next);
 
 //* ms_split_pa_utils.c
 t_pa	*pa_lstnew(struct s_pa *previous);
 void	pa_lst_fst_or_lst(t_pa **pa, int flag);
-void	pa_lstadd_back(t_pa **alst, t_pa *next);
+void	pa_lstadd_next(t_pa **alst, t_pa *next);
 
 //* ms_utils.c
 int		ft_strcmp(char *s1, char *s2);
@@ -129,7 +129,7 @@ void	custom_err(t_ad *ad, int arg, char *str);
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
 t_pa	*ms_lstlast(t_pa *pa);
-void	ms_lstadd_back(t_pa **pa, t_pa *panew);
+void	ms_lstadd_next(t_pa **pa, t_pa *panew);
 
 //* signal.c
 void	sig_handler(int signum);

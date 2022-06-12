@@ -33,9 +33,11 @@ void	ft_export(t_ad *ad)
 	}
 	else
 	{
+//		key = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
 		i = 0;
 		while (ad->pa->args[++i])
 		{
+			printf("%s\n", ft_strchr(ad->pa->args[i], '='));
 			if (ft_strchr(ad->pa->args[i], '='))
 			{
 				if (ft_strlen(ft_strchr(ad->pa->args[i], '=')) > 1)
@@ -69,13 +71,7 @@ void	add_env(t_ad *ad, int arg, char *key, char *value)
 	else
 	{
 		tmp = get_env(ad, i);
-		if (!tmp->value)
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
-		}
-		else
-			tmp->value = value;
+		tmp->value = value;
 	}
 }
 

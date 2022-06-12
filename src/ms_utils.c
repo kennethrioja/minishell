@@ -48,9 +48,14 @@ char	*ft_strtolower(char *str)
 {
 	int	i;
 
-	i = ft_strlen(str);
-	while (i--)
-		str[i] = ft_tolower(str[i]);
+	if (str)
+	{
+		i = ft_strlen(str);
+		while (i--)
+			str[i] = ft_tolower(str[i]);
+	}
+	else
+		str = "";
 	return (str);
 }
 

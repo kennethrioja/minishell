@@ -141,7 +141,7 @@ void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
 
 //* path.c
-void	check_path(t_ad *ad);
+int		check_path(t_ad *ad);
 
 //* builtins
 

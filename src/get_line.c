@@ -32,6 +32,8 @@ int	get_line(t_ad *ad)
 
 void	check_line(t_ad *ad)
 {
+	if (ad->pa->cmd == NULL)
+		return ;
 	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
 	if (!ad->pa)
 		return ;
@@ -54,8 +56,7 @@ void	check_line(t_ad *ad)
 		exit(EXIT_SUCCESS);
 	}
 	else
-		custom_err(ad, 0, "Command not found");
+		check_path(ad);
+//		custom_err(ad, 0, "Command not found");
 
-//	else
-//		check_path(ad);
 }

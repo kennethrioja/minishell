@@ -26,13 +26,13 @@
     - [x] ctrl-\ ne fait rien.
     - [x] ajouter les modif termios
 - Votre shell doit implémenter les **builtins** suivantes :
-    - [ ] *echo et l’option -n
-    - [ ] *cd uniquement avec un chemin relatif ou absolu
-    - [ ] *pwd sans aucune option
-    - [ ] *export sans aucune option
-    - [ ] *unset sans aucune option
-    - [ ] *env sans aucune option ni argument
-    - [ ] *exit sans aucune option
+    - [x] *echo et l’option -n
+    - [x] *cd uniquement avec un chemin relatif ou absolu
+    - [x] *pwd sans aucune option
+    - [x] *export sans aucune option
+    - [x] *unset sans aucune option
+    - [x] *env sans aucune option ni argument
+    - [x] *exit sans aucune option
 
 - [ ] Leaks
 - [ ] Gestion d'erreurs

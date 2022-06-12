@@ -130,9 +130,9 @@ static int	populate_redir(t_ad *ad, const char *l)
 
 int	ms_split(t_ad *ad)
 {
-	int	i;
-
-	i = 0;
+//	int	i;
+//
+//	i = 0;
 	if (!ad->line)
 		return (1);
 	if (populate_redir(ad, ft_strtrim(ad->line, " ")))

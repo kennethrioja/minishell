@@ -68,10 +68,11 @@ static int	populate_pa(t_ad *ad, const char *l)
 
 static int	parse_line(t_ad *ad, const char *l)
 {
-// 	int	n;
+ 	int	n;
 
-// 	n = 0;
+ 	n = 0;
 	ad->pa = pa_lstnew(NULL);
+	ad->pa_head = ad->pa;
 	while (*l)
 	{
 		if (*l != '|')
@@ -85,28 +86,30 @@ static int	parse_line(t_ad *ad, const char *l)
 		}
 	}
 	pa_lst_fst_or_lst(&ad->pa, 0);
-// 	while (ad->pa)
-// 	{
-// 		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
-// 		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
-// 		while (ad->pa->args[n])
-// 		{
-// 			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
-// 			++n;
-// 		}
-// 		redir_lst_fst_or_lst(&ad->pa->redir, 0);
-// 		while (ad->pa->redir)
-// 		{
-// 			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
-// 			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
-// 			if (ad->pa->redir->next)
-// 				ad->pa->redir = ad->pa->redir->next;
-// 			else
-// 				break ;
-// 		}
-// 		ad->pa = ad->pa->next;
-// 		n = 0;
-// 	}
+	check_dollar(ad);
+ 	while (ad->pa)
+ 	{
+ 		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
+ 		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
+ 		while (ad->pa->args[n])
+ 		{
+ 			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
+ 			++n;
+ 		}
+ 		redir_lst_fst_or_lst(&ad->pa->redir, 0);
+ 		while (ad->pa->redir)
+ 		{
+ 			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
+ 			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
+ 			if (ad->pa->redir->next)
+ 				ad->pa->redir = ad->pa->redir->next;
+ 			else
+ 				break ;
+ 		}
+ 		ad->pa = ad->pa->next;
+ 		n = 0;
+ 	}
+	ad->pa = ad->pa_head;
 	return (0);
 }
 /*
@@ -147,5 +150,6 @@ int	ms_split(t_ad *ad)
 		return (1);
 	if (parse_line(ad, ft_strtrim(ad->line, " ")))
 		return (2);
+//	check_dollar(ad);
 	return (0);
 }

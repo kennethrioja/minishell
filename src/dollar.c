@@ -1,36 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 14:00:42 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/31 23:40:23 by tpinto-m         ###   ########.fr       */
+/*   Created: 2022/06/13 09:48:22 by tpinto-m          #+#    #+#             */
+/*   Updated: 2022/06/13 09:48:26 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(t_ad *ad)
+void	check_dollar(t_ad *ad)
 {
-	int	n_option;
 	int	i;
-	int	arrlen;
 
-	n_option = 0;
-	if (ad->pa->args[1])
-		if (!ft_strcmp(ad->pa->args[1], "-n"))
-			n_option = 1;
-	i = 1 + n_option;
-	arrlen = (int)ft_arrlen(ad->pa->args);
-	while (i < arrlen)
+	while (ad->pa)
 	{
-		ft_printf("%s", ad->pa->args[i]);
-		if (i < arrlen - 1)
-			ft_printf(" ");
-		i++;
+		i = -1;
+		while (++i < (int)ft_arrlen(ad->pa->args))
+		{
+			if (ad->pa->args[i][0] == '$')
+			{
+				if (get_i_env(ad, ad->pa->args[i] + 1) != -1)
+				{
+					ad->pa->args[i] = get_env(ad, get_i_env(ad, ad->pa->args[i] + 1))->value;
+				}
+			}
+		}
+		ad->pa = ad->pa->next;
 	}
-	if (!n_option)
-		ft_printf("\n");
+	ad->pa = ad->pa_head;
 }

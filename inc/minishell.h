@@ -92,6 +92,7 @@ typedef struct s_ad
 	t_node			*env;
 	t_redir			*redir;
 	t_pa			*pa;
+	t_pa			*pa_head;
 }					t_ad;
 
 // minishell functions
@@ -142,6 +143,9 @@ void	free_cmd(t_ad *ad);
 
 //* path.c
 int		check_path(t_ad *ad);
+
+//* dollar.c
+void	check_dollar(t_ad *ad);
 
 //* builtins
 

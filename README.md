@@ -17,7 +17,7 @@
 contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jour !
 	- [ ] *>> doit rediriger la sortie en mode append.
 - [ ] *Implémenter les **pipes** (caractère |). La sortie de chaque commande de la pipeline est connectée à l’entrée de la commande suivante grâce à un pipe.
-- [ ] *Gérer les **variables d’environnement** (un $ suivi d’une séquence de caractères) qui doivent être substituées par leur contenu.
+- [x] Gérer les **variables d’environnement** (un $ suivi d’une séquence de caractères) qui doivent être substituées par leur contenu.
 - [ ] *Gérer $? qui doit être substitué par le statut de sortie de la dernière pipeline exécutée au premier plan.
 - [x] Gérer ctrl-C, ctrl-D et ctrl-\ qui doivent fonctionner comme dans bash.
 - En mode interactif :

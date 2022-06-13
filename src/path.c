@@ -81,10 +81,10 @@ int	check_path(t_ad *ad)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		if (access(ad->pa->cmd, X_OK) == 0)
-		{
-			execve(".", ad->pa->args, get_env2d(ad->env));
-		}
+//		if (access(ad->pa->cmd, X_OK) == 0)
+//		{
+//			execve(".", ad->pa->args, get_env2d(ad->env));
+//		}
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
 		size = ft_arrlen(path);
 		while (size-- > 0)

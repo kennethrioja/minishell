@@ -75,4 +75,5 @@ void	*ft_memset(void *str, int c, size_t n);
 int		ft_bool(int btn);
 long	ft_atol(const char *str);
 char	*ft_remove_str(char *str, const char *sub);
+char	*ft_strtrim_f(char *s1, char const *set);
 #endif

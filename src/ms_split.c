@@ -47,14 +47,14 @@ static int	populate_pa(t_ad *ad, const char *l)
 	n = 0;
 	ret = 0;
 	ret += populate_redir(ad, l + ret);
-	ad->pa->cmd = ft_strtrim(ft_substr(l + ret, 0,
+	ad->pa->cmd = ft_strtrim_f(ft_substr(l + ret, 0,
 				ft_strlen_sp(l + ret, 0)), " ");
 	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while (*(l + ret) != '|' && *(l + ret))
 	{
-		ad->pa->args[n] = ft_strtrim(ft_substr(l + ret, 0,
+		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,
 					ft_strlen_sp(l + ret, 0)), " ");
 		if (ad->pa->args[n] == NULL)
 			my_exit(ad, write(2, "Error: ad->pa->args is NULL\n", 28));
@@ -66,13 +66,14 @@ static int	populate_pa(t_ad *ad, const char *l)
 	return (ret);
 }
 
-static int	parse_line(t_ad *ad, const char *l)
+static int	parse_line(t_ad *ad, char *l)
 {
- 	int	n;
+	int		n;
+	char	*tmp;
 
- 	n = 0;
 	ad->pa = pa_lstnew(NULL);
 	ad->pa_head = ad->pa;
+	tmp = l;
 	while (*l)
 	{
 		if (*l != '|')
@@ -85,30 +86,32 @@ static int	parse_line(t_ad *ad, const char *l)
 			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
 		}
 	}
+	free(tmp);
 	pa_lst_fst_or_lst(&ad->pa, 0);
 	check_dollar(ad);
- 	while (ad->pa)
- 	{
- 		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
- 		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
- 		while (ad->pa->args[n])
- 		{
- 			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
- 			++n;
- 		}
- 		redir_lst_fst_or_lst(&ad->pa->redir, 0);
- 		while (ad->pa->redir)
- 		{
- 			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
- 			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
- 			if (ad->pa->redir->next)
- 				ad->pa->redir = ad->pa->redir->next;
- 			else
- 				break ;
- 		}
- 		ad->pa = ad->pa->next;
- 		n = 0;
- 	}
+	while (ad->pa)
+	{
+		n = 0;
+		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
+		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
+		while (ad->pa->args[n])
+		{
+			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
+			++n;
+		}
+		redir_lst_fst_or_lst(&ad->pa->redir, 0);
+		while (ad->pa->redir)
+		{
+			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
+			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
+			if (ad->pa->redir->next)
+				ad->pa->redir = ad->pa->redir->next;
+			else
+				break ;
+		}
+		ad->pa = ad->pa->next;
+		n = 0;
+	}
 	ad->pa = ad->pa_head;
 	return (0);
 }
@@ -143,6 +146,7 @@ static int	parse_line(t_ad *ad, const char *l)
 
 int	ms_split(t_ad *ad)
 {
+//	TODO controler si j'ai sup le redir ??
 //	int	i;
 //
 //	i = 0;

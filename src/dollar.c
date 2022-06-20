@@ -1,42 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/09 21:46:52 by krioja           ###   ########.fr       */
+/*   Created: 2022/06/13 09:48:22 by tpinto-m          #+#    #+#             */
+/*   Updated: 2022/06/13 09:48:26 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	check_dollar(t_ad *ad)
 {
-	t_ad	ad;
+	int	i;
 
-	init(&ad, env);
-	while (1)
+	while (ad->pa)
 	{
-		handle_signal();
-		if (!get_line(&ad))
-			break ;
-		if (ms_split(&ad))
-			break ;
-    if (ms_pipex(&ad))
-	   	break ;
-//		while (ad.pa)
-//		{
-			check_line(&ad);
-//			ad.pa = ad.pa->next;
-//		}
-//		ad.pa = ad.pa_head;
-		free_cmd(&ad);
+		i = -1;
+		while (++i < (int)ft_arrlen(ad->pa->args))
+		{
+			if (ad->pa->args[i][0] == '$')
+			{
+				if (get_i_env(ad, ad->pa->args[i] + 1) != -1)
+				{
+					ad->pa->args[i] = get_env(ad, get_i_env(ad, ad->pa->args[i] + 1))->value;
+				}
+			}
+		}
+		ad->pa = ad->pa->next;
 	}
-	free_all(&ad);
-	(void)ac;
-	(void)av;
-	(void)env;
-	return (EXIT_SUCCESS);
+	ad->pa = ad->pa_head;
 }

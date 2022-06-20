@@ -46,51 +46,61 @@ char	**get_env2d(t_node *env)
 	return (env2d);
 }
 
-void	get_path_bin(t_ad *ad, char ***path, int size, char ***av)
+void	get_path_bin(t_ad *ad, char ***path, int size)
 {
-	char	**argv;
 	char	*dir;
-	int		i;
 
 	dir = ft_strjoin((*path)[size], "/");
-	argv = ft_split(ad->line, ' ');
-	i = 0;
-	while (argv[++i])
-	{
-		if (argv[i][0] != '-')
-		{
-			free(argv[i]);
-			argv[i] = NULL;
-		}
-	}
-	*av = argv;
-	**path = ft_strjoin(dir, argv[0]);
+	**path = ft_strjoin(dir, ad->pa->args[0]);
 }
 
-void	check_path(t_ad *ad)
+char	*create_cmd(char *path, char *cmd)
+{
+	char	*ncmd;
+	char	*npath;
+	int		i;
+
+	i = ft_strlen(path);
+	if (path[i - 1] != '/')
+	{
+		npath = ft_strjoin(path, "/");
+		ncmd = ft_strjoin(npath, cmd);
+		free(npath);
+		return (ncmd);
+	}
+	return (cmd);
+}
+
+int	check_path(t_ad *ad)
 {
 	char	**path;
-	char	**av;
+	char	*cmd;
 	int		size;
-	int		size2;
-	int		err;
+	pid_t	child_pid;
 
-	path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
-	size = ft_arrlen(path);
-	while (size--)
+	child_pid = fork();
+	if (child_pid == 0)
 	{
-		get_path_bin(ad, &path, size, &av);
-		if (!access(*path, F_OK))
+//		if (access(ad->pa->cmd, X_OK) == 0)
+//		{
+//			execve(".", ad->pa->args, get_env2d(ad->env));
+//		}
+		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
+		size = ft_arrlen(path);
+		while (size-- > 0)
 		{
-			size2 = ft_arrlen(av);
-			err = execve(*path, av, get_env2d(ad->env));
-			while (size2--)
-				free(av[size2]);
-			free(av);
-			if (err)
-				perror("execve");
+			cmd = create_cmd(path[size], ad->pa->cmd);
+			if (access(cmd, X_OK) == 0)
+				execve(cmd, ad->pa->args, get_env2d(ad->env));
 		}
+		size = ft_arrlen(path);
+		while (size-- > 0)
+			free(path[size]);
+		free(cmd);
+		free(path);
+		custom_err(ad, 0, "Command not found");
+		exit(EXIT_FAILURE);
 	}
-	free(path[size]);
-	free(path);
+	waitpid(child_pid, NULL, 0);
+	return (1);
 }

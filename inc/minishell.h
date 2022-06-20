@@ -54,15 +54,6 @@
 
 // macro
 
-// * builtins
-# define MS_ECHO "echo"
-# define MS_CD "cd"
-# define MS_PWD "pwd"
-# define MS_EXPORT "export"
-# define MS_UNSET "unset"
-# define MS_ENV "env"
-# define MS_EXIT "exit"
-
 # ifndef PATH_MAX
 #  define PATH_MAX 1024
 # endif
@@ -101,6 +92,7 @@ typedef struct s_ad
 	t_node			*env;
 	t_redir			*redir;
 	t_pa			*pa;
+	t_pa			*pa_head;
 }					t_ad;
 
 // minishell functions
@@ -132,6 +124,8 @@ void	pa_lstadd_next(t_pa **alst, t_pa *next);
 int		ft_strcmp(char *s1, char *s2);
 size_t	ft_arrlen(char **arr);
 size_t	ft_strlen_c(char *str, char c);
+char	*ft_strtolower(char *str);
+void	custom_err(t_ad *ad, int arg, char *str);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
@@ -145,9 +139,13 @@ void	handle_signal(void);
 //* free_all.c
 void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
+void	free_cmd(t_ad *ad);
 
 //* path.c
-void	check_path(t_ad *ad);
+int		check_path(t_ad *ad);
+
+//* dollar.c
+void	check_dollar(t_ad *ad);
 
 //* ms_pipex.c
 int		ms_pipex(t_ad *ad);
@@ -158,7 +156,7 @@ int		ms_pipex(t_ad *ad);
 void	ft_echo(t_ad *ad);
 
 // ** builtins/pwd.c
-void	ft_pwd(t_ad *ad);
+void	ft_pwd(void);
 
 // ** builtins/cd.c
 void	ft_cd(t_ad *ad);
@@ -172,7 +170,7 @@ void	print_node(t_node	*node, int option);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
-void	add_env(t_ad *ad, char *key, char *value);
+void	add_env(t_ad *ad, int arg, char *key, char *value);
 void	append_env(t_node **head_ref, char *key, char *value);
 int		count_export(t_ad *ad);
 void	sort_export(t_ad *ad, int count);
@@ -180,5 +178,8 @@ void	sort_export(t_ad *ad, int count);
 // ** builtins/unset.c
 void	ft_unset(t_ad *ad);
 void	delete_env(t_node **head_ref, t_node *del);
+
+// ** builtins/cd.c
+void	free_env(t_ad *ad);
 
 #endif

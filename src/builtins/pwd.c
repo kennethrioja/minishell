@@ -12,16 +12,10 @@
 
 #include "minishell.h"
 
-void	ft_pwd(t_ad *ad)
+void	ft_pwd(void)
 {
 	char	buf[PATH_MAX];
 
-	// if (!ad->pa->args[1])
-		if (getcwd(buf, PATH_MAX))
-			ft_printf("%s\n", buf);
-	// else
-	// 	ft_printf("pwd: too many arguments\n");
-	// or
-	// 	perror("pwd");
-	(void)ad;
+	if (getcwd(buf, PATH_MAX))
+		ft_printf("%s\n", buf);
 }

@@ -16,12 +16,14 @@ void	ft_unset(t_ad *ad)
 {
 	t_node	*tmp;
 	int		size;
+	int		i;
 
-	if (ft_strlen(ad->line) > 6)
+	i = 0;
+	while (ad->pa->args[++i])
 	{
-		size = get_i_env(ad, ad->line + 6);
+		size = get_i_env(ad, ad->pa->args[i]);
 		if (size == -1)
-			return ;
+			continue ;
 		tmp = get_env(ad, size);
 		delete_env(&ad->env, tmp);
 	}

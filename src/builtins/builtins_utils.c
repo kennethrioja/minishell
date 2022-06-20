@@ -1,42 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/09 21:46:52 by krioja           ###   ########.fr       */
+/*   Created: 2022/06/09 15:28:08 by tpinto-m          #+#    #+#             */
+/*   Updated: 2022/06/09 15:28:10 by tpinto-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	free_env(t_ad *ad)
 {
-	t_ad	ad;
-
-	init(&ad, env);
-	while (1)
+	while (ad->env && ad->env->next)
 	{
-		handle_signal();
-		if (!get_line(&ad))
-			break ;
-		if (ms_split(&ad))
-			break ;
-    if (ms_pipex(&ad))
-	   	break ;
-//		while (ad.pa)
-//		{
-			check_line(&ad);
-//			ad.pa = ad.pa->next;
-//		}
-//		ad.pa = ad.pa_head;
-		free_cmd(&ad);
+		free(ad->env->key);
+		free(ad->env->value);
+		ad->env = ad->env->next;
+		free(ad->env->prev);
 	}
-	free_all(&ad);
-	(void)ac;
-	(void)av;
-	(void)env;
-	return (EXIT_SUCCESS);
+	free(ad->env->key);
+	free(ad->env->value);
+	free(ad->env);
 }

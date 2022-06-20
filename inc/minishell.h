@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/20 12:50:28 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 14:38:15 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,10 +147,10 @@ int		check_path(t_ad *ad);
 //* dollar.c
 void	check_dollar(t_ad *ad);
 
-//* ms_pipex.c
-int		ms_pipex(t_ad *ad);
+//* ms_exec.c
+int		ms_exec(t_ad *ad);
 
-//* ms_pipex_get_path.c
+//* ms_exec_get_path.c
 void	get_path(t_ad *ad);
 
 //* builtins

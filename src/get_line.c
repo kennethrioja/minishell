@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/04 17:34:17 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:33:56 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ void	check_line(t_ad *ad)
 		free_all(ad);
 		exit(EXIT_SUCCESS);
 	}
-	else
-		check_path(ad);
+// TO DEEGOH : is it necessary? if checkline after pipex, it rechecks
+// bis : we need to implement this in the execution part  
+//	else
+//		check_path(ad);
 //		custom_err(ad, 0, "Command not found");
 
 }

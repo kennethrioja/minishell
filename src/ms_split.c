@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/09 18:38:20 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 09:53:12 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,7 @@ static int	parse_line(t_ad *ad, char *l)
 }
 /*
 	to put before return (0) to check all redir structs
-	int	n;
-
-	n = 0;
+	int	n = 0;
  	pa_lst_fst_or_lst(&ad->pa, 0);
 	while (ad->pa)
 	{

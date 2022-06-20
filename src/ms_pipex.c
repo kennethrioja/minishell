@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/20 09:54:00 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 10:49:31 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,45 @@ int	pipex(char **argv, char **paths, char **params1, char **params2)
 }
 */
 
-/*
-static void	multi_pipex(t_ad *ad)
+static void	exec_one_gr(t_ad *ad)
 {
+	int	pid;
+	int	outfile;
 
+	pid = fork();
+	if (pid == -1)
+		my_exit(ad, write(2, "Error: fork\n", 12));
+	if (pid == 0)
+	{
+		outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
+		if (outfile == -1)
+			my_exit(ad, write(2, "Error: open\n", 12));
+		dup2(outfile, STDOUT_FILENO);
+	}
 }
-*/
+
+static void	do_redir(t_ad *ad)
+{
+	redir_lst_fst_or_lst(&ad->pa->redir, 0);
+	while (ad->pa->redir)
+	{
+		if (!ft_strncmp(ad->pa->redir->op, ">", 1))
+			exec_one_gr(ad);
+		/*
+		if (ad->pa->redir->op == '<')
+			exec_one_sm(ad);
+		if (!ft_strncmp(ad->pa->redir->op, ">>", 2)
+			exec_two_gr(ad);
+		if (!ft_strncmp(ad->pa->redir->op, "<<", 2)
+			exec_one_sm(ad);
+		*/
+		if (ad->pa->redir->next)
+			ad->pa->redir = ad->pa->redir->next;
+		else
+			break ;
+	}
+	execve(ad->pa->path, ad->pa->args, NULL);
+}
 
 static void	env_lst_fst_or_lst(t_node **env, int flag)
 {
@@ -101,14 +134,13 @@ static int	add_prefix(t_ad *ad, const char *s, int n)
 	while (ft_strncmp(ad->env->key, "PATH", 4))
 		ad->env = ad->env->next;
 	path = ft_split(ad->env->value, ':');
-	ad->pa->path = ft_strjoin(path[n], s);
+	ad->pa->path = ft_strjoin(path[n], "/");
+	ad->pa->path = ft_strjoin(ad->pa->path, s);
 	while (path[++i])
 		free(path[i]);
 	free(path);
 	if (ad->pa->path == NULL)
-	{
 		return (0);
-	}
 	return (n + 1);
 }
 
@@ -141,7 +173,7 @@ static void	get_path(t_ad *ad)
 int	ms_pipex(t_ad *ad)
 {
 	get_path(ad);
-//	multi_pipex(ad);
+	do_redir(ad);
 //	return (0);
 
 	int	n = 0;

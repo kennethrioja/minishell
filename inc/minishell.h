@@ -54,9 +54,16 @@
 
 // macro
 
-# ifndef PATH_MAX
-#  define PATH_MAX 1024
-# endif
+//# ifndef PATH_MAX
+# define PATH_MAX 1024
+//# endif
+
+# define SUCCESS 0
+# define GENERAL_ERR 1
+# define PERMISSION_ERR 126
+# define NOT_FOUND_ERR 127
+# define EXIT_ERR 128
+# define SIGNAL_ERR 128
 
 // typedef, struct & vars
 
@@ -89,6 +96,7 @@ typedef struct s_node
 typedef struct s_ad
 {
 	char			*line;
+	int				status_exit;
 	t_node			*env;
 	t_redir			*redir;
 	t_pa			*pa;
@@ -170,9 +178,9 @@ void	print_node(t_node	*node, int option);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
-void	add_env(t_ad *ad, int arg, char *key, char *value);
-void	append_env(t_node **head_ref, char *key, char *value);
-int		count_export(t_ad *ad);
+void	add_env(t_ad *ad, int arg, char *name, char *value);
+void	append_t_node(t_node **head_ref, char *key, char *value);
+int		count_t_node(t_ad *ad);
 void	sort_export(t_ad *ad, int count);
 
 // ** builtins/unset.c

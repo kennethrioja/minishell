@@ -15,9 +15,23 @@
 void	ft_env(t_ad *ad)
 {
 	if (ad->pa->args[1])
-		custom_err(ad, 1, "No such file or directory");
+	{
+		if (access(ad->pa->args[1], X_OK))
+		{
+			ad->status_exit = NOT_FOUND_ERR;
+			custom_err(ad, 1, "No such file or directory");
+		}
+		else
+		{
+			ad->status_exit = PERMISSION_ERR;
+			custom_err(ad, 1, "Permission denied");
+		}
+	}
 	else
+	{
+		ad->status_exit = SUCCESS;
 		print_node(ad->env, 'c');
+	}
 }
 
 int	get_i_env(t_ad *ad, char *key)
@@ -61,11 +75,12 @@ void	init(t_ad *ad, char	**env)
 	{
 		key = ft_substr(env[j], 0, ft_strlen_c(env[j], '='));
 		value = ft_strdup(env[j] + 1 + ft_strlen_c(env[j], '='));
-		append_env(&ad->env, key, value);
+		append_t_node(&ad->env, key, value);
 		j++;
 	}
 	ad->redir = NULL;
 	ad->pa = NULL;
+	ad->status_exit = 0;
 }
 
 void	print_node(t_node	*node, int option)

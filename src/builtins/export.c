@@ -12,26 +12,34 @@
 
 #include "minishell.h"
 
-void	ft_export(t_ad *ad)
+void	show_export(t_ad *ad)
 {
 	t_ad	dup;
 	t_node	*tmp;
-	int		i;
+
+	dup.env = NULL;
+	tmp = ad->env;
+	while (tmp)
+	{
+		add_env(&dup, 1, ft_strdup(tmp->key), ft_strdup(tmp->value));
+		tmp = tmp->next;
+	}
+	sort_export(&dup, count_t_node(&dup));
+	free_env(&dup);
+}
+
+void	ft_export(t_ad *ad)
+{
+	int	i;
 
 	if (!ad->pa->args[1])
 	{
-		dup.env = NULL;
-		tmp = ad->env;
-		while (tmp)
-		{
-			add_env(&dup, 1, ft_strdup(tmp->key), ft_strdup(tmp->value));
-			tmp = tmp->next;
-		}
-		sort_export(&dup, count_export(&dup));
-		free_env(&dup);
+		ad->status_exit = SUCCESS;
+		show_export(ad);
 	}
 	else
 	{
+		//TODO CHECK IS ALPHA
 		i = 0;
 		while (ad->pa->args[++i])
 		{
@@ -48,60 +56,24 @@ void	ft_export(t_ad *ad)
 	}
 }
 
-void	add_env(t_ad *ad, int arg, char *key, char *value)
+void	add_env(t_ad *ad, int arg, char *name, char *value)
 {
 	t_node	*tmp;
 	int		i;
 
-	if (!key)
-		key = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
+	if (!name)
+		name = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
 	if (!value)
 		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg], '=') + 1);
-	i = get_i_env(ad, key);
+	i = get_i_env(ad, name);
 	if (i == -1)
-		append_env(&ad->env, key, value);
+		append_t_node(&ad->env, name, value);
 	else
 	{
 		tmp = get_env(ad, i);
 		tmp->value = value;
 	}
-}
-
-void	append_env(t_node **head_ref, char *key, char *value)
-{
-	t_node	*new_node;
-	t_node	*last;
-
-	new_node = (t_node *)malloc(sizeof(t_node));
-	new_node->key = key;
-	new_node->value = value;
-	new_node->next = NULL;
-	if (*head_ref == NULL)
-	{
-		new_node->prev = NULL;
-		*head_ref = new_node;
-		return ;
-	}
-	last = *head_ref;
-	while (last->next != NULL)
-		last = last->next;
-	last->next = new_node;
-	new_node->prev = last;
-}
-
-int	count_export(t_ad *ad)
-{
-	int		i;
-	t_node	*tmp;
-
-	i = 0;
-	tmp = ad->env;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
+	ad->status_exit = SUCCESS;
 }
 
 void	sort_export(t_ad *ad, int count)

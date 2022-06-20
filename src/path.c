@@ -35,7 +35,7 @@ char	**get_env2d(t_node *env)
 	char	*tmp;
 
 	size = count_node(env);
-	env2d = ft_calloc(sizeof(char **), size);
+	env2d = ft_calloc(sizeof(char **), size + 1);
 	i = -1;
 	while (++i < size)
 	{
@@ -99,6 +99,7 @@ int	check_path(t_ad *ad)
 		free(cmd);
 		free(path);
 		custom_err(ad, 0, "Command not found");
+		ad->status_exit = 127;
 		exit(EXIT_FAILURE);
 	}
 	waitpid(child_pid, NULL, 0);

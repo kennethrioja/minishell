@@ -33,4 +33,5 @@ void	ft_echo(t_ad *ad)
 	}
 	if (!n_option)
 		ft_printf("\n");
+	ad->status_exit = SUCCESS;
 }

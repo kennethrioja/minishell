@@ -77,6 +77,9 @@ clean:
 fclean:			clean
 				$(RM) $(NAME)
 
+leak:			all
+				leaks -atExit -- ./$(NAME)
+
 re:				fclean all
 
 .PHONY:			all clean fclean re

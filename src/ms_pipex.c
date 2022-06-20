@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/20 10:49:31 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 13:15:24 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,49 @@ int	pipex(char **argv, char **paths, char **params1, char **params2)
 }
 */
 
-static void	exec_one_gr(t_ad *ad)
+/*
+static int	count_redir(t_ad *ad)
+{
+	int	n;
+
+	n = 0;
+	redir_lst_fst_or_lst(&ad->pa->redir, 0);
+	while (ad->pa->redir)
+	{
+		if (ad->pa->redir->next)
+		{
+			++n;
+			ad->pa->redir = ad->pa->redir->next;
+		}
+		else
+		{
+			++n;
+			break;
+		}
+	}
+	return (n);
+}
+
+static int	redir_one_sm(t_ad *ad)
+{
+	int	pid;
+	int	infile;
+
+	pid = fork();
+	if (pid == -1)
+		my_exit(ad, write(2, "Error: fork\n", 12));
+	if (pid == 0)
+	{
+		infile = open(ad->pa->redir->file, O_RDWR);
+		if (infile == -1)
+			my_exit(ad, write(2, "Error: open infile\n", 20));
+		dup2(infile, STDIN_FILENO);
+		execve(ad->pa->path, ad->pa->args, NULL);
+	}
+	return (pid);
+}
+
+static int	redir_one_gr(t_ad *ad)
 {
 	int	pid;
 	int	outfile;
@@ -74,106 +116,55 @@ static void	exec_one_gr(t_ad *ad)
 	{
 		outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
 		if (outfile == -1)
-			my_exit(ad, write(2, "Error: open\n", 12));
+			my_exit(ad, write(2, "Error: open outfile\n", 20));
 		dup2(outfile, STDOUT_FILENO);
+		execve(ad->pa->path, ad->pa->args, NULL);
 	}
+	return (pid);
 }
 
-static void	do_redir(t_ad *ad)
+static void	exec_redir(t_ad *ad)
 {
+	int	*pid_tab;
+	int	n;
+
+	n = 0;
+	pid_tab = malloc(sizeof(int) * count_redir(ad));
 	redir_lst_fst_or_lst(&ad->pa->redir, 0);
 	while (ad->pa->redir)
 	{
+		ft_printf("HEYYY\n");
 		if (!ft_strncmp(ad->pa->redir->op, ">", 1))
-			exec_one_gr(ad);
-		/*
-		if (ad->pa->redir->op == '<')
-			exec_one_sm(ad);
-		if (!ft_strncmp(ad->pa->redir->op, ">>", 2)
-			exec_two_gr(ad);
-		if (!ft_strncmp(ad->pa->redir->op, "<<", 2)
-			exec_one_sm(ad);
-		*/
+			pid_tab[n] = redir_one_gr(ad);
+		else if (!ft_strncmp(ad->pa->redir->op, "<", 1))
+			pid_tab[n] = redir_one_sm(ad);
+		n++;
 		if (ad->pa->redir->next)
 			ad->pa->redir = ad->pa->redir->next;
 		else
 			break ;
 	}
-	execve(ad->pa->path, ad->pa->args, NULL);
+	n = -1;
+	while (++n < count_redir(ad))
+		waitpid(pid_tab[n], NULL, 0);
+	free(pid_tab);
 }
-
-static void	env_lst_fst_or_lst(t_node **env, int flag)
-{
-	if (flag == 0)
-	{
-		while (*env)
-		{
-			if ((*env)->prev == NULL)
-				break ;
-			*env = (*env)->prev;
-		}
-	}
-	else
-	{
-		while (*env)
-		{
-			if ((*env)->next == NULL)
-				break ;
-			*env = (*env)->next;
-		}
-	}
-}
-
-static int	add_prefix(t_ad *ad, const char *s, int n)
-{
-	char	**path;
-	int		i;
-
-	i = -1;
-	env_lst_fst_or_lst(&ad->env, 0);
-	while (ft_strncmp(ad->env->key, "PATH", 4))
-		ad->env = ad->env->next;
-	path = ft_split(ad->env->value, ':');
-	ad->pa->path = ft_strjoin(path[n], "/");
-	ad->pa->path = ft_strjoin(ad->pa->path, s);
-	while (path[++i])
-		free(path[i]);
-	free(path);
-	if (ad->pa->path == NULL)
-		return (0);
-	return (n + 1);
-}
-
-static void	get_path(t_ad *ad)
-{
-	int	n;
-
-	n = 0;
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (ad->pa)
-	{
-		while (access(ad->pa->path, F_OK) == -1)
-		{
-			if (ad->pa->path)
-				free(ad->pa->path);
-			n = add_prefix(ad, ad->pa->cmd, n);
-			if (n == 0)
-				my_exit(ad, write(2, "adsh: command not found: ", 25)
-					+ write(2, ad->pa->args[0], ft_strlen(ad->pa->args[0]))
-					+ write(2, "\n", 1));
-		}
-		if (ad->pa->next)
-			ad->pa = ad->pa->next;
-		else
-			break ;
-		n = 0;
-	}
-}
+*/
 
 int	ms_pipex(t_ad *ad)
 {
+//	int	pid;
+
 	get_path(ad);
-	do_redir(ad);
+//	if (ad->pa->redir)
+//		exec_redir(ad);
+//	else
+//	pid = fork();
+//	if (pid == -1)
+//		my_exit(ad, write(2, "Error: fork\n", 12));
+//	if (pid == 0)
+		execve(ad->pa->path, ad->pa->args, NULL);
+//	waitpid(pid, NULL, 0);
 //	return (0);
 
 	int	n = 0;

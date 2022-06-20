@@ -12,7 +12,8 @@ SRCS		=	main.c						\
 				ms_split_redir_utils.c		\
 				ms_split_pa_utils.c			\
 				path.c						\
-        ms_pipex.c					\
+        		ms_pipex.c					\
+        		ms_pipex_get_path.c			\
 				dollar.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\

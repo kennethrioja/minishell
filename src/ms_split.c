@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/09 21:37:15 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 09:53:12 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	populate_pa(t_ad *ad, const char *l)
 	ret = 0;
 	ret += populate_redir(ad, l + ret);
 	ad->pa->cmd = ft_strjoin("/", ft_strtrim(ft_substr(l + ret, 0,
-				ft_strlen_sp(l + ret, 0)), " "));
+					ft_strlen_sp(l + ret, 0)), " "));
 	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));

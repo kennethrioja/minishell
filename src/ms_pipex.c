@@ -6,14 +6,12 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/09 22:47:31 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 09:54:00 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 /*
-
-
 static int	pipex2(char **argv, char *path2, char **params2, int *fd)
 {
 	int	outfile;
@@ -64,6 +62,13 @@ int	pipex(char **argv, char **paths, char **params1, char **params2)
 }
 */
 
+/*
+static void	multi_pipex(t_ad *ad)
+{
+
+}
+*/
+
 static void	env_lst_fst_or_lst(t_node **env, int flag)
 {
 	if (flag == 0)
@@ -86,64 +91,7 @@ static void	env_lst_fst_or_lst(t_node **env, int flag)
 	}
 }
 
-/*
-static char	**add_prefix(char ***params, char **path, char *prefix)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = -1;
-	if (prefix[1] == 'b')
-	{
-		*path = malloc(sizeof(char) * (word_length((*params)[0], 0) + 5 + 1));
-		while (prefix[++i])
-			(*path)[i] = prefix[i];
-		while ((*params)[0][++j])
-			(*path)[i++] = (*params)[0][j];
-		(*path)[i] = '\0';
-		return (path);
-	}
-	*path = malloc(sizeof(char) * (word_length((*params)[0], 0) + 9 + 1));
-	while (prefix[++i])
-		(*path)[i] = prefix[i];
-	while ((*params)[0][++j])
-		(*path)[i++] = (*params)[0][j];
-	(*path)[i] = '\0';
-	return (path);
-}
-
-static void	get_path(char ***params, char **path)
-{
-	path = add_prefix(params, path, "/bin/");
-	if (access(*path, F_OK) == -1)
-	{
-		free(*path);
-		path = add_prefix(params, path, "/usr/bin/");
-		if (access(*path, F_OK) == -1)
-		{
-			free(*path);
-			perror("Error (path)");
-		}
-	}
-}
-*/
-
-/*
-static void	add_nth_prefix(t_ad *ad, const char *s, const int n)
-{
-	while (*s && n)
-	{
-		if (*s == ':')
-			--n;
-		*s++;
-	}
-
-	ad->pa->path = ft_strjoin(ft_split(ad->env->value, ':')[n], ad->pa->cmd);
-}
-*/
-
-static int add_prefix(t_ad *ad, const char *s, int n)
+static int	add_prefix(t_ad *ad, const char *s, int n)
 {
 	char	**path;
 	int		i;
@@ -152,25 +100,19 @@ static int add_prefix(t_ad *ad, const char *s, int n)
 	env_lst_fst_or_lst(&ad->env, 0);
 	while (ft_strncmp(ad->env->key, "PATH", 4))
 		ad->env = ad->env->next;
-//	ft_printf("envkey=|%s|\n", ad->env->key);
 	path = ft_split(ad->env->value, ':');
-//	ft_printf("path[%d]=|%s|\n", n, path[n]);
 	ad->pa->path = ft_strjoin(path[n], s);
-//	ft_printf("ad->pa->path=|%s|\n", ad->pa->path);
-//	add_nth_prefix(ad, ad->env->value, n)
 	while (path[++i])
 		free(path[i]);
 	free(path);
-//	if (!ft_strncmp(ad->pa->path, s, ft_strlen(s)))
 	if (ad->pa->path == NULL)
 	{
-//		ft_printf("PATH IS NULL\n");
 		return (0);
 	}
 	return (n + 1);
 }
 
-static void get_path(t_ad *ad)
+static void	get_path(t_ad *ad)
 {
 	int	n;
 
@@ -183,13 +125,11 @@ static void get_path(t_ad *ad)
 			if (ad->pa->path)
 				free(ad->pa->path);
 			n = add_prefix(ad, ad->pa->cmd, n);
-//			ft_printf("YO N IS %d\n", n);
 			if (n == 0)
 				my_exit(ad, write(2, "adsh: command not found: ", 25)
-						+ write(2, ad->pa->args[0], ft_strlen(ad->pa->args[0]))
-						+ write(2, "\n", 1));
+					+ write(2, ad->pa->args[0], ft_strlen(ad->pa->args[0]))
+					+ write(2, "\n", 1));
 		}
-		ft_printf("right path for cmd : |%s| is : |%s|\n",ad->pa->args[0], ad->pa->path);
 		if (ad->pa->next)
 			ad->pa = ad->pa->next;
 		else
@@ -201,6 +141,7 @@ static void get_path(t_ad *ad)
 int	ms_pipex(t_ad *ad)
 {
 	get_path(ad);
+//	multi_pipex(ad);
 //	return (0);
 
 	int	n = 0;

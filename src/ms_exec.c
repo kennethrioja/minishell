@@ -6,12 +6,34 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/20 17:15:30 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/21 15:22:03 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 /*
+static int	is_last_redir(t_ad *ad, char *cmp)
+{
+	t_ad *tmp;
+	int	n;
+
+	tmp = ad;
+	n = -1;
+	while (ad->pa->redir)
+	{
+		if (!ft_strncmp(ad->pa->redir->op, cmp, ft_strlen(cmp)))
+			++n;
+		if (ad->pa->redir->next)
+			ad->pa->redir = ad->pa->redir->next;
+		else
+			break;
+	}
+	ad = tmp;
+	if (n)
+		return (0);
+	return (1);
+}
+
 static int	pipex2(char **argv, char *path2, char **params2, int *fd)
 {
 	int	outfile;
@@ -62,29 +84,40 @@ int	pipex(char **argv, char **paths, char **params1, char **params2)
 }
 */
 
-/*
-static int	is_last_redir(t_ad *ad, char *cmp)
+static void	redir_two_sm(t_ad *ad)
 {
-	t_ad *tmp;
-	int	n;
+	char *tmp;
+	int	fd[2];
 
-	tmp = ad;
-	n = -1;
+	redir_lst_fst_or_lst(&ad->pa->redir, 0);
 	while (ad->pa->redir)
 	{
-		if (!ft_strncmp(ad->pa->redir->op, cmp, ft_strlen(cmp)))
-			++n;
+		if (!ft_strcmp(ad->pa->redir->op, "<<"))
+		{
+			if (pipe(fd) == -1)
+				my_exit(ad, write(2, "Error: pipe for <<\n", 19));
+			while (ft_strcmp(ad->pa->redir->file, tmp))
+			{
+				tmp = readline("> ");
+				if (!ft_strcmp(ad->pa->redir->file, tmp))
+					break ;
+				write(fd[1], tmp, ft_strlen(tmp));
+				write(fd[1], "\n", 1);
+				if (tmp)
+					free(tmp);
+			}
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+			close(fd[1]);
+		}
 		if (ad->pa->redir->next)
 			ad->pa->redir = ad->pa->redir->next;
 		else
 			break;
 	}
-	ad = tmp;
-	if (n)
-		return (0);
-	return (1);
+	close(fd[0]);
+	close(fd[1]);
 }
-*/
 
 static void	redir_one_sm(t_ad *ad)
 {
@@ -93,7 +126,7 @@ static void	redir_one_sm(t_ad *ad)
 	redir_lst_fst_or_lst(&ad->pa->redir, 0);
 	while (ad->pa->redir)
 	{
-		if (!ft_strncmp(ad->pa->redir->op, "<", 1))
+		if (!ft_strcmp(ad->pa->redir->op, "<"))
 		{
 			infile = open(ad->pa->redir->file, O_RDWR);
 			if (infile == -1)
@@ -101,6 +134,7 @@ static void	redir_one_sm(t_ad *ad)
 					+ write(2, ad->pa->redir->file, ft_strlen(ad->pa->redir->file))
 					+ write(2, ": No such file or directory\n", 28));
 			dup2(infile, STDIN_FILENO);
+			close(infile);
 		}
 		if (ad->pa->redir->next)
 			ad->pa->redir = ad->pa->redir->next;
@@ -109,7 +143,7 @@ static void	redir_one_sm(t_ad *ad)
 	}
 }
 
-static void	redir_one_gr(t_ad *ad)
+static void	redir_gr(t_ad *ad)
 {
 	int	outfile;
 	
@@ -118,10 +152,14 @@ static void	redir_one_gr(t_ad *ad)
 	{
 		if (!ft_strncmp(ad->pa->redir->op, ">", 1))
 		{
-			outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
+			if (!ft_strcmp(ad->pa->redir->op, ">>"))
+				outfile = open(ad->pa->redir->file, O_RDWR | O_APPEND | O_CREAT  , 0644);
+			else
+				outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
 			if (outfile == -1)
 				my_exit(ad, write(2, "Error: outfile\n", 15));
 			dup2(outfile, STDOUT_FILENO);
+			close(outfile);
 		}
 		if (ad->pa->redir->next)
 			ad->pa->redir = ad->pa->redir->next;
@@ -139,7 +177,8 @@ static void	exec_redir_multiple(t_ad *ad)
 		my_exit(ad, write(2, "Error: fork\n", 12));
 	if (pid == 0)
 	{
-		redir_one_gr(ad);
+		redir_gr(ad);
+		redir_two_sm(ad);
 		redir_one_sm(ad);
 		execve(ad->pa->path, ad->pa->args, NULL);
 	}

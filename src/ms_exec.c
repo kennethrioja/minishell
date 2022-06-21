@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/21 20:24:48 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/21 20:59:23 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,36 +67,30 @@ int	ms_exec(t_ad *ad)
 	get_path(ad);
 //	exec_redir(ad);
 
-	/*
-	if (!ad->pa->next)
-	{
-		ft_printf("no next\n");
-		exec_redir(ad);
-	}
-	else
-	{
-	ft_printf("yes next\n");
-	*/
-	int	fd[2];
+
+	int	fd[2][2];
 	int	pid1;
 	int	pid2;
+	int	pid3;
 
 	pa_lst_fst_or_lst(&ad->pa, 0);
 
-	if (pipe(fd) == -1)
+	if (pipe(fd[0]) == -1 || pipe(fd[1]) == -1)
 		my_exit(ad, write(2, "Error: pipe\n", 12));
-	
+//1	
 	pid1 = fork();
 	if (pid1 == -1)
 		my_exit(ad, write(2, "Error: fork\n", 12));
 	if (pid1 == 0)
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		close(fd[0]);
+		ft_printf("pid1.exe:%s\n",ad->pa->args[0]);
+		dup2(fd[0][1], STDOUT_FILENO);
+		close(fd[0][1]);
+		close(fd[0][0]);
 		exec_redir(ad);
 	}
 	
+//2
 	if (ad->pa->next)
 		ad->pa = ad->pa->next;
 
@@ -105,17 +99,41 @@ int	ms_exec(t_ad *ad)
 		my_exit(ad, write(2, "Error: fork\n", 12));
 	if (pid2 == 0)
 	{
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		ft_printf("pid2.exe:%s\n",ad->pa->args[0]);
+		dup2(fd[0][0], STDIN_FILENO);
+		if (ad->pa->next)
+		{
+			ft_printf("2 has next\n");
+			dup2(fd[1][1], STDOUT_FILENO);
+		}
+		close(fd[0][0]);
+		close(fd[0][1]);
+		exec_redir(ad);
+	}
+	close(fd[0][0]);
+	close(fd[0][1]);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
+	
+//3
+	if (ad->pa->next)
+		ad->pa = ad->pa->next;
+	
+	pid3 = fork();
+	if (pid3 == -1)
+		my_exit(ad, write(2, "Error: fork\n", 12));
+	if (pid3 == 0)
+	{
+		ft_printf("pid3.exe:%s\n",ad->pa->args[0]);
+		dup2(fd[1][0], STDIN_FILENO);
+		close(fd[1][0]);
+		close(fd[1][1]);
 		exec_redir(ad);
 	}
 	
-	
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	close(fd[1][0]);
+	close(fd[1][1]);
+	waitpid(pid3, NULL, 0);
 
 	return (0);
 }

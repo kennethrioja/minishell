@@ -37,6 +37,16 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] Leaks
 - [ ] Gestion d'erreurs
 - [ ] Norminette
+- [ ] Faire le lien ms_split et check_line
+- [ ] Faire les /
+- [ ] Faire les builtins avant les execve
+- [ ] Try ctrl-C in a prompt after you wrote some stuff should show a new line with a new prompt
+ The buffer should be clean too, press "enter" to make sure nothing from the old line is executed.
+- [ ] Try ctrl-C after running a blocking command like cat without arguments or grep “something“
+- [ ] Try ctrl-\ after running a blocking command like cat without arguments or grep “something“
+- [ ] Try ctrl-D after running a blocking command like cat without arguments or grep “something“
+- [ ] Gestion erreur " et '
+- [ ] 
 
 ## Bonus
 - [ ] && et || avec des parenthèses pour les priorités.

@@ -12,8 +12,9 @@ SRCS		=	main.c						\
 				ms_split_redir_utils.c		\
 				ms_split_pa_utils.c			\
 				path.c						\
-        		ms_exec.c						\
-        		ms_exec_get_path.c				\
+        		ms_exec.c					\
+        		ms_exec_get_path.c			\
+        		ms_exec_redir.c				\
 				dollar.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\

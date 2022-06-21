@@ -12,10 +12,11 @@
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+void	ft_pwd(t_ad *ad)
 {
 	char	buf[PATH_MAX];
 
 	if (getcwd(buf, PATH_MAX))
 		ft_printf("%s\n", buf);
+	ad->status_exit = SUCCESS;
 }

@@ -64,6 +64,7 @@
 # define NOT_FOUND_ERR 127
 # define EXIT_ERR 128
 # define SIGNAL_ERR 128
+# define EXPORT_ERR "export: not valid in this context: "
 
 // typedef, struct & vars
 
@@ -164,30 +165,30 @@ int		ms_pipex(t_ad *ad);
 void	ft_echo(t_ad *ad);
 
 // ** builtins/pwd.c
-void	ft_pwd(void);
+void	ft_pwd(t_ad *ad);
 
 // ** builtins/cd.c
 void	ft_cd(t_ad *ad);
 
 // ** builtins/env.c
 void	ft_env(t_ad *ad);
-void	init(t_ad *ad, char	**env);
 int		get_i_env(t_ad *ad, char *key);
 t_node	*get_env(t_ad *ad, int i);
-void	print_node(t_node	*node, int option);
+void	init(t_ad *ad, char	**env);
+void	add_env(t_ad *ad, int arg, char *name, char *value);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
-void	add_env(t_ad *ad, int arg, char *name, char *value);
-void	append_t_node(t_node **head_ref, char *key, char *value);
-int		count_t_node(t_ad *ad);
-void	sort_export(t_ad *ad, int count);
+int		ft_isexport(const char *str);
 
 // ** builtins/unset.c
 void	ft_unset(t_ad *ad);
-void	delete_env(t_node **head_ref, t_node *del);
+void	delete_t_node(t_node **head_ref, t_node *del);
 
 // ** builtins/cd.c
 void	free_env(t_ad *ad);
+int		count_t_node(t_ad *ad);
+void	append_t_node(t_node **head_ref, char *key, char *value);
+void	print_node(t_node	*node, int option);
 
 #endif

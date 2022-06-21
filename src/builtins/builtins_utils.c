@@ -62,3 +62,23 @@ void	append_t_node(t_node **head_ref, char *key, char *value)
 	last->next = new_node;
 	new_node->prev = last;
 }
+
+void	print_node(t_node	*node, int option)
+{
+	while (node)
+	{
+		if (option == 1)
+		{
+			if (!ft_strcmp(node->value, "NULL"))
+				ft_printf("declare -x %s\n", node->key);
+			else
+				ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		}
+		else
+		{
+			if (ft_strcmp(node->value, "NULL"))
+				ft_printf("%s=%s\n", node->key, node->value);
+		}
+		node = node->next;
+	}
+}

@@ -12,7 +12,52 @@
 
 #include "minishell.h"
 
-void	show_export(t_ad *ad)
+static void	sort_export(t_ad *ad, int count);
+static void	show_export(t_ad *ad);
+static void	add_export(t_ad *ad, int i);
+
+void	ft_export(t_ad *ad)
+{
+	int	i;
+	int	checker;
+	int	status;
+
+	status = SUCCESS;
+	if (!ad->pa->args[1])
+		show_export(ad);
+	else
+	{
+		i = 0;
+		while (ad->pa->args[++i])
+		{
+			checker = ft_isexport(ad->pa->args[i]);
+			if (checker)
+				add_export(ad, i);
+			else
+			{
+				status = GENERAL_ERR;
+				custom_err(ad, i, "not a valid identifier");
+			}
+		}
+	}
+	ad->status_exit = status;
+}
+
+int	ft_isexport(const char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')
+			|| str[i] == '=' || str[i] == '_')
+			return (1);
+	}
+	return (0);
+}
+
+static void	show_export(t_ad *ad)
 {
 	t_ad	dup;
 	t_node	*tmp;
@@ -28,55 +73,20 @@ void	show_export(t_ad *ad)
 	free_env(&dup);
 }
 
-void	ft_export(t_ad *ad)
+static void	add_export(t_ad *ad, int i)
 {
-	int	i;
-
-	if (!ad->pa->args[1])
+	if (ft_strchr(ad->pa->args[i], '='))
 	{
-		ad->status_exit = SUCCESS;
-		show_export(ad);
+		if (ft_strlen(ft_strchr(ad->pa->args[i], '=')) > 1)
+			add_env(ad, i, NULL, NULL);
+		else
+			add_env(ad, i, NULL, ft_strdup(""));
 	}
 	else
-	{
-		//TODO CHECK IS ALPHA
-		i = 0;
-		while (ad->pa->args[++i])
-		{
-			if (ft_strchr(ad->pa->args[i], '='))
-			{
-				if (ft_strlen(ft_strchr(ad->pa->args[i], '=')) > 1)
-					add_env(ad, i, NULL, NULL);
-				else
-					add_env(ad, i, NULL, ft_strdup(""));
-			}
-			else
-				add_env(ad, i, NULL, ft_strdup("NULL"));
-		}
-	}
+		add_env(ad, i, NULL, ft_strdup("NULL"));
 }
 
-void	add_env(t_ad *ad, int arg, char *name, char *value)
-{
-	t_node	*tmp;
-	int		i;
-
-	if (!name)
-		name = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
-	if (!value)
-		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg], '=') + 1);
-	i = get_i_env(ad, name);
-	if (i == -1)
-		append_t_node(&ad->env, name, value);
-	else
-	{
-		tmp = get_env(ad, i);
-		tmp->value = value;
-	}
-	ad->status_exit = SUCCESS;
-}
-
-void	sort_export(t_ad *ad, int count)
+static void	sort_export(t_ad *ad, int count)
 {
 	t_node	*tmp;
 	int		i;

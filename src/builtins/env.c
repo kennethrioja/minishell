@@ -83,22 +83,22 @@ void	init(t_ad *ad, char	**env)
 	ad->status_exit = 0;
 }
 
-void	print_node(t_node	*node, int option)
+void	add_env(t_ad *ad, int arg, char *name, char *value)
 {
-	while (node)
+	t_node	*tmp;
+	int		i;
+
+	if (!name)
+		name = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
+	if (!value)
+		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg], '=') + 1);
+	i = get_i_env(ad, name);
+	if (i == -1)
+		append_t_node(&ad->env, name, value);
+	else
 	{
-		if (option == 1)
-		{
-			if (!ft_strcmp(node->value, "NULL"))
-				ft_printf("declare -x %s\n", node->key);
-			else
-				ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
-		}
-		else
-		{
-			if (ft_strcmp(node->value, "NULL"))
-				ft_printf("%s=%s\n", node->key, node->value);
-		}
-		node = node->next;
+		tmp = get_env(ad, i);
+		tmp->value = value;
 	}
+	ad->status_exit = SUCCESS;
 }

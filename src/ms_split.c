@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/20 09:53:12 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/20 14:31:08 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	populate_pa(t_ad *ad, const char *l)
 
 static int	parse_line(t_ad *ad, char *l)
 {
-	int		n;
+//	int		n;
 	char	*tmp;
 
 	ad->pa = pa_lstnew(NULL);
@@ -87,8 +87,9 @@ static int	parse_line(t_ad *ad, char *l)
 		}
 	}
 	free(tmp);
-	pa_lst_fst_or_lst(&ad->pa, 0);
+//	pa_lst_fst_or_lst(&ad->pa, 0);
 	check_dollar(ad);
+/*
 	while (ad->pa)
 	{
 		n = 0;
@@ -113,6 +114,7 @@ static int	parse_line(t_ad *ad, char *l)
 		n = 0;
 	}
 	ad->pa = ad->pa_head;
+	*/
 	return (0);
 }
 /*

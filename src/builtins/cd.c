@@ -24,7 +24,10 @@ void	ft_cd(t_ad *ad)
 	else if (chdir(ad->pa->args[1]))
 	{
 		ad->status_exit = GENERAL_ERR;
-		perror("cd");
+		if (access(ad->pa->args[1], X_OK))
+			custom_err(ad, 1, "No such file or directory");
+		else
+			custom_err(ad, 1, "Permission denied");
 		return ;
 	}
 	add_env(ad, 0, "PWD", ft_strdup(getcwd(buf, PATH_MAX)));

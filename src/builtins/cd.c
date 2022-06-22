@@ -20,12 +20,13 @@ void	ft_cd(t_ad *ad)
 	if (!ad->pa->args[1])
 	{
 		chdir(get_env(ad, get_i_env(ad, "HOME"))->value);
-		ad->status_exit = SUCCESS;
 	}
 	else if (chdir(ad->pa->args[1]))
 	{
 		ad->status_exit = GENERAL_ERR;
 		perror("cd");
+		return ;
 	}
 	add_env(ad, 0, "PWD", ft_strdup(getcwd(buf, PATH_MAX)));
+	ad->status_exit = SUCCESS;
 }

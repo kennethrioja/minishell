@@ -34,7 +34,7 @@ void	ft_unset(t_ad *ad)
 		else
 		{
 			status = GENERAL_ERR;
-			custom_err(ad, i, "not a valid identifier");
+			custom_err(ad, i, VALID_IDENTIFIER_MSG);
 		}
 	}
 	ad->status_exit = status;

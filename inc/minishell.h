@@ -54,9 +54,9 @@
 
 // macro
 
-//# ifndef PATH_MAX
-# define PATH_MAX 1024
-//# endif
+# ifndef PATH_MAX
+#  define PATH_MAX 1024
+# endif
 
 # define SUCCESS 0
 # define GENERAL_ERR 1
@@ -64,7 +64,10 @@
 # define NOT_FOUND_ERR 127
 # define EXIT_ERR 128
 # define SIGNAL_ERR 128
-# define EXPORT_ERR "export: not valid in this context: "
+
+# define PERMISSION_MSG "Permission denied"
+# define NOT_FOUND_MSG "No such file or directory"
+# define VALID_IDENTIFIER_MSG "Not a valid identifier"
 
 // typedef, struct & vars
 

@@ -19,12 +19,12 @@ void	ft_env(t_ad *ad)
 		if (access(ad->pa->args[1], X_OK))
 		{
 			ad->status_exit = NOT_FOUND_ERR;
-			custom_err(ad, 1, "No such file or directory");
+			custom_err(ad, 1, NOT_FOUND_MSG);
 		}
 		else
 		{
 			ad->status_exit = PERMISSION_ERR;
-			custom_err(ad, 1, "Permission denied");
+			custom_err(ad, 1, PERMISSION_MSG);
 		}
 	}
 	else

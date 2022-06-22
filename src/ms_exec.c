@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/21 22:30:57 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 10:57:34 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	pipex(char **argv, char **paths, char **params1, char **params2)
 */
 
 /*
+*/
 static int	count_pa(t_ad *ad)
 {
 	int	n;
@@ -80,30 +81,45 @@ static int	count_pa(t_ad *ad)
 	pa_lst_fst_or_lst(&ad->pa, 0);
 	return (n);
 }
-*/
+
+static void	my_close(int **fd, int n_pa)
+{
+	int	i;
+
+	i = -1;
+	while (++i < n_pa - 1)
+	{
+		close(fd[i][0]);
+		close(fd[i][1]);
+	}
+}
 
 int	ms_exec(t_ad *ad)
 {
 	get_path(ad);
 //	exec_redir(ad);
 
-/*
 	int **fd;
 	int	*pid;
 	int	n;
+	int	n_pa;
 
-	n = -1;
 	pa_lst_fst_or_lst(&ad->pa, 0);
-	ft_printf("pa=%d\n", count_pa(ad));
-	fd = malloc(sizeof(int *) * (count_pa(ad) - 1));
-	while (++n < count_pa(ad) - 1)
+	n_pa = count_pa(ad);
+	ft_printf("pa=%d\n", n_pa);
+	n = -1;
+	if (n_pa > 1)
 	{
-		ft_printf("malloc fd[%d]\n", n);
-		fd[n] = malloc(sizeof(int) * 2);
+		fd = malloc(sizeof(int *) * (n_pa - 1));
+		while (++n < n_pa - 1)
+		{
+			ft_printf("malloc fd[%d]\n", n);
+			fd[n] = malloc(sizeof(int) * 2);
+		}
 	}
-	pid = malloc(sizeof(int) * count_pa(ad));
-	
-	while (--n > 0)
+	pid = malloc(sizeof(int) * n_pa);
+	n = -1;
+	while (++n < n_pa - 1)
 	{
 		ft_printf("pipe(fd[%d])\n", n);
 		if (pipe(fd[n]) == -1)
@@ -112,6 +128,7 @@ int	ms_exec(t_ad *ad)
 	ft_printf("n=%d\n", n);
 
 
+	n = 0;
 	while (ad->pa)
 	{
 		pid[n] = fork();
@@ -119,28 +136,38 @@ int	ms_exec(t_ad *ad)
 			my_exit(ad, write(2, "Error: fork\n", 12));
 		if (pid[n] == 0)
 		{
-			if (n > 0)
+			if (ad->pa->prev || ad->pa->next)
 			{
-				ft_printf("STDIN on fd[%d][0]\n", n-1);
-				dup2(fd[n - 1][0], STDIN_FILENO);
+				if (ad->pa->prev)
+				{
+					ft_printf("cmd: %s, STDIN on fd[%d][0]\n", ad->pa->args[0], n-1);
+					dup2(fd[n - 1][0], STDIN_FILENO);
+				}
+				if (ad->pa->next)
+				{
+					ft_printf("cmd: %s, STDOUT on fd[%d][1]\n", ad->pa->args[0], n);
+					dup2(fd[n][1], STDOUT_FILENO);
+				}
+				my_close(fd, n_pa);
 			}
-			if (ad->pa->prev && ad->pa->next)
-			{
-				ft_printf("STDOUT on fd[%d][1]\n", n);
-				dup2(fd[n][1], STDOUT_FILENO);
-			}
-			close(fd[n][1]);
-			close(fd[n][0]);
 			exec_redir(ad);
 		}
 
 		
 		if (n > 0)
 		{
-			close(fd[n - 1][0]);
-			close(fd[n - 1][1]);
-			if (ad->pa->prev && ad->pa->next)
+			my_close(fd, n_pa);
+			if (n == 1)
+			{
+				ft_printf("%d waits pid[0]\n",n);
 				waitpid(pid[0], NULL, 0);
+			}
+			ft_printf("%d waits pid[%d]\n",n,n);
+			waitpid(pid[n], NULL, 0);
+		}
+		if (!ad->pa->prev && !ad->pa->next)
+		{
+			ft_printf("%d waits\n",n);
 			waitpid(pid[n], NULL, 0);
 		}
 
@@ -154,8 +181,6 @@ int	ms_exec(t_ad *ad)
 			break ;
 	}
 
-
-
 	pa_lst_fst_or_lst(&ad->pa, 0);
 	ft_printf("pa=%d\n", count_pa(ad));
 	n = -1;
@@ -163,11 +188,57 @@ int	ms_exec(t_ad *ad)
 	{
 		ft_printf("free(fd[%d])\n", n);
 		free(fd[n]);
+		if (n == count_pa(ad) - 2)
+			free(fd);
 	}
-	free(fd);
 	free(pid);
+
+	/*
+// TWO COMMANDS
+//————
+//0
+
+	pid[0] = fork();
+	if (pid[0] == -1)
+		my_exit(ad, write(2, "Error: fork\n", 12));
+	if (pid[0] == 0)
+	{
+		ft_printf("cmd: %s, STDOUT on fd[0][1]\n", ad->pa->args[0]);
+		dup2(fd[0][1], STDOUT_FILENO);
+		close(fd[0][1]);
+		close(fd[0][0]);
+		exec_redir(ad);
+	}
+
+//————
+//1
+
+	if (ad->pa->next)
+		ad->pa = ad->pa->next;
+
+	pid[1] = fork();
+	if (pid[1] == -1)
+		my_exit(ad, write(2, "Error: fork\n", 12));
+	if (pid[1] == 0)
+	{
+		ft_printf("cmd: %s, STDIN on fd[0][0]\n", ad->pa->args[0]);
+		dup2(fd[0][0], STDIN_FILENO);
+		close(fd[0][0]);
+		close(fd[0][1]);
+		exec_redir(ad);
+	}
+
+
+	close(fd[0][0]);
+	close(fd[0][1]);
+	ft_printf("waits pid[0]\n");
+	waitpid(pid[0], NULL, 0);
+	ft_printf("waits pid[1]\n");
+	waitpid(pid[1], NULL, 0);
 */
 
+/*
+// THREE COMMANDS
 	int	fd[3][2];
 	int	pid0;
 	int	pid1;
@@ -205,7 +276,7 @@ int	ms_exec(t_ad *ad)
 		dup2(fd[0][0], STDIN_FILENO);
 		if (ad->pa->next)
 		{
-			ft_printf("2 has next\n");
+			ft_printf("1 has next\n");
 			dup2(fd[1][1], STDOUT_FILENO);
 		}
 		close(fd[0][0]);
@@ -260,7 +331,7 @@ int	ms_exec(t_ad *ad)
 	close(fd[2][0]);
 	close(fd[2][1]);
 	waitpid(pid3, NULL, 0);
-
+*/
 
 	return (0);
 }

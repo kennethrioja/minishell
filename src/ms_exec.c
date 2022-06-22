@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 10:57:34 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 11:27:27 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ int	pipex(char **argv, char **paths, char **params1, char **params2)
 }
 */
 
-/*
-*/
 static int	count_pa(t_ad *ad)
 {
 	int	n;
@@ -82,6 +80,7 @@ static int	count_pa(t_ad *ad)
 	return (n);
 }
 
+/*
 static void	my_close(int **fd, int n_pa)
 {
 	int	i;
@@ -93,11 +92,11 @@ static void	my_close(int **fd, int n_pa)
 		close(fd[i][1]);
 	}
 }
+*/
 
 int	ms_exec(t_ad *ad)
 {
 	get_path(ad);
-//	exec_redir(ad);
 
 	int **fd;
 	int	*pid;
@@ -128,6 +127,7 @@ int	ms_exec(t_ad *ad)
 	ft_printf("n=%d\n", n);
 
 
+/*
 	n = 0;
 	while (ad->pa)
 	{
@@ -193,57 +193,13 @@ int	ms_exec(t_ad *ad)
 	}
 	free(pid);
 
-	/*
-// TWO COMMANDS
-//————
-//0
-
-	pid[0] = fork();
-	if (pid[0] == -1)
-		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid[0] == 0)
-	{
-		ft_printf("cmd: %s, STDOUT on fd[0][1]\n", ad->pa->args[0]);
-		dup2(fd[0][1], STDOUT_FILENO);
-		close(fd[0][1]);
-		close(fd[0][0]);
-		exec_redir(ad);
-	}
-
-//————
-//1
-
-	if (ad->pa->next)
-		ad->pa = ad->pa->next;
-
-	pid[1] = fork();
-	if (pid[1] == -1)
-		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid[1] == 0)
-	{
-		ft_printf("cmd: %s, STDIN on fd[0][0]\n", ad->pa->args[0]);
-		dup2(fd[0][0], STDIN_FILENO);
-		close(fd[0][0]);
-		close(fd[0][1]);
-		exec_redir(ad);
-	}
-
-
-	close(fd[0][0]);
-	close(fd[0][1]);
-	ft_printf("waits pid[0]\n");
-	waitpid(pid[0], NULL, 0);
-	ft_printf("waits pid[1]\n");
-	waitpid(pid[1], NULL, 0);
-*/
-
-/*
 // THREE COMMANDS
 	int	fd[3][2];
 	int	pid0;
 	int	pid1;
 	int	pid2;
 	int	pid3;
+*/
 
 	pa_lst_fst_or_lst(&ad->pa, 0);
 
@@ -251,15 +207,19 @@ int	ms_exec(t_ad *ad)
 		my_exit(ad, write(2, "Error: pipe\n", 12));
 
 //0	
-	pid0 = fork();
-	if (pid0 == -1)
+	pid[0] = fork();
+	if (pid[0] == -1)
 		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid0 == 0)
+	if (pid[0] == 0)
 	{
 		ft_printf("pid0.exe:%s\n",ad->pa->args[0]);
 		dup2(fd[0][1], STDOUT_FILENO);
 		close(fd[0][1]);
 		close(fd[0][0]);
+		close(fd[1][1]);
+		close(fd[1][0]);
+		close(fd[2][0]);
+		close(fd[2][1]);
 		exec_redir(ad);
 	}
 	
@@ -267,10 +227,10 @@ int	ms_exec(t_ad *ad)
 	if (ad->pa->next)
 		ad->pa = ad->pa->next;
 
-	pid1 = fork();
-	if (pid1 == -1)
+	pid[1] = fork();
+	if (pid[1] == -1)
 		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid1 == 0)
+	if (pid[1] == 0)
 	{
 		ft_printf("pid1.exe:%s\n",ad->pa->args[0]);
 		dup2(fd[0][0], STDIN_FILENO);
@@ -281,21 +241,26 @@ int	ms_exec(t_ad *ad)
 		}
 		close(fd[0][0]);
 		close(fd[0][1]);
+		close(fd[1][1]);
+		close(fd[1][0]);
+		close(fd[2][0]);
+		close(fd[2][1]);
 		exec_redir(ad);
 	}
 	close(fd[0][0]);
 	close(fd[0][1]);
-	waitpid(pid0, NULL, 0);
-	waitpid(pid1, NULL, 0);
+	close(fd[1][1]);
+	waitpid(pid[0], NULL, 0);
+	waitpid(pid[1], NULL, 0);
 
 //2
 	if (ad->pa->next)
 		ad->pa = ad->pa->next;
 
-	pid2 = fork();
-	if (pid2 == -1)
+	pid[2] = fork();
+	if (pid[2] == -1)
 		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid2 == 0)
+	if (pid[2] == 0)
 	{
 		ft_printf("pid2.exe:%s\n",ad->pa->args[0]);
 		dup2(fd[1][0], STDIN_FILENO);
@@ -306,31 +271,46 @@ int	ms_exec(t_ad *ad)
 		}
 		close(fd[1][0]);
 		close(fd[1][1]);
+		close(fd[1][1]);
+		close(fd[1][0]);
+		close(fd[2][0]);
+		close(fd[2][1]);
 		exec_redir(ad);
 	}
+	close(fd[0][0]);
+	close(fd[0][1]);
 	close(fd[1][0]);
 	close(fd[1][1]);
-	waitpid(pid2, NULL, 0);
+	close(fd[2][1]);
+	waitpid(pid[2], NULL, 0);
 
 //3
 	if (ad->pa->next)
 		ad->pa = ad->pa->next;
 	
-	pid3 = fork();
-	if (pid3 == -1)
+	pid[3] = fork();
+	if (pid[3] == -1)
 		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid3 == 0)
+	if (pid[3] == 0)
 	{
 		ft_printf("pid3.exe:%s\n",ad->pa->args[0]);
 		dup2(fd[2][0], STDIN_FILENO);
+		close(fd[1][0]);
+		close(fd[1][1]);
+		close(fd[1][1]);
+		close(fd[1][0]);
 		close(fd[2][0]);
 		close(fd[2][1]);
 		exec_redir(ad);
 	}
-	
+	close(fd[0][0]);
+	close(fd[0][1]);
+	close(fd[1][0]);
+	close(fd[1][1]);
 	close(fd[2][0]);
 	close(fd[2][1]);
-	waitpid(pid3, NULL, 0);
+	waitpid(pid[3], NULL, 0);
+/*
 */
 
 	return (0);

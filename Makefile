@@ -12,7 +12,7 @@ SRCS		=	main.c						\
 				ms_split_redir_utils.c		\
 				ms_split_pa_utils.c			\
 				path.c						\
-        ms_pipex.c					\
+				ms_pipex.c					\
 				dollar.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\
@@ -41,7 +41,7 @@ OBJ_DIR		= 	obj/
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o) $(SRCS_GNL:.c=.o))
 
 CC			=	gcc
-LEAKS		=	#-fsanitize=address #-fsanitize=leak
+LEAKS		=	-fsanitize=address #-fsanitize=leak
 CFLAGS		=	-g -Wall -Wextra -Werror $(LEAKS)
 MAKE		=	make -C
 RM			=	rm -rf

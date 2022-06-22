@@ -88,6 +88,8 @@ static int	parse_line(t_ad *ad, char *l)
 	}
 	free(tmp);
 	pa_lst_fst_or_lst(&ad->pa, 0);
+	if (!ad->pa->cmd)
+		return (0);
 	check_dollar(ad);
 	while (ad->pa)
 	{

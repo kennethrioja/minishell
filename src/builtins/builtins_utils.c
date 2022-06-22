@@ -26,13 +26,13 @@ void	free_env(t_ad *ad)
 	free(ad->env);
 }
 
-int	count_t_node(t_ad *ad)
+int	count_t_node(t_node *node)
 {
-	int		i;
 	t_node	*tmp;
+	int		i;
 
+	tmp = node;
 	i = 0;
-	tmp = ad->env;
 	while (tmp)
 	{
 		i++;

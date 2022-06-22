@@ -69,7 +69,7 @@ static void	show_export(t_ad *ad)
 		add_env(&dup, 1, ft_strdup(tmp->key), ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}
-	sort_export(&dup, count_t_node(&dup));
+	sort_export(&dup, count_t_node(dup.env));
 	free_env(&dup);
 }
 

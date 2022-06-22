@@ -56,7 +56,8 @@ void	check_line(t_ad *ad)
 		exit(EXIT_SUCCESS);
 	}
 	else
-		check_path(ad);
-//		custom_err(ad, 0, "Command not found");
-
+	{
+		if (check_path(ad) == 1)
+			custom_err(ad, 0, "Command not found");
+	}
 }

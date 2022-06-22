@@ -157,6 +157,7 @@ void	free_cmd(t_ad *ad);
 
 //* path.c
 int		check_path(t_ad *ad);
+void	abs_path(t_ad *ad);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);
@@ -192,7 +193,7 @@ void	delete_t_node(t_node **head_ref, t_node *del);
 
 // ** builtins/cd.c
 void	free_env(t_ad *ad);
-int		count_t_node(t_ad *ad);
+int		count_t_node(t_node *node);
 void	append_t_node(t_node **head_ref, char *key, char *value);
 void	print_node(t_node	*node, int option);
 

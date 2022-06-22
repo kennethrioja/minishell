@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:58:03 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 17:58:20 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 18:43:09 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	my_close(int **fd, int n_pa, int n, int flag)
 	int	i;
 
 	i = 0;
-
 	while (i <= n && flag == 0)
 	{
 		if (i != n)

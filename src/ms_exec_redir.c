@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 19:14:04 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 17:51:02 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 18:01:45 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,19 @@ static void	redir_outfile(t_ad *ad)
 
 void	exec_redir(t_ad *ad)
 {
-/*
-	int	pid;
-
-	pid = fork();
-	if (pid == -1)
-		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pid == 0)
+	if (ad->pa->redir)
 	{
-	*/
-		if (ad->pa->redir)
+		redir_lst_fst_or_lst(&ad->pa->redir, 0);
+		while (ad->pa->redir)
 		{
-			redir_lst_fst_or_lst(&ad->pa->redir, 0);
-			while (ad->pa->redir)
-			{
-				redir_outfile(ad);
-				redir_infile(ad);
-				redir_heredoc(ad);
-				if (ad->pa->redir->next)
-					ad->pa->redir = ad->pa->redir->next;
-				else
-					break ;
-			}
+			redir_outfile(ad);
+			redir_infile(ad);
+			redir_heredoc(ad);
+			if (ad->pa->redir->next)
+				ad->pa->redir = ad->pa->redir->next;
+			else
+				break ;
 		}
-		execve(ad->pa->path, ad->pa->args, NULL);
-	/*}
-	waitpid(pid, NULL, 0);
-*/
+	}
+	execve(ad->pa->path, ad->pa->args, NULL);
 }

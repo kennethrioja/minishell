@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 17:59:33 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 18:24:15 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,13 @@ typedef struct s_node
 	struct s_node	*next;
 	struct s_node	*prev;
 }					t_node;
+
+typedef struct s_pipe
+{
+	int				**fd;
+	int				*pid;
+	int				n_pa;
+}					t_pipe;
 
 typedef struct s_ad
 {

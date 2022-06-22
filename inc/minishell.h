@@ -66,10 +66,13 @@
 # define SIGNAL_ERR 128
 
 # define PERMISSION_MSG "Permission denied"
-# define NOT_FOUND_MSG "No such file or directory"
+# define NOT_FOUND_DIR_MSG "No such file or directory"
 # define VALID_IDENTIFIER_MSG "Not a valid identifier"
+# define NOT_FOUND_CMD_MSG "Command not found"
 
 // typedef, struct & vars
+
+int	g_status_exit;
 
 typedef struct s_redir
 {
@@ -100,7 +103,6 @@ typedef struct s_node
 typedef struct s_ad
 {
 	char			*line;
-	int				status_exit;
 	t_node			*env;
 	t_redir			*redir;
 	t_pa			*pa;
@@ -168,7 +170,7 @@ int		ms_pipex(t_ad *ad);
 void	ft_echo(t_ad *ad);
 
 // ** builtins/pwd.c
-void	ft_pwd(t_ad *ad);
+void	ft_pwd(void);
 
 // ** builtins/cd.c
 void	ft_cd(t_ad *ad);

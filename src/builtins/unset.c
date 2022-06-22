@@ -37,7 +37,7 @@ void	ft_unset(t_ad *ad)
 			custom_err(ad, i, VALID_IDENTIFIER_MSG);
 		}
 	}
-	ad->status_exit = status;
+	g_status_exit = status;
 }
 
 void	delete_t_node(t_node **head_ref, t_node *del)

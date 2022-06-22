@@ -33,7 +33,7 @@ void	check_dollar(t_ad *ad)
 			}
 			else if (!ft_strcmp(ad->pa->args[i], "$?"))
 			{
-				ad->pa->args[i] = ft_strdup(ft_itoa(ad->status_exit));
+				ad->pa->args[i] = ft_strdup(ft_itoa(g_status_exit));
 			}
 		}
 		ad->pa = ad->pa->next;

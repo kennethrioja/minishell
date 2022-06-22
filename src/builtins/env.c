@@ -18,18 +18,18 @@ void	ft_env(t_ad *ad)
 	{
 		if (access(ad->pa->args[1], X_OK))
 		{
-			ad->status_exit = NOT_FOUND_ERR;
-			custom_err(ad, 1, NOT_FOUND_MSG);
+			g_status_exit = NOT_FOUND_ERR;
+			custom_err(ad, 1, NOT_FOUND_DIR_MSG);
 		}
 		else
 		{
-			ad->status_exit = PERMISSION_ERR;
+			g_status_exit = PERMISSION_ERR;
 			custom_err(ad, 1, PERMISSION_MSG);
 		}
 	}
 	else
 	{
-		ad->status_exit = SUCCESS;
+		g_status_exit = SUCCESS;
 		print_node(ad->env, 'c');
 	}
 }
@@ -80,7 +80,7 @@ void	init(t_ad *ad, char	**env)
 	}
 	ad->redir = NULL;
 	ad->pa = NULL;
-	ad->status_exit = 0;
+	g_status_exit = 0;
 }
 
 void	add_env(t_ad *ad, int arg, char *name, char *value)
@@ -102,5 +102,5 @@ void	add_env(t_ad *ad, int arg, char *name, char *value)
 		tmp = get_env(ad, i);
 		tmp->value = value;
 	}
-	ad->status_exit = SUCCESS;
+	g_status_exit = SUCCESS;
 }

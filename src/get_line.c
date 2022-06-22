@@ -42,7 +42,7 @@ void	check_line(t_ad *ad)
 	else if (!ft_strcmp("cd", ad->pa->cmd))
 		ft_cd(ad);
 	else if (!ft_strcmp("pwd", ad->pa->cmd))
-		ft_pwd(ad);
+		ft_pwd();
 	else if (!ft_strcmp("env", ad->pa->cmd))
 		ft_env(ad);
 	else if (!ft_strcmp("export", ad->pa->cmd))

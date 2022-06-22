@@ -40,7 +40,7 @@ void	ft_export(t_ad *ad)
 			}
 		}
 	}
-	ad->status_exit = status;
+	g_status_exit = status;
 }
 
 int	ft_isexport(const char *str)

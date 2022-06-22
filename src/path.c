@@ -101,11 +101,11 @@ int	check_path(t_ad *ad)
 			free(path[size]);
 		free(cmd);
 		free(path);
-		custom_err(ad, 0, "Command not found");
-		ad->status_exit = NOT_FOUND_ERR;
+		custom_err(ad, 0, NOT_FOUND_CMD_MSG);
+		g_status_exit = NOT_FOUND_ERR;
 		exit(EXIT_FAILURE);
 	}
-	waitpid(child_pid, &ad->status_exit, 0);
-	ad->status_exit = WIFEXITED(ad->status_exit);
+	waitpid(child_pid, &g_status_exit, 0);
+	g_status_exit = WIFEXITED(g_status_exit);
 	return (1);
 }

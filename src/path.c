@@ -106,5 +106,6 @@ int	check_path(t_ad *ad)
 		exit(EXIT_FAILURE);
 	}
 	waitpid(child_pid, &ad->status_exit, 0);
+	ad->status_exit = WIFEXITED(ad->status_exit);
 	return (1);
 }

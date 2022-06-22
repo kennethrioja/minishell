@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 18:42:40 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 19:13:14 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,7 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 	pa_lst_fst_or_lst(&ad->pa, 0);
 }
 
-static void	wait_the_pid(t_ad *ad, t_pipe *pipe, int n)
-{
-	if (!ad->pa->prev && !ad->pa->next)
-		waitpid(pipe->pid[n], NULL, 0);
-	if (n >= 1)
-	{
-		if (ad->pa->next)
-			my_close(pipe->fd, pipe->n_pa, n, 0);
-		else
-			my_close(pipe->fd, pipe->n_pa, n, 1);
-		if (n == 1)
-			waitpid(pipe->pid[0], NULL, 0);
-		waitpid(pipe->pid[n], NULL, 0);
-	}
-}
-
-static void	dup_and_exec(t_ad *ad, t_pipe *pipe, int n)
+static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	pipe->pid[n] = fork();
 	if (pipe->pid[n] == -1)
@@ -58,6 +42,13 @@ static void	dup_and_exec(t_ad *ad, t_pipe *pipe, int n)
 		if (ad->pa->prev || ad->pa->next)
 			my_close(pipe->fd, pipe->n_pa, n, 1);
 		exec_redir(ad);
+	}
+	if (n >= 1)
+	{
+		if (ad->pa->next)
+			my_close(pipe->fd, pipe->n_pa, n, 0);
+		else
+			my_close(pipe->fd, pipe->n_pa, n, 1);
 	}
 }
 
@@ -92,8 +83,7 @@ int	ms_exec(t_ad *ad)
 	n = 0;
 	while (ad->pa)
 	{
-		dup_and_exec(ad, &pipe, n);
-		wait_the_pid(ad, &pipe, n);
+		dup_exec_close(ad, &pipe, n);
 		if (ad->pa->next)
 		{
 			++n;
@@ -102,6 +92,9 @@ int	ms_exec(t_ad *ad)
 		else
 			break ;
 	}
+	n = -1;
+	while (++n < pipe.n_pa)
+		waitpid(pipe.pid[n], NULL, 0);
 	free_pipe(ad, &pipe);
 	return (0);
 }

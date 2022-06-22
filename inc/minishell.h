@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/21 19:15:27 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 17:59:33 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,10 @@ void	get_path(t_ad *ad);
 
 //* ms_exec_redir.c
 void	exec_redir(t_ad *ad);
+
+//* ms_exec_utils.c
+int		count_pa(t_ad *ad);
+void	my_close(int **fd, int n_pa, int n, int flag);
 
 //* builtins
 

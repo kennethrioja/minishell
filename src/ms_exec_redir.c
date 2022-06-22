@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 19:14:04 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 14:26:41 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 17:51:02 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	exec_redir(t_ad *ad)
 					break ;
 			}
 		}
-		ft_printf("exe:%s\n",ad->pa->args[0]);
 		execve(ad->pa->path, ad->pa->args, NULL);
 	/*}
 	waitpid(pid, NULL, 0);

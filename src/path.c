@@ -81,10 +81,13 @@ int	check_path(t_ad *ad)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-//		if (access(ad->pa->cmd, X_OK) == 0)
-//		{
-//			execve(".", ad->pa->args, get_env2d(ad->env));
-//		}
+		if (access(ad->pa->cmd, X_OK) == 0)
+		{
+			execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
+			exit(0);
+		}
+		if (get_i_env(ad, "PATH") == -1)
+			exit (EXIT_FAILURE);
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
 		size = ft_arrlen(path);
 		while (size-- > 0)
@@ -99,9 +102,9 @@ int	check_path(t_ad *ad)
 		free(cmd);
 		free(path);
 		custom_err(ad, 0, "Command not found");
-		ad->status_exit = 127;
+		ad->status_exit = NOT_FOUND_ERR;
 		exit(EXIT_FAILURE);
 	}
-	waitpid(child_pid, NULL, 0);
+	waitpid(child_pid, &ad->status_exit, 0);
 	return (1);
 }

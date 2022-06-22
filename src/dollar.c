@@ -16,6 +16,8 @@ void	check_dollar(t_ad *ad)
 {
 	int	i;
 
+	if (!ad->pa)
+		return ;
 	while (ad->pa)
 	{
 		i = -1;

@@ -77,45 +77,6 @@ void	exec_cmd(t_ad *ad, char *cmd)
 	}
 }
 
-//int	check_path(t_ad *ad)
-//{
-//	char	**path;
-//	char	*cmd;
-//	int		size;
-//	pid_t	child_pid;
-//
-//	child_pid = fork();
-//	if (child_pid == 0)
-//	{
-//		if (access(ad->pa->cmd, X_OK) == 0)
-//		{
-//			execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
-//			exit(0);
-//		}
-//		if (get_i_env(ad, "PATH") == -1)
-//			exit (EXIT_FAILURE);
-//		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
-//		size = ft_arrlen(path);
-//		while (size-- > 0)
-//		{
-//			cmd = create_cmd(path, ad->pa->cmd);
-//			if (access(cmd, X_OK) == 0)
-//				execve(cmd, ad->pa->args, get_env2d(ad->env));
-//		}
-//		size = ft_arrlen(path);
-//		while (size-- > 0)
-//			free(path[size]);
-//		free(cmd);
-//		free(path);
-//		custom_err(ad, 0, "Command not found");
-//		g_status_exit = NOT_FOUND_ERR;
-//		exit(EXIT_FAILURE);
-//	}
-//	waitpid(child_pid, &g_status_exit, 0);
-//	g_status_exit = WIFEXITED(g_status_exit);
-//	return (1);
-//}
-
 int	check_path(t_ad *ad)
 {
 	char	**path;

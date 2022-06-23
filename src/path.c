@@ -56,6 +56,7 @@ char	*create_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
+// TODO CHECK DISPLAY
 void	exec_cmd(t_ad *ad, char *cmd)
 {
 	pid_t	child_pid;
@@ -89,7 +90,7 @@ int	check_path(t_ad *ad)
 		cmd = create_cmd(path, ad->pa->cmd);
 		if (!cmd)
 			return (1);
-		exec_cmd(ad, ad->pa->cmd);
+		exec_cmd(ad, cmd);
 	}
 	return (0);
 }

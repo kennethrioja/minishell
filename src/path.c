@@ -31,15 +31,6 @@ char	**get_env2d(t_node *env)
 	return (env2d);
 }
 
-//TODO clean
-void	get_path_bin(t_ad *ad, char ***path, int size)
-{
-	char	*dir;
-
-	dir = ft_strjoin((*path)[size], "/");
-	**path = ft_strjoin(dir, ad->pa->args[0]);
-}
-
 char	*create_cmd(char **path, char *cmd)
 {
 	char	*ncmd;
@@ -65,16 +56,16 @@ char	*create_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
-void	abs_path(t_ad *ad)
+void	exec_cmd(t_ad *ad, char *cmd)
 {
 	pid_t	child_pid;
 
-	if (access(ad->pa->cmd, X_OK) == 0)
+	if (access(cmd, X_OK) == 0)
 	{
 		child_pid = fork();
 		if (child_pid == 0)
 		{
-			execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
+			execve(cmd, ad->pa->args, get_env2d(ad->env));
 			waitpid(child_pid, &g_status_exit, 0);
 			g_status_exit = WIFEXITED(g_status_exit);
 		}
@@ -85,13 +76,10 @@ int	check_path(t_ad *ad)
 {
 	char	**path;
 	char	*cmd;
-	pid_t	child_pid;
-
 
 	if (access(ad->pa->cmd, X_OK) == 0)
 	{
-		abs_path(ad);
-		return (0);
+		exec_cmd(ad, ad->pa->cmd);
 	}
 	else if (get_i_env(ad, "PATH") == -1)
 		return (1);
@@ -101,14 +89,7 @@ int	check_path(t_ad *ad)
 		cmd = create_cmd(path, ad->pa->cmd);
 		if (!cmd)
 			return (1);
-		child_pid = fork();
-		if (child_pid == 0)
-		{
-			execve(cmd, ad->pa->args, get_env2d(ad->env));
-			waitpid(child_pid, &g_status_exit, 0);
-			g_status_exit = WIFEXITED(g_status_exit);
-		}
-		return (0);
+		exec_cmd(ad, ad->pa->cmd);
 	}
-	return (1);
+	return (0);
 }

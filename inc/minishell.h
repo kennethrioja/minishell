@@ -157,7 +157,7 @@ void	free_cmd(t_ad *ad);
 
 //* path.c
 int		check_path(t_ad *ad);
-void	abs_path(t_ad *ad);
+void	exec_cmd(t_ad *ad, char *cmd);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);

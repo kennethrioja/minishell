@@ -42,7 +42,7 @@ char	*create_cmd(char **path, char *cmd)
 	while (arr_i-- > 0)
 	{
 		i = ft_strlen(path[arr_i]);
-		if (path[arr_i][i - 1] != '/')
+		if (path[arr_i][i - 1] != '/' && cmd[0] != '/')
 		{
 			npath = ft_strjoin(path[arr_i], "/");
 			ncmd = ft_strjoin(npath, cmd);
@@ -69,6 +69,7 @@ void	exec_cmd(t_ad *ad, char *cmd)
 			execve(cmd, ad->pa->args, get_env2d(ad->env));
 			waitpid(child_pid, &g_status_exit, 0);
 			g_status_exit = WIFEXITED(g_status_exit);
+			exit(EXIT_SUCCESS);
 		}
 	}
 }

@@ -68,7 +68,11 @@
 # define PERMISSION_MSG "Permission denied"
 # define NOT_FOUND_DIR_MSG "No such file or directory"
 # define VALID_IDENTIFIER_MSG "Not a valid identifier"
-# define NOT_FOUND_CMD_MSG "Command not found"
+# define NOT_FOUND_CMD_MSG "command not found"
+# define EXIT_MSG "numeric argument required"
+# define ARGS_MSG "too many arguments"
+
+# define SHELL_NAME "adsh"
 
 // typedef, struct & vars
 
@@ -190,6 +194,9 @@ int		ft_isexport(const char *str);
 // ** builtins/unset.c
 void	ft_unset(t_ad *ad);
 void	delete_t_node(t_node **head_ref, t_node *del);
+
+// ** builtins/exit.c
+void	ft_exit(t_ad *ad);
 
 // ** builtins/cd.c
 void	free_env(t_ad *ad);

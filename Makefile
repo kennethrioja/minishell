@@ -20,6 +20,7 @@ SRCS		=	main.c						\
 				$(B_INS_DIR)env.c			\
 				$(B_INS_DIR)export.c		\
 				$(B_INS_DIR)unset.c			\
+				$(B_INS_DIR)exit.c			\
 				$(B_INS_DIR)builtins_utils.c\
 
 FT_DIR		=	ft/

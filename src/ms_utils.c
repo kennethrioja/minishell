@@ -59,9 +59,15 @@ char	*ft_strtolower(char *str)
 	return (str);
 }
 
+//TODO CHECK ALL ERROR MSGS
 void	custom_err(t_ad *ad, int arg, char *str)
 {
-	write(2, ad->pa->cmd, ft_strlen(ad->pa->cmd));
+	write(2, SHELL_NAME, ft_strlen(SHELL_NAME));
+	if (arg != 0)
+	{
+		write(2, ": ", 2);
+		write(2, ad->pa->cmd, ft_strlen(ad->pa->cmd));
+	}
 	write(2, ": ", 2);
 	write(2, ad->pa->args[arg], ft_strlen(ad->pa->args[arg]));
 	write(2, ": ", 2);

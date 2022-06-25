@@ -21,7 +21,7 @@ int	get_line(t_ad *ad)
 	tcgetattr(STDIN_FILENO, &attributes);
 	attributes.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
-	ad->line = readline("adsh> ");
+	ad->line = readline(ft_strjoin(SHELL_NAME, "> "));
 	if (ad->line)
 		add_history(ad->line);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);
@@ -50,15 +50,13 @@ void	check_line(t_ad *ad)
 	else if (!ft_strcmp("unset", ad->pa->cmd))
 		ft_unset(ad);
 	else if (!ft_strcmp("exit", ad->pa->cmd))
-	{
-		ft_printf("exit\n");
-		free_all(ad);
-		exit(EXIT_SUCCESS);
-	}
+		ft_exit(ad);
+	else
+		if (check_path(ad) == 1)
+			custom_err(ad, 0, NOT_FOUND_CMD_MSG);
 // TO DEEGOH : is it necessary? if checkline after pipex, it rechecks
 // bis : we need to implement this in the execution part  
 //	else
 //		check_path(ad);
 //		custom_err(ad, 0, "Command not found");
-
 }

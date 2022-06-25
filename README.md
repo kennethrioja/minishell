@@ -19,6 +19,8 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [x] Implémenter les **pipes** (caractère |). La sortie de chaque commande de la pipeline est connectée à l’entrée de la commande suivante grâce à un pipe. (cat | cat | ls marche aussi ;))
 - [x] Gérer les **variables d’environnement** (un $ suivi d’une séquence de caractères) qui doivent être substituées par leur contenu.
 - [ ] *Gérer $? qui doit être substitué par le statut de sortie de la dernière pipeline exécutée au premier plan.
+ https://tldp.org/LDP/abs/html/exitcodes.html#EXITCODESREF
+ https://tldp.org/LDP/abs/html/refcards.html#AEN22006
 - [x] Gérer ctrl-C, ctrl-D et ctrl-\ qui doivent fonctionner comme dans bash.
 - En mode interactif :
     - [x] ctrl-C affiche un nouveau prompt sur une nouvelle ligne.

@@ -12,99 +12,81 @@
 
 #include "minishell.h"
 
+static void	sort_export(t_ad *ad, int count);
+static void	show_export(t_ad *ad);
+static void	add_export(t_ad *ad, int i);
+
 void	ft_export(t_ad *ad)
 {
-	t_ad	dup;
-	t_node	*tmp;
-	int		i;
+	int	i;
+	int	checker;
+	int	status;
 
+	status = SUCCESS;
 	if (!ad->pa->args[1])
-	{
-		dup.env = NULL;
-		tmp = ad->env;
-		while (tmp)
-		{
-			add_env(&dup, 1, ft_strdup(tmp->key), ft_strdup(tmp->value));
-			tmp = tmp->next;
-		}
-		sort_export(&dup, count_export(&dup));
-		free_env(&dup);
-	}
+		show_export(ad);
 	else
 	{
 		i = 0;
 		while (ad->pa->args[++i])
 		{
-			if (ft_strchr(ad->pa->args[i], '='))
-			{
-				if (ft_strlen(ft_strchr(ad->pa->args[i], '=')) > 1)
-					add_env(ad, i, NULL, NULL);
-				else
-					add_env(ad, i, NULL, ft_strdup(""));
-			}
+			checker = ft_isexport(ad->pa->args[i]);
+			if (checker)
+				add_export(ad, i);
 			else
-				add_env(ad, i, NULL, ft_strdup("NULL"));
+			{
+				status = GENERAL_ERR;
+				custom_err(ad, i, VALID_IDENTIFIER_MSG);
+			}
 		}
 	}
+	g_status_exit = status;
 }
 
-void	add_env(t_ad *ad, int arg, char *key, char *value)
+int	ft_isexport(const char *str)
 {
-	t_node	*tmp;
-	int		i;
+	int	i;
 
-	if (!key)
-		key = ft_substr(ad->pa->args[arg], 0, ft_strlen_c(ad->pa->args[arg], '='));
-	if (!value)
-		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg], '=') + 1);
-	i = get_i_env(ad, key);
-	if (i == -1)
-		append_env(&ad->env, key, value);
-	else
+	i = -1;
+	while (str[++i])
 	{
-		tmp = get_env(ad, i);
-		tmp->value = value;
+		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')
+			|| str[i] == '=' || str[i] == '_')
+			return (1);
 	}
+	return (0);
 }
 
-void	append_env(t_node **head_ref, char *key, char *value)
+static void	show_export(t_ad *ad)
 {
-	t_node	*new_node;
-	t_node	*last;
-
-	new_node = (t_node *)malloc(sizeof(t_node));
-	new_node->key = key;
-	new_node->value = value;
-	new_node->next = NULL;
-	if (*head_ref == NULL)
-	{
-		new_node->prev = NULL;
-		*head_ref = new_node;
-		return ;
-	}
-	last = *head_ref;
-	while (last->next != NULL)
-		last = last->next;
-	last->next = new_node;
-	new_node->prev = last;
-}
-
-int	count_export(t_ad *ad)
-{
-	int		i;
+	t_ad	dup;
 	t_node	*tmp;
 
-	i = 0;
+	dup.env = NULL;
 	tmp = ad->env;
 	while (tmp)
 	{
-		i++;
+		add_env(&dup, 1, ft_strdup(tmp->key), ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}
-	return (i);
+	sort_export(&dup, count_t_node(dup.env));
+	free_env(&dup);
 }
 
-void	sort_export(t_ad *ad, int count)
+static void	add_export(t_ad *ad, int i)
+{
+	if (ft_strchr(ad->pa->args[i], '='))
+	{
+		if (ft_strlen(ft_strchr(ad->pa->args[i], '=')) > 1)
+			add_env(ad, i, NULL, NULL);
+		else
+			add_env(ad, i, NULL, ft_strdup(""));
+	}
+	else
+		add_env(ad, i, NULL, ft_strdup("NULL"));
+}
+
+static void	sort_export(t_ad *ad, int count)
 {
 	t_node	*tmp;
 	int		i;

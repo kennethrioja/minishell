@@ -58,7 +58,25 @@
 #  define PATH_MAX 1024
 # endif
 
+# define SUCCESS 0
+# define GENERAL_ERR 1
+# define PERMISSION_ERR 126
+# define NOT_FOUND_ERR 127
+# define EXIT_ERR 255
+# define SIGNAL_ERR 128
+
+# define PERMISSION_MSG "Permission denied"
+# define NOT_FOUND_DIR_MSG "No such file or directory"
+# define VALID_IDENTIFIER_MSG "Not a valid identifier"
+# define NOT_FOUND_CMD_MSG "command not found"
+# define EXIT_MSG "numeric argument required"
+# define ARGS_MSG "too many arguments"
+
+# define SHELL_NAME "adsh"
+
 // typedef, struct & vars
+
+int	g_status_exit;
 
 typedef struct s_redir
 {
@@ -150,6 +168,7 @@ void	free_cmd(t_ad *ad);
 
 //* path.c
 int		check_path(t_ad *ad);
+void	exec_cmd(t_ad *ad, char *cmd);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);
@@ -180,23 +199,26 @@ void	ft_cd(t_ad *ad);
 
 // ** builtins/env.c
 void	ft_env(t_ad *ad);
-void	init(t_ad *ad, char	**env);
 int		get_i_env(t_ad *ad, char *key);
 t_node	*get_env(t_ad *ad, int i);
-void	print_node(t_node	*node, int option);
+void	init(t_ad *ad, char	**env);
+void	add_env(t_ad *ad, int arg, char *name, char *value);
 
 // ** builtins/export.c
 void	ft_export(t_ad *ad);
-void	add_env(t_ad *ad, int arg, char *key, char *value);
-void	append_env(t_node **head_ref, char *key, char *value);
-int		count_export(t_ad *ad);
-void	sort_export(t_ad *ad, int count);
+int		ft_isexport(const char *str);
 
 // ** builtins/unset.c
 void	ft_unset(t_ad *ad);
-void	delete_env(t_node **head_ref, t_node *del);
+void	delete_t_node(t_node **head_ref, t_node *del);
+
+// ** builtins/exit.c
+void	ft_exit(t_ad *ad);
 
 // ** builtins/cd.c
 void	free_env(t_ad *ad);
+int		count_t_node(t_node *node);
+void	append_t_node(t_node **head_ref, char *key, char *value);
+void	print_node(t_node	*node, int option);
 
 #endif

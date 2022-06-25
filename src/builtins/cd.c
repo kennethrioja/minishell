@@ -18,8 +18,18 @@ void	ft_cd(t_ad *ad)
 
 	add_env(ad, 0, "OLDPWD", ft_strdup(getcwd(buf, PATH_MAX)));
 	if (!ad->pa->args[1])
+	{
 		chdir(get_env(ad, get_i_env(ad, "HOME"))->value);
+	}
 	else if (chdir(ad->pa->args[1]))
-		perror("cd");
+	{
+		g_status_exit = GENERAL_ERR;
+		if (access(ad->pa->args[1], F_OK))
+			custom_err(ad, 1, NOT_FOUND_DIR_MSG);
+		else
+			custom_err(ad, 1, PERMISSION_MSG);
+		return ;
+	}
 	add_env(ad, 0, "PWD", ft_strdup(getcwd(buf, PATH_MAX)));
+	g_status_exit = SUCCESS;
 }

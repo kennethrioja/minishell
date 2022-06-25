@@ -12,21 +12,6 @@
 
 #include "minishell.h"
 
-int	count_node(t_node *node)
-{
-	t_node	*tmp;
-	int		i;
-
-	tmp = node;
-	i = 0;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
-}
-
 char	**get_env2d(t_node *env)
 {
 	char	**env2d;
@@ -34,8 +19,8 @@ char	**get_env2d(t_node *env)
 	int		i;
 	char	*tmp;
 
-	size = count_node(env);
-	env2d = ft_calloc(sizeof(char **), size);
+	size = count_t_node(env);
+	env2d = ft_calloc(sizeof(char **), size + 1);
 	i = -1;
 	while (++i < size)
 	{
@@ -46,61 +31,70 @@ char	**get_env2d(t_node *env)
 	return (env2d);
 }
 
-void	get_path_bin(t_ad *ad, char ***path, int size)
-{
-	char	*dir;
-
-	dir = ft_strjoin((*path)[size], "/");
-	**path = ft_strjoin(dir, ad->pa->args[0]);
-}
-
-char	*create_cmd(char *path, char *cmd)
+char	*create_cmd(char **path, char *cmd)
 {
 	char	*ncmd;
 	char	*npath;
 	int		i;
+	int		arr_i;
 
-	i = ft_strlen(path);
-	if (path[i - 1] != '/')
+	arr_i = ft_arrlen(path);
+	while (arr_i-- > 0)
 	{
-		npath = ft_strjoin(path, "/");
-		ncmd = ft_strjoin(npath, cmd);
-		free(npath);
-		return (ncmd);
+		i = ft_strlen(path[arr_i]);
+		if (path[arr_i][i - 1] != '/' && cmd[0] != '/')
+		{
+			npath = ft_strjoin(path[arr_i], "/");
+			ncmd = ft_strjoin(npath, cmd);
+			free(npath);
+			if (access(ncmd, X_OK) == 0)
+				return (ncmd);
+		}
+		if (access(cmd, X_OK) == 0)
+			return (ncmd);
 	}
-	return (cmd);
+	return (NULL);
+}
+
+// TODO CHECK DISPLAY
+void	exec_cmd(t_ad *ad, char *cmd)
+{
+	pid_t	child_pid;
+
+	if (access(cmd, X_OK) == 0)
+	{
+		child_pid = fork();
+		if (child_pid == 0)
+		{
+			execve(cmd, ad->pa->args, get_env2d(ad->env));
+		}
+		else
+		{
+			waitpid(child_pid, &g_status_exit, 0);
+			if (WIFSIGNALED(g_status_exit))
+				g_status_exit = SIGNAL_ERR + g_status_exit;
+		}
+	}
 }
 
 int	check_path(t_ad *ad)
 {
 	char	**path;
 	char	*cmd;
-	int		size;
-	pid_t	child_pid;
 
-	child_pid = fork();
-	if (child_pid == 0)
+	if (access(ad->pa->cmd, X_OK) == 0)
 	{
-//		if (access(ad->pa->cmd, X_OK) == 0)
-//		{
-//			execve(".", ad->pa->args, get_env2d(ad->env));
-//		}
-		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
-		size = ft_arrlen(path);
-		while (size-- > 0)
-		{
-			cmd = create_cmd(path[size], ad->pa->cmd);
-			if (access(cmd, X_OK) == 0)
-				execve(cmd, ad->pa->args, get_env2d(ad->env));
-		}
-		size = ft_arrlen(path);
-		while (size-- > 0)
-			free(path[size]);
-		free(cmd);
-		free(path);
-		custom_err(ad, 0, "Command not found");
-		exit(EXIT_FAILURE);
+		exec_cmd(ad, ad->pa->cmd);
 	}
-	waitpid(child_pid, NULL, 0);
-	return (1);
+	else if (get_i_env(ad, "PATH") == -1)
+		return (1);
+	else
+	{
+		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
+		cmd = create_cmd(path, ad->pa->cmd);
+		if (!cmd)
+			return (1);
+		exec_cmd(ad, cmd);
+	}
+	return (0);
 }

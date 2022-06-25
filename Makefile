@@ -12,10 +12,11 @@ SRCS		=	main.c						\
 				ms_split_redir_utils.c		\
 				ms_split_pa_utils.c			\
 				path.c						\
-        		ms_exec.c					\
-        		ms_exec_get_path.c			\
-        		ms_exec_redir.c				\
-        		ms_exec_utils.c				\
+				ms_pipex.c					\
+        ms_exec.c					\
+        ms_exec_get_path.c			\
+        ms_exec_redir.c				\
+        ms_exec_utils.c				\
 				dollar.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\
@@ -23,6 +24,7 @@ SRCS		=	main.c						\
 				$(B_INS_DIR)env.c			\
 				$(B_INS_DIR)export.c		\
 				$(B_INS_DIR)unset.c			\
+				$(B_INS_DIR)exit.c			\
 				$(B_INS_DIR)builtins_utils.c\
 
 FT_DIR		=	ft/
@@ -44,7 +46,7 @@ OBJ_DIR		= 	obj/
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o) $(SRCS_GNL:.c=.o))
 
 CC			=	gcc
-LEAKS		=	#-fsanitize=address #-fsanitize=leak
+LEAKS		=	-fsanitize=address #-fsanitize=leak
 CFLAGS		=	-g -Wall -Wextra -Werror $(LEAKS)
 MAKE		=	make -C
 RM			=	rm -rf
@@ -79,6 +81,9 @@ clean:
 
 fclean:			clean
 				$(RM) $(NAME)
+
+leak:			all
+				leaks -atExit -- ./$(NAME)
 
 re:				fclean all
 

@@ -15,9 +15,23 @@
 void	ft_env(t_ad *ad)
 {
 	if (ad->pa->args[1])
-		custom_err(ad, 1, "No such file or directory");
+	{
+		if (access(ad->pa->args[1], X_OK))
+		{
+			g_status_exit = NOT_FOUND_ERR;
+			custom_err(ad, 1, NOT_FOUND_DIR_MSG);
+		}
+		else
+		{
+			g_status_exit = PERMISSION_ERR;
+			custom_err(ad, 1, PERMISSION_MSG);
+		}
+	}
 	else
+	{
+		g_status_exit = SUCCESS;
 		print_node(ad->env, 'c');
+	}
 }
 
 int	get_i_env(t_ad *ad, char *key)
@@ -61,29 +75,32 @@ void	init(t_ad *ad, char	**env)
 	{
 		key = ft_substr(env[j], 0, ft_strlen_c(env[j], '='));
 		value = ft_strdup(env[j] + 1 + ft_strlen_c(env[j], '='));
-		append_env(&ad->env, key, value);
+		append_t_node(&ad->env, key, value);
 		j++;
 	}
 	ad->redir = NULL;
 	ad->pa = NULL;
+	g_status_exit = 0;
 }
 
-void	print_node(t_node	*node, int option)
+void	add_env(t_ad *ad, int arg, char *name, char *value)
 {
-	while (node)
+	t_node	*tmp;
+	int		i;
+
+	if (!name)
+		name = ft_substr(ad->pa->args[arg], 0,
+				ft_strlen_c(ad->pa->args[arg], '='));
+	if (!value)
+		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg],
+					'=') + 1);
+	i = get_i_env(ad, name);
+	if (i == -1)
+		append_t_node(&ad->env, name, value);
+	else
 	{
-		if (option == 1)
-		{
-			if (!ft_strcmp(node->value, "NULL"))
-				ft_printf("declare -x %s\n", node->key);
-			else
-				ft_printf("declare -x %s=\"%s\"\n", node->key, node->value);
-		}
-		else
-		{
-			if (ft_strcmp(node->value, "NULL"))
-				ft_printf("%s=%s\n", node->key, node->value);
-		}
-		node = node->next;
+		tmp = get_env(ad, i);
+		tmp->value = value;
 	}
+	g_status_exit = SUCCESS;
 }

@@ -17,19 +17,30 @@ void	ft_unset(t_ad *ad)
 	t_node	*tmp;
 	int		size;
 	int		i;
+	int		status;
 
 	i = 0;
+	status = SUCCESS;
 	while (ad->pa->args[++i])
 	{
-		size = get_i_env(ad, ad->pa->args[i]);
-		if (size == -1)
-			continue ;
-		tmp = get_env(ad, size);
-		delete_env(&ad->env, tmp);
+		if (ft_isexport(ad->pa->args[i]))
+		{
+			size = get_i_env(ad, ad->pa->args[i]);
+			if (size == -1)
+				continue ;
+			tmp = get_env(ad, size);
+			delete_t_node(&ad->env, tmp);
+		}
+		else
+		{
+			status = GENERAL_ERR;
+			custom_err(ad, i, VALID_IDENTIFIER_MSG);
+		}
 	}
+	g_status_exit = status;
 }
 
-void	delete_env(t_node **head_ref, t_node *del)
+void	delete_t_node(t_node **head_ref, t_node *del)
 {
 	if (*head_ref == NULL || del == NULL)
 		return ;

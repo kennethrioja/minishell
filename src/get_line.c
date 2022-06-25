@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:11:14 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/04 17:34:17 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:33:56 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,9 @@ void	check_line(t_ad *ad)
 	else
 		if (check_path(ad) == 1)
 			custom_err(ad, 0, NOT_FOUND_CMD_MSG);
+// TO DEEGOH : is it necessary? if checkline after pipex, it rechecks
+// bis : we need to implement this in the execution part  
+//	else
+//		check_path(ad);
+//		custom_err(ad, 0, "Command not found");
 }

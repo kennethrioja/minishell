@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/09 21:52:58 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/22 18:24:15 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,13 @@ typedef struct s_node
 	struct s_node	*prev;
 }					t_node;
 
+typedef struct s_pipe
+{
+	int				**fd;
+	int				*pid;
+	int				n_pa;
+}					t_pipe;
+
 typedef struct s_ad
 {
 	char			*line;
@@ -166,8 +173,18 @@ void	exec_cmd(t_ad *ad, char *cmd);
 //* dollar.c
 void	check_dollar(t_ad *ad);
 
-//* ms_pipex.c
-int		ms_pipex(t_ad *ad);
+//* ms_exec.c
+int		ms_exec(t_ad *ad);
+
+//* ms_exec_get_path.c
+void	get_path(t_ad *ad);
+
+//* ms_exec_redir.c
+void	exec_redir(t_ad *ad);
+
+//* ms_exec_utils.c
+int		count_pa(t_ad *ad);
+void	my_close(int **fd, int n_pa, int n, int flag);
 
 //* builtins
 

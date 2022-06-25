@@ -13,6 +13,10 @@ SRCS		=	main.c						\
 				ms_split_pa_utils.c			\
 				path.c						\
 				ms_pipex.c					\
+        ms_exec.c					\
+        ms_exec_get_path.c			\
+        ms_exec_redir.c				\
+        ms_exec_utils.c				\
 				dollar.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\
@@ -30,7 +34,7 @@ PRINTF_DIR	=	$(SRC_DIR)$(FT_DIR)ft_printf
 INC_PRINTF	=	-I $(PRINTF_DIR) -L $(PRINTF_DIR) -lftprintf
 
 ifeq ($(shell env | grep USER= | cut -b 6-), krioja)
-	READLINE_DIR	=	/System/Volumes/Data/mnt/sgoinfre/krioja/.brew/Cellar/readline/8.1.2/
+	READLINE_DIR	=	/Users/krioja/sgoinfre/krioja/.brew/Cellar/readline/8.1.2/
 else ifeq ($(shell env | grep USER= | cut -b 6-), tpinto-m)
 	READLINE_DIR	=	~/.brew/Cellar/readline/8.1.2/
 endif

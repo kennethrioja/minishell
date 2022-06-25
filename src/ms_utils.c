@@ -59,7 +59,6 @@ char	*ft_strtolower(char *str)
 	return (str);
 }
 
-//TODO CHECK ALL ERROR MSGS
 void	custom_err(t_ad *ad, int arg, char *str)
 {
 	write(2, SHELL_NAME, ft_strlen(SHELL_NAME));

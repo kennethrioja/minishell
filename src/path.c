@@ -67,12 +67,12 @@ void	exec_cmd(t_ad *ad, char *cmd)
 		if (child_pid == 0)
 		{
 			execve(cmd, ad->pa->args, get_env2d(ad->env));
-			exit(EXIT_SUCCESS);
 		}
 		else
 		{
 			waitpid(child_pid, &g_status_exit, 0);
-			g_status_exit = WIFEXITED(g_status_exit);
+			if (WIFSIGNALED(g_status_exit))
+				g_status_exit = SIGNAL_ERR + g_status_exit;
 		}
 	}
 }

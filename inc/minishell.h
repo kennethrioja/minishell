@@ -62,7 +62,7 @@
 # define GENERAL_ERR 1
 # define PERMISSION_ERR 126
 # define NOT_FOUND_ERR 127
-# define EXIT_ERR 128
+# define EXIT_ERR 255
 # define SIGNAL_ERR 128
 
 # define PERMISSION_MSG "Permission denied"

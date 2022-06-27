@@ -24,14 +24,8 @@ int	main(int ac, char **av, char **env)
 			break ;
 		if (ms_split(&ad))
 			break ;
-//		if (ms_exec(&ad))
-//			break ;
-//		while (ad.pa)
-//		{
-			check_line(&ad);
-//			ad.pa = ad.pa->next;
-//		}
-//		ad.pa = ad.pa_head;
+		if (ms_exec(&ad))
+			break ;
 		free_cmd(&ad);
 	}
 	free_all(&ad);

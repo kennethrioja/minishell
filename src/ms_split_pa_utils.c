@@ -27,6 +27,7 @@ t_pa	*pa_lstnew(struct s_pa *previous)
 	else
 		pa->prev = NULL;
 	pa->redir = NULL;
+	pa->is_blt = 0;
 	pa->next = NULL;
 	return (pa);
 }

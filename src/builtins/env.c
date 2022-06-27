@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_env(t_ad *ad)
+int	ft_env(t_ad *ad)
 {
 	if (ad->pa->args[1])
 	{
@@ -32,6 +32,7 @@ void	ft_env(t_ad *ad)
 		g_status_exit = SUCCESS;
 		print_node(ad->env, 'c');
 	}
+	return (0);
 }
 
 int	get_i_env(t_ad *ad, char *key)

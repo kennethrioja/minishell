@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_unset(t_ad *ad)
+int	ft_unset(t_ad *ad)
 {
 	t_node	*tmp;
 	int		size;
@@ -38,6 +38,7 @@ void	ft_unset(t_ad *ad)
 		}
 	}
 	g_status_exit = status;
+	return (0);
 }
 
 void	delete_t_node(t_node **head_ref, t_node *del)

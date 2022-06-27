@@ -66,6 +66,7 @@ void	free_cmd(t_ad *ad)
 	free_redir(ad);
 	free_pa(ad);
 	ad->pa = NULL;
+	ad->pa_head = NULL;
 	ad->redir = NULL;
 }
 

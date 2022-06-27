@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_echo(t_ad *ad)
+int	ft_echo(t_ad *ad)
 {
 	int	n_option;
 	int	i;
@@ -34,4 +34,5 @@ void	ft_echo(t_ad *ad)
 	if (!n_option)
 		ft_printf("\n");
 	g_status_exit = SUCCESS;
+	return (0);
 }

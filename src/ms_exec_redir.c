@@ -74,7 +74,7 @@ static void	redir_outfile(t_ad *ad)
 	}
 }
 
-void	exec_redir(t_ad *ad)
+void	  exec_redir(t_ad *ad)
 {
 	if (ad->pa->redir)
 	{
@@ -90,5 +90,46 @@ void	exec_redir(t_ad *ad)
 				break ;
 		}
 	}
-	execve(ad->pa->path, ad->pa->args, NULL);
+//	int	n = 0;
+//	pa_lst_fst_or_lst(&ad->pa, 0);
+//	while (ad->pa)
+//	{
+//		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
+//		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
+//		while (ad->pa->args[n])
+//		{
+//			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
+//			++n;
+//		}
+//		redir_lst_fst_or_lst(&ad->pa->redir, 0);
+//		while (ad->pa->redir)
+//		{
+//			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
+//			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
+//			if (ad->pa->redir->next)
+//				ad->pa->redir = ad->pa->redir->next;
+//			else
+//				break;
+//		}
+//		ad->pa = ad->pa->next;
+//		n = 0;
+//	}
+//	ad->pa = ad->pa_head;
+	if (check_builtins(ad))
+	{
+		printf("exec ?\n");
+		if (check_execve(ad))
+		{
+			custom_err(ad, 0, NOT_FOUND_CMD_MSG);
+			exit(EXIT_FAILURE);
+//			return ;
+		}
+//		exit(10);
+//		set_path(ad);
+//		execve(ad->pa->path, ad->pa->args, get_env2d(ad->env));
+	}
+	else
+		ad->pa->is_blt = 1;
+//		exit(EXIT_SUCCESS);
+//	exit(10);
 }

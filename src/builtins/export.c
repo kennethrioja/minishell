@@ -16,7 +16,7 @@ static void	sort_export(t_ad *ad, int count);
 static void	show_export(t_ad *ad);
 static void	add_export(t_ad *ad, int i);
 
-void	ft_export(t_ad *ad)
+int	ft_export(t_ad *ad)
 {
 	int	i;
 	int	checker;
@@ -41,6 +41,7 @@ void	ft_export(t_ad *ad)
 		}
 	}
 	g_status_exit = status;
+	return (0);
 }
 
 int	ft_isexport(const char *str)

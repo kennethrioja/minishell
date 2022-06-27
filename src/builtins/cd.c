@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_cd(t_ad *ad)
+int	ft_cd(t_ad *ad)
 {
 	char	buf[PATH_MAX];
 
@@ -28,8 +28,8 @@ void	ft_cd(t_ad *ad)
 			custom_err(ad, 1, NOT_FOUND_DIR_MSG);
 		else
 			custom_err(ad, 1, PERMISSION_MSG);
-		return ;
 	}
 	add_env(ad, 0, "PWD", ft_strdup(getcwd(buf, PATH_MAX)));
 	g_status_exit = SUCCESS;
+	return (0);
 }

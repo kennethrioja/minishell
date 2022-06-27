@@ -28,6 +28,7 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 	pa_lst_fst_or_lst(&ad->pa, 0);
 }
 
+//TODO do not fork when builtins
 static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	pipe->pid[n] = fork();
@@ -78,7 +79,7 @@ int	ms_exec(t_ad *ad)
 	t_pipe	pipe;
 	int		n;
 
-	get_path(ad);
+//	set_path(ad);
 	init_pipe(ad, &pipe);
 	n = 0;
 	while (ad->pa)
@@ -94,7 +95,14 @@ int	ms_exec(t_ad *ad)
 	}
 	n = -1;
 	while (++n < pipe.n_pa)
-		waitpid(pipe.pid[n], NULL, 0);
+	{
+		if (ad->pa->is_blt == 0)
+		{
+			waitpid(pipe.pid[n], &g_status_exit, 0);
+			if (WIFSIGNALED(g_status_exit))
+				g_status_exit = SIGNAL_ERR + g_status_exit;
+		}
+	}
 	free_pipe(ad, &pipe);
 	return (0);
 }

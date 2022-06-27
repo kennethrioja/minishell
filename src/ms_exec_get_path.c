@@ -54,28 +54,30 @@ static int	add_prefix(t_ad *ad, const char *s, int n)
 	return (n + 1);
 }
 
-void	get_path(t_ad *ad)
+void	set_path(t_ad *ad)
 {
 	int	n;
 
 	n = 0;
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (ad->pa)
-	{
+//	pa_lst_fst_or_lst(&ad->pa, 0);
+//	while (ad->pa)
+//	{
 		while (access(ad->pa->path, F_OK) == -1)
 		{
 			if (ad->pa->path)
 				free(ad->pa->path);
 			n = add_prefix(ad, ad->pa->cmd, n);
 			if (n == 0)
-				my_exit(ad, write(2, "adsh: command not found: ", 25)
-					+ write(2, ad->pa->args[0], ft_strlen(ad->pa->args[0]))
-					+ write(2, "\n", 1));
+			{
+				custom_err(ad, 0, NOT_FOUND_CMD_MSG);
+				free_all(ad);
+				return ;
+			}
 		}
-		if (ad->pa->next)
-			ad->pa = ad->pa->next;
-		else
-			break ;
-		n = 0;
-	}
+//		if (ad->pa->next)
+//			ad->pa = ad->pa->next;
+//		else
+//			break ;
+//		n = 0;
+//	}
 }

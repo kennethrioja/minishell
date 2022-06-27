@@ -30,33 +30,29 @@ int	get_line(t_ad *ad)
 	return (1);
 }
 
-void	check_line(t_ad *ad)
+int	check_builtins(t_ad *ad)
 {
-	if (ad->pa->cmd == NULL)
-		return ;
+//	if (ad->pa->cmd == NULL)
+//		return (0);
 	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
-	if (!ad->pa)
-		return ;
+//	if (!ad->pa)
+//		return (0);
 	if (!ft_strcmp("echo", ad->pa->cmd))
-		ft_echo(ad);
+		return (ft_echo(ad));
 	else if (!ft_strcmp("cd", ad->pa->cmd))
-		ft_cd(ad);
+		return (ft_cd(ad));
 	else if (!ft_strcmp("pwd", ad->pa->cmd))
-		ft_pwd();
+		return (ft_pwd());
 	else if (!ft_strcmp("env", ad->pa->cmd))
-		ft_env(ad);
+		return (ft_env(ad));
 	else if (!ft_strcmp("export", ad->pa->cmd))
-		ft_export(ad);
+		return (ft_export(ad));
 	else if (!ft_strcmp("unset", ad->pa->cmd))
-		ft_unset(ad);
+		return (ft_unset(ad));
 	else if (!ft_strcmp("exit", ad->pa->cmd))
 		ft_exit(ad);
-	else
-		if (check_path(ad) == 1)
-			custom_err(ad, 0, NOT_FOUND_CMD_MSG);
-// TO DEEGOH : is it necessary? if checkline after pipex, it rechecks
-// bis : we need to implement this in the execution part  
 //	else
-//		check_path(ad);
-//		custom_err(ad, 0, "Command not found");
+//		if (check_execve(ad) == 1)
+//			custom_err(ad, 0, NOT_FOUND_CMD_MSG);
+	return (1);
 }

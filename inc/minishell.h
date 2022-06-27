@@ -92,6 +92,7 @@ typedef struct s_pa
 	char			*path;
 	char			**args;
 	t_redir			*redir;
+	int				is_blt;
 	struct s_pa		*prev;
 	struct s_pa		*next;
 }					t_pa;
@@ -124,7 +125,7 @@ typedef struct s_ad
 
 //* get_line.c
 int		get_line(t_ad *ad);
-void	check_line(t_ad *ad);
+int	check_builtins(t_ad *ad);
 
 //* ms_split.c
 int		ms_split(t_ad *ad);
@@ -167,8 +168,9 @@ void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
 
 //* path.c
-int		check_path(t_ad *ad);
+int		check_execve(t_ad *ad);
 void	exec_cmd(t_ad *ad, char *cmd);
+char	**get_env2d(t_node *env);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);
@@ -177,10 +179,10 @@ void	check_dollar(t_ad *ad);
 int		ms_exec(t_ad *ad);
 
 //* ms_exec_get_path.c
-void	get_path(t_ad *ad);
+void	set_path(t_ad *ad);
 
 //* ms_exec_redir.c
-void	exec_redir(t_ad *ad);
+void	  exec_redir(t_ad *ad);
 
 //* ms_exec_utils.c
 int		count_pa(t_ad *ad);
@@ -189,27 +191,27 @@ void	my_close(int **fd, int n_pa, int n, int flag);
 //* builtins
 
 //** builtins/echo.c
-void	ft_echo(t_ad *ad);
+int		ft_echo(t_ad *ad);
 
 // ** builtins/pwd.c
-void	ft_pwd(void);
+int		ft_pwd(void);
 
 // ** builtins/cd.c
-void	ft_cd(t_ad *ad);
+int		ft_cd(t_ad *ad);
 
 // ** builtins/env.c
-void	ft_env(t_ad *ad);
+int		ft_env(t_ad *ad);
 int		get_i_env(t_ad *ad, char *key);
 t_node	*get_env(t_ad *ad, int i);
 void	init(t_ad *ad, char	**env);
 void	add_env(t_ad *ad, int arg, char *name, char *value);
 
 // ** builtins/export.c
-void	ft_export(t_ad *ad);
+int		ft_export(t_ad *ad);
 int		ft_isexport(const char *str);
 
 // ** builtins/unset.c
-void	ft_unset(t_ad *ad);
+int		ft_unset(t_ad *ad);
 void	delete_t_node(t_node **head_ref, t_node *del);
 
 // ** builtins/exit.c

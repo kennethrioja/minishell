@@ -39,7 +39,7 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] Leaks
 - [ ] Gestion d'erreurs
 - [ ] Norminette
-- [ ] Faire le lien ms_split et check_line
+- [ ] Faire le lien ms_split et check_builtins
 - [ ] Faire les /
 - [ ] Faire les builtins avant les execve
 - [ ] Try ctrl-C in a prompt after you wrote some stuff should show a new line with a new prompt

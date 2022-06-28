@@ -34,6 +34,7 @@ int	check_builtins(t_ad *ad)
 {
 //	if (ad->pa->cmd == NULL)
 //		return (0);
+	ad->pa->is_blt = 1;
 	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
 //	if (!ad->pa)
 //		return (0);

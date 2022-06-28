@@ -222,5 +222,6 @@ void	free_env(t_ad *ad);
 int		count_t_node(t_node *node);
 void	append_t_node(t_node **head_ref, char *key, char *value);
 void	print_node(t_node	*node, int option);
+int		is_builtins(t_ad *ad);
 
 #endif

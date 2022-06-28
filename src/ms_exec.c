@@ -31,18 +31,23 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 //TODO do not fork when builtins
 static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
-	pipe->pid[n] = fork();
-	if (pipe->pid[n] == -1)
-		my_exit(ad, write(2, "Error: fork\n", 12));
-	if (pipe->pid[n] == 0)
+	if (is_builtins(ad))
+		check_builtins(ad);
+	else
 	{
-		if (ad->pa->prev)
-			dup2(pipe->fd[n - 1][0], STDIN_FILENO);
-		if (ad->pa->next)
-			dup2(pipe->fd[n][1], STDOUT_FILENO);
-		if (ad->pa->prev || ad->pa->next)
-			my_close(pipe->fd, pipe->n_pa, n, 1);
-		exec_redir(ad);
+		pipe->pid[n] = fork();
+		if (pipe->pid[n] == -1)
+			my_exit(ad, write(2, "Error: fork\n", 12));
+		if (pipe->pid[n] == 0)
+		{
+			if (ad->pa->prev)
+				dup2(pipe->fd[n - 1][0], STDIN_FILENO);
+			if (ad->pa->next)
+				dup2(pipe->fd[n][1], STDOUT_FILENO);
+			if (ad->pa->prev || ad->pa->next)
+				my_close(pipe->fd, pipe->n_pa, n, 1);
+			exec_redir(ad);
+		}
 	}
 	if (n >= 1)
 	{

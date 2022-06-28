@@ -56,7 +56,6 @@ char	*create_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
-// TODO CHECK DISPLAY
 void	exec_cmd(t_ad *ad, char *cmd)
 {
 	if (access(cmd, X_OK) == 0)
@@ -68,26 +67,22 @@ int	check_execve(t_ad *ad)
 	char	**path;
 	char	*cmd;
 
-	printf("should exec ?\n");
 	if (access(ad->pa->cmd, X_OK) == 0)
 	{
-		printf("exec /\n");
 		exec_cmd(ad, ad->pa->cmd);
 	}
 	else if (get_i_env(ad, "PATH") == -1)
 	{
-		printf("error path\n");
 		return (1);
 	}
 	else
 	{
-		printf("eexec with path\n");
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
 		cmd = create_cmd(path, ad->pa->cmd);
 		if (!cmd)
 			return (1);
-		printf("i exe\n");
 		exec_cmd(ad, cmd);
+		free(cmd);
 	}
 	return (0);
 }

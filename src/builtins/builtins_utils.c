@@ -82,3 +82,23 @@ void	print_node(t_node	*node, int option)
 		node = node->next;
 	}
 }
+
+int	is_builtins(t_ad *ad)
+{
+	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
+	if (!ft_strcmp("echo", ad->pa->cmd))
+		return (1);
+	else if (!ft_strcmp("cd", ad->pa->cmd))
+		return (1);
+	else if (!ft_strcmp("pwd", ad->pa->cmd))
+		return (1);
+	else if (!ft_strcmp("env", ad->pa->cmd))
+		return (1);
+	else if (!ft_strcmp("export", ad->pa->cmd))
+		return (1);
+	else if (!ft_strcmp("unset", ad->pa->cmd))
+		return (1);
+	else if (!ft_strcmp("exit", ad->pa->cmd))
+		return (1);
+	return (0);
+}

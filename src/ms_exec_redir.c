@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 19:14:04 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 18:01:45 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/28 13:31:40 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	redir_outfile(t_ad *ad)
 	}
 }
 
-void	exec_redir(t_ad *ad)
+void	ms_exec_redir(t_ad *ad)
 {
 	if (ad->pa->redir)
 	{
@@ -89,10 +89,5 @@ void	exec_redir(t_ad *ad)
 			else
 				break ;
 		}
-	}
-	if (check_execve(ad))
-	{
-		custom_err(ad, 0, NOT_FOUND_CMD_MSG);
-		exit(EXIT_FAILURE);
 	}
 }

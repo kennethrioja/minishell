@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   ms_exec_check_execve.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:03:18 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/06 12:11:53 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/28 13:29:21 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_env2d(t_node *env)
+static char	**get_env2d(t_node *env)
 {
 	char	**env2d;
 	int		size;
@@ -31,7 +31,7 @@ char	**get_env2d(t_node *env)
 	return (env2d);
 }
 
-char	*create_cmd(char **path, char *cmd)
+static char	*create_cmd(char **path, char *cmd)
 {
 	char	*ncmd;
 	char	*npath;
@@ -56,32 +56,26 @@ char	*create_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
-void	exec_cmd(t_ad *ad, char *cmd)
-{
-	if (access(cmd, X_OK) == 0)
-		execve(cmd, ad->pa->args, get_env2d(ad->env));
-}
-
-int	check_execve(t_ad *ad)
+int	ms_exec_check_execve(t_ad *ad)
 {
 	char	**path;
 	char	*cmd;
 
 	if (access(ad->pa->cmd, X_OK) == 0)
 	{
-		exec_cmd(ad, ad->pa->cmd);
+		ms_exec_redir(ad);
+		execve(cmd, ad->pa->args, get_env2d(ad->env));
 	}
 	else if (get_i_env(ad, "PATH") == -1)
-	{
 		return (1);
-	}
 	else
 	{
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
 		cmd = create_cmd(path, ad->pa->cmd);
 		if (!cmd)
 			return (1);
-		exec_cmd(ad, cmd);
+		ms_exec_redir(ad);
+		execve(cmd, ad->pa->args, get_env2d(ad->env));
 		free(cmd);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/20 14:35:40 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/28 12:11:55 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,20 @@
 int	main(int ac, char **av, char **env)
 {
 	t_ad	ad;
+	int		tmp;
 
+	tmp = 0;
 	init(&ad, env);
 	while (1)
 	{
 		handle_signal();
 		if (!get_line(&ad))
 			break ;
-		if (ms_split(&ad))
+		tmp = ms_split(&ad);
+		if (tmp == 1)
 			break ;
+		if (tmp == 2)
+			continue ;
 		if (ms_exec(&ad))
 			break ;
 		free_cmd(&ad);

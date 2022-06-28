@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:58:03 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 18:43:09 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/28 13:30:56 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_pa(t_ad *ad)
 	return (n);
 }
 
-void	my_close(int **fd, int n_pa, int n, int flag)
+void	my_close2(int **fd, int n_pa, int n, int flag)
 {
 	int	i;
 
@@ -47,5 +47,16 @@ void	my_close(int **fd, int n_pa, int n, int flag)
 		close(fd[i][0]);
 		close(fd[i][1]);
 		++i;
+	}
+}
+
+void	my_close(t_ad *ad, t_pipe *pipe, int n)
+{
+	if (n >= 1)
+	{
+		if (!ad->pa->next || ad->pa->is_blt)
+			my_close2(pipe->fd, pipe->n_pa, n, 1);
+		else
+			my_close2(pipe->fd, pipe->n_pa, n, 0);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 09:48:22 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/13 09:48:26 by tpinto-m         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:17:29 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	check_dollar(t_ad *ad)
 {
 	int	i;
 
+	pa_lst_fst_or_lst(&ad->pa, 0);
 	if (!ad->pa)
 		return ;
 	while (ad->pa)
@@ -32,9 +33,7 @@ void	check_dollar(t_ad *ad)
 				}
 			}
 			else if (!ft_strcmp(ad->pa->args[i], "$?"))
-			{
 				ad->pa->args[i] = ft_strdup(ft_itoa(g_status_exit));
-			}
 		}
 		ad->pa = ad->pa->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 18:24:15 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/28 13:01:18 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,26 +167,25 @@ void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
 
-//* path.c
-int		check_execve(t_ad *ad);
-void	exec_cmd(t_ad *ad, char *cmd);
-char	**get_env2d(t_node *env);
-
 //* dollar.c
 void	check_dollar(t_ad *ad);
 
-//* ms_exec.c
-int		ms_exec(t_ad *ad);
+//* ms_exec_builtins.c
+int		ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n);
 
-//* ms_exec_get_path.c
-void	set_path(t_ad *ad);
+//* ms_exec_check_execve.c
+int		ms_exec_check_execve(t_ad *ad);
 
 //* ms_exec_redir.c
-void	  exec_redir(t_ad *ad);
+void	ms_exec_redir(t_ad *ad);
 
 //* ms_exec_utils.c
 int		count_pa(t_ad *ad);
-void	my_close(int **fd, int n_pa, int n, int flag);
+void	my_close(t_ad *ad, t_pipe *pipe, int n);
+void	my_close2(int **fd, int n_pa, int n, int flag);
+
+//* ms_exec.c
+int		ms_exec(t_ad *ad);
 
 //* builtins
 

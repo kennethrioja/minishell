@@ -20,7 +20,8 @@ int	ft_echo(t_ad *ad)
 
 	n_option = 0;
 	if (ad->pa->args[1])
-		if (!ft_strcmp(ad->pa->args[1], "-n"))
+		if (!ft_strcmp(ad->pa->args[1], "-n")
+			|| ft_strcmp(ad->pa->args[1], "-n") == 110)
 			n_option = 1;
 	i = 1 + n_option;
 	arrlen = (int)ft_arrlen(ad->pa->args);

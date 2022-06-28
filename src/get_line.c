@@ -32,12 +32,10 @@ int	get_line(t_ad *ad)
 
 int	check_builtins(t_ad *ad)
 {
-//	if (ad->pa->cmd == NULL)
-//		return (0);
+	if (ad->pa->cmd == NULL)
+		return (0);
 	ad->pa->is_blt = 1;
 	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
-//	if (!ad->pa)
-//		return (0);
 	if (!ft_strcmp("echo", ad->pa->cmd))
 		return (ft_echo(ad));
 	else if (!ft_strcmp("cd", ad->pa->cmd))
@@ -52,8 +50,5 @@ int	check_builtins(t_ad *ad)
 		return (ft_unset(ad));
 	else if (!ft_strcmp("exit", ad->pa->cmd))
 		ft_exit(ad);
-//	else
-//		if (check_execve(ad) == 1)
-//			custom_err(ad, 0, NOT_FOUND_CMD_MSG);
 	return (1);
 }

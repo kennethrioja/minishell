@@ -85,6 +85,8 @@ void	print_node(t_node	*node, int option)
 
 int	is_builtins(t_ad *ad)
 {
+	if (!ad->pa->cmd)
+		return (1);
 	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
 	if (!ft_strcmp("echo", ad->pa->cmd))
 		return (1);

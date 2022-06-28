@@ -28,7 +28,6 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 	pa_lst_fst_or_lst(&ad->pa, 0);
 }
 
-//TODO do not fork when builtins
 static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	if (is_builtins(ad))
@@ -36,6 +35,7 @@ static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 	else
 	{
 		pipe->pid[n] = fork();
+		handle_child_signal();
 		if (pipe->pid[n] == -1)
 			my_exit(ad, write(2, "Error: fork\n", 12));
 		if (pipe->pid[n] == 0)
@@ -84,7 +84,6 @@ int	ms_exec(t_ad *ad)
 	t_pipe	pipe;
 	int		n;
 
-//	set_path(ad);
 	init_pipe(ad, &pipe);
 	n = 0;
 	while (ad->pa)

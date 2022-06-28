@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/20 14:31:08 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/28 12:12:46 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static int	populate_pa(t_ad *ad, const char *l)
 
 static int	parse_line(t_ad *ad, char *l)
 {
-//	int		n;
 	char	*tmp;
 
 	ad->pa = pa_lstnew(NULL);
@@ -80,43 +79,18 @@ static int	parse_line(t_ad *ad, char *l)
 			l += populate_pa(ad, l);
 		else
 		{
+			if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
+				return (1);
 			++l;
 			while (ft_isspace(*l) && *l)
 				++l;
 			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
 		}
 	}
+	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
+		return (1);
 	free(tmp);
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	if (!ad->pa->cmd)
-		return (0);
 	check_dollar(ad);
-/*
-	while (ad->pa)
-	{
-		n = 0;
-		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
-		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
-		while (ad->pa->args[n])
-		{
-			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
-			++n;
-		}
-		redir_lst_fst_or_lst(&ad->pa->redir, 0);
-		while (ad->pa->redir)
-		{
-			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
-			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
-			if (ad->pa->redir->next)
-				ad->pa->redir = ad->pa->redir->next;
-			else
-				break ;
-		}
-		ad->pa = ad->pa->next;
-		n = 0;
-	}
-	ad->pa = ad->pa_head;
-	*/
 	return (0);
 }
 /*
@@ -155,7 +129,10 @@ int	ms_split(t_ad *ad)
 	if (!ad->line)
 		return (1);
 	if (parse_line(ad, ft_strtrim(ad->line, " ")))
+	{
+		write(2, "Error: ad->pa->cmd is NULL\n", 27);
 		return (2);
+	}
 //	check_dollar(ad);
 	return (0);
 }

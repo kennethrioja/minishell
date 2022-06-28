@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/22 19:13:14 by krioja           ###   ########.fr       */
+/*   Updated: 2022/06/28 13:31:33 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	if (is_builtins(ad))
-		check_builtins(ad);
+		ms_exec_builtins(ad, pipe, n);
 	else
 	{
 		pipe->pid[n] = fork();
@@ -45,16 +45,14 @@ static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 			if (ad->pa->next)
 				dup2(pipe->fd[n][1], STDOUT_FILENO);
 			if (ad->pa->prev || ad->pa->next)
-				my_close(pipe->fd, pipe->n_pa, n, 1);
-			exec_redir(ad);
+				my_close2(pipe->fd, pipe->n_pa, n, 1);
+			if (ms_exec_check_execve(ad))
+			{
+				custom_err(ad, 0, NOT_FOUND_CMD_MSG);
+				exit(EXIT_FAILURE);
+			}
 		}
-	}
-	if (n >= 1)
-	{
-		if (ad->pa->next)
-			my_close(pipe->fd, pipe->n_pa, n, 0);
-		else
-			my_close(pipe->fd, pipe->n_pa, n, 1);
+		my_close(ad, pipe, n);
 	}
 }
 

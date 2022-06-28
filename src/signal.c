@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	sig_handler(int signum)
+static void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -27,10 +27,25 @@ void	sig_handler(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	g_status_exit = GENERAL_ERR;
 }
 
 void	handle_signal(void)
 {
 	signal(SIGQUIT, sig_handler);
 	signal(SIGINT, sig_handler);
+}
+
+static void	child_handler(int signum)
+{
+	if (signum == SIGINT)
+		ft_printf("\n");
+	if (signum == SIGQUIT)
+		ft_printf("Quit: 3\n");
+}
+
+void	handle_child_signal(void)
+{
+	signal(SIGQUIT, child_handler);
+	signal(SIGINT, child_handler);
 }

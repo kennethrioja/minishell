@@ -159,8 +159,8 @@ t_pa	*ms_lstlast(t_pa *pa);
 void	ms_lstadd_next(t_pa **pa, t_pa *panew);
 
 //* signal.c
-void	sig_handler(int signum);
 void	handle_signal(void);
+void	handle_child_signal(void);
 
 //* free_all.c
 void	my_exit(t_ad *ad, int flag);

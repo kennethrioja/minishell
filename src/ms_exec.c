@@ -35,6 +35,7 @@ static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 	else
 	{
 		pipe->pid[n] = fork();
+		handle_child_signal();
 		if (pipe->pid[n] == -1)
 			my_exit(ad, write(2, "Error: fork\n", 12));
 		if (pipe->pid[n] == 0)

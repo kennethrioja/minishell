@@ -122,17 +122,11 @@ static int	parse_line(t_ad *ad, char *l)
 
 int	ms_split(t_ad *ad)
 {
-//	TODO controler si j'ai sup le redir ??
-//	int	i;
-//
-//	i = 0;
 	if (!ad->line)
 		return (1);
-	if (parse_line(ad, ft_strtrim(ad->line, " ")))
-	{
-		write(2, "Error: ad->pa->cmd is NULL\n", 27);
+	if (!check_quote(ad->line, '\'') || !check_quote(ad->line, '"'))
 		return (2);
-	}
-//	check_dollar(ad);
+	if (parse_line(ad, ft_strtrim(ad->line, " ")))
+		return (2);
 	return (0);
 }

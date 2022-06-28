@@ -17,6 +17,7 @@ SRCS		=	main.c						\
 				ms_exec_check_execve.c		\
 				ms_exec_utils.c				\
 				dollar.c					\
+				ms_quote.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\
 				$(B_INS_DIR)cd.c			\
@@ -45,7 +46,7 @@ OBJ_DIR		= 	obj/
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o) $(SRCS_GNL:.c=.o))
 
 CC			=	gcc
-LEAKS		=	#-fsanitize=address #-fsanitize=leak
+LEAKS		=	-fsanitize=address #-fsanitize=leak
 CFLAGS		=	-g -Wall -Wextra -Werror $(LEAKS)
 MAKE		=	make -C
 RM			=	rm -rf

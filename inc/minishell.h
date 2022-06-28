@@ -71,6 +71,8 @@
 # define NOT_FOUND_CMD_MSG "command not found"
 # define EXIT_MSG "numeric argument required"
 # define ARGS_MSG "too many arguments"
+# define QUOTE_MSG "adsh: "
+# define EVEN_MSG ": not a even quote"
 
 # define SHELL_NAME "adsh"
 
@@ -186,6 +188,10 @@ void	my_close2(int **fd, int n_pa, int n, int flag);
 
 //* ms_exec.c
 int		ms_exec(t_ad *ad);
+
+//* ms_quote.c
+int		pos_n_char(char *str, int n, char c);
+int		check_quote(char *str, char c);
 
 //* builtins
 

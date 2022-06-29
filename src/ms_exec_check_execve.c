@@ -56,20 +56,15 @@ static char	*create_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
-int	ms_exec_check_execve(t_ad *ad, t_pipe *pipe, int n)
+int	ms_exec_check_execve(t_ad *ad)
 {
 	char	**path;
 	char	*cmd;
 
-	if (ad->pa->is_blt)
-	{
-		ms_exec_builtins(ad, pipe, n);
-		exit(0);
-	}
-	else if (access(ad->pa->cmd, X_OK) == 0)
+	if (access(ad->pa->cmd, X_OK) == 0)
 	{
 		ms_exec_redir(ad);
-		execve(cmd, ad->pa->args, get_env2d(ad->env));
+		execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
 	}
 	else if (get_i_env(ad, "PATH") == -1)
 		return (1);

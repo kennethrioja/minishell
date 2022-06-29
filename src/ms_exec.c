@@ -25,6 +25,7 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 			free(pipe->fd);
 	}
 	free(pipe->pid);
+	free(pipe->pblt);
 	pa_lst_fst_or_lst(&ad->pa, 0);
 }
 
@@ -46,7 +47,7 @@ static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 				dup2(pipe->fd[n][1], STDOUT_FILENO);
 			if ((ad->pa->prev && !ad->pa->is_blt) || ad->pa->next)
 				my_close2(pipe->fd, pipe->n_pa, n, 1);
-			if (ms_exec_check_execve(ad, pipe, n))
+			if (ms_exec_check_execve(ad))
 			{
 				custom_err(ad, 0, NOT_FOUND_CMD_MSG);
 				exit(EXIT_FAILURE);
@@ -75,6 +76,9 @@ static void	init_pipe(t_ad *ad, t_pipe *pip)
 		if (pipe(pip->fd[n]) == -1)
 			my_exit(ad, write(2, "Error: pipe\n", 12));
 	}
+	pip->pblt = malloc(sizeof(int) * 2);
+	if (pipe(pip->pblt) == -1)
+		my_exit(ad, write(2, "Error: builtins pipe\n", 21));
 }
 
 static int	find_last_blt(t_ad *ad)
@@ -125,9 +129,12 @@ int	ms_exec(t_ad *ad)
 	n = find_last_blt(ad);
 	while (n < pipe.n_pa)
 	{
-		waitpid(pipe.pid[n], &g_status_exit, 0);
-		if (WIFSIGNALED(g_status_exit))
-			g_status_exit = SIGNAL_ERR + g_status_exit;
+		if (!ad->pa->is_blt)
+		{
+			waitpid(pipe.pid[n], &g_status_exit, 0);
+			if (WIFSIGNALED(g_status_exit))
+				g_status_exit = SIGNAL_ERR + g_status_exit;
+		}
 		if (ad->pa->next)
 			ad->pa = ad->pa->next;
 		else

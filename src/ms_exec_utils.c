@@ -59,4 +59,9 @@ void	my_close(t_ad *ad, t_pipe *pipe, int n)
 		else
 			my_close2(pipe->fd, pipe->n_pa, n, 0);
 	}
+	if (pipe->pblt[1])
+	{
+		close(pipe->pblt[0]);
+		close(pipe->pblt[1]);
+	}
 }

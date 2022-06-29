@@ -54,7 +54,7 @@ void	my_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	if (n >= 1)
 	{
-		if (!ad->pa->next || ad->pa->is_blt)
+		if (!ad->pa->next)
 			my_close2(pipe->fd, pipe->n_pa, n, 1);
 		else
 			my_close2(pipe->fd, pipe->n_pa, n, 0);

@@ -49,6 +49,8 @@ static int	populate_pa(t_ad *ad, const char *l)
 	ret += populate_redir(ad, l + ret);
 	ad->pa->cmd = ft_strtrim_f(ft_substr(l + ret, 0,
 				ft_strlen_sp(l + ret, 0)), " ");
+	if (is_builtins(ad))
+		ad->pa->is_blt = 1;
 	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));

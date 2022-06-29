@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int exec_blt(t_ad *ad)
+static int	exec_blt(t_ad *ad)
 {
 	ad->pa->cmd = ft_strtolower(ad->pa->cmd);
 	if (!ft_strcmp("echo", ad->pa->cmd))
@@ -34,12 +34,11 @@ static int exec_blt(t_ad *ad)
 
 int	ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n)
 {
-	ad->pa->is_blt = 1;
-	if (ad->pa->prev)
-		dup2(pipe->fd[n - 1][0], STDIN_FILENO);
+//	if (ad->pa->prev)
+//		dup2(pipe->fd[n - 1][0], STDIN_FILENO);
 	if (ad->pa->next)
 		dup2(pipe->fd[n][1], STDOUT_FILENO);
-	if (ad->pa->prev || ad->pa->next)
+	if (ad->pa->next)
 		my_close2(pipe->fd, pipe->n_pa, n, 1);
 	ms_exec_redir(ad);
 	if (!exec_blt(ad))

@@ -56,12 +56,17 @@ static char	*create_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
-int	ms_exec_check_execve(t_ad *ad)
+int	ms_exec_check_execve(t_ad *ad, t_pipe *pipe, int n)
 {
 	char	**path;
 	char	*cmd;
 
-	if (access(ad->pa->cmd, X_OK) == 0)
+	if (ad->pa->is_blt)
+	{
+		ms_exec_builtins(ad, pipe, n);
+		exit(0);
+	}
+	else if (access(ad->pa->cmd, X_OK) == 0)
 	{
 		ms_exec_redir(ad);
 		execve(cmd, ad->pa->args, get_env2d(ad->env));
@@ -78,5 +83,7 @@ int	ms_exec_check_execve(t_ad *ad)
 		execve(cmd, ad->pa->args, get_env2d(ad->env));
 		free(cmd);
 	}
+	(void)pipe;
+	(void)n;
 	return (0);
 }

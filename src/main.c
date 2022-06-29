@@ -17,7 +17,6 @@ int	main(int ac, char **av, char **env)
 	t_ad	ad;
 	int		tmp;
 
-	tmp = 0;
 	init(&ad, env);
 	while (1)
 	{

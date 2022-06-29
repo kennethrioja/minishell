@@ -176,7 +176,7 @@ void	check_dollar(t_ad *ad);
 int		ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n);
 
 //* ms_exec_check_execve.c
-int		ms_exec_check_execve(t_ad *ad);
+int		ms_exec_check_execve(t_ad *ad, t_pipe *pipe, int n);
 
 //* ms_exec_redir.c
 void	ms_exec_redir(t_ad *ad);

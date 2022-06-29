@@ -30,23 +30,26 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 
 static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
-	if (is_builtins(ad))
+	if (is_builtins(ad) && !ad->pa->next)
 		ms_exec_builtins(ad, pipe, n);
 	else
 	{
+//		if (!ad->pa->is_blt)
 		pipe->pid[n] = fork();
+//		else
+//			ms_exec_builtins(ad, pipe, n);
 		handle_child_signal();
 		if (pipe->pid[n] == -1)
 			my_exit(ad, write(2, "Error: fork\n", 12));
 		if (pipe->pid[n] == 0)
 		{
-			if (ad->pa->prev)
+			if (ad->pa->prev && !ad->pa->is_blt)
 				dup2(pipe->fd[n - 1][0], STDIN_FILENO);
 			if (ad->pa->next)
 				dup2(pipe->fd[n][1], STDOUT_FILENO);
-			if (ad->pa->prev || ad->pa->next)
+			if ((ad->pa->prev && !ad->pa->is_blt) || ad->pa->next)
 				my_close2(pipe->fd, pipe->n_pa, n, 1);
-			if (ms_exec_check_execve(ad))
+			if (ms_exec_check_execve(ad, pipe, n))
 			{
 				custom_err(ad, 0, NOT_FOUND_CMD_MSG);
 				exit(EXIT_FAILURE);
@@ -77,13 +80,42 @@ static void	init_pipe(t_ad *ad, t_pipe *pip)
 	}
 }
 
+static int	find_last_blt(t_ad *ad)
+{
+	t_pa	*tmp;
+	int		ret;
+	int		n;
+
+	ret = 0;
+	n = 0;
+	pa_lst_fst_or_lst(&ad->pa, 0);
+	while (ad->pa)
+	{
+		if (ad->pa->is_blt == 1)
+		{
+			tmp = ad->pa;
+			ret = n;
+		}
+		n++;
+		ad->pa = ad->pa->next;
+	}
+	if (tmp)
+		ad->pa = tmp;
+	else
+	{
+		ad->pa = ad->pa_head;
+		return (0);
+	}
+	return (ret);
+}
+
 int	ms_exec(t_ad *ad)
 {
 	t_pipe	pipe;
 	int		n;
 
 	init_pipe(ad, &pipe);
-	n = 0;
+	n = find_last_blt(ad);
 	while (ad->pa)
 	{
 		dup_exec_close(ad, &pipe, n);
@@ -95,15 +127,14 @@ int	ms_exec(t_ad *ad)
 		else
 			break ;
 	}
-	n = -1;
-	while (++n < pipe.n_pa)
+	n = find_last_blt(ad);
+	while (n < pipe.n_pa)
 	{
-		if (ad->pa->is_blt == 0)
-		{
-			waitpid(pipe.pid[n], &g_status_exit, 0);
-			if (WIFSIGNALED(g_status_exit))
-				g_status_exit = SIGNAL_ERR + g_status_exit;
-		}
+		waitpid(pipe.pid[n], &g_status_exit, 0);
+		if (WIFSIGNALED(g_status_exit))
+			g_status_exit = SIGNAL_ERR + g_status_exit;
+		ad->pa = ad->pa->next;
+		n++;
 	}
 	free_pipe(ad, &pipe);
 	return (0);

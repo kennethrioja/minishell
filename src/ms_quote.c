@@ -17,13 +17,19 @@ int	pos_n_char(char *str, int n, char c)
 {
 	int	i;
 
-	i = 0;
-	while (str[i++])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == c)
 			n--;
 		if (n == 0)
-			return (i);
+			return (i + 1);
+	}
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == ' ')
+			return (++i);
 	}
 	return (i);
 }

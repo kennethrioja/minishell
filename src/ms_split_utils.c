@@ -69,6 +69,18 @@ int	ft_count_args(const char *s)
 	i = 0;
 	while (s[i] && s[i] != '|')
 	{
+//		if (s[i++] == '\'')
+//		{
+//			while (s[i] != '\'')
+//				i++;
+//			count++;
+//		}
+//		if (s[i++] == '"')
+//		{
+//			while (s[i] != '"')
+//				i++;
+//			count++;
+//		}
 		if (!ft_isspace(s[i]) && s[i] != '>' && s[i] != '<'
 			&& (ft_isspace(s[i + 1]) || s[i + 1] == '\0'
 				|| s[i + 1] == '>' || s[i + 1] == '<' || s[i + 1] == '|'))

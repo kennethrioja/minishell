@@ -39,7 +39,7 @@ static int	populate_redir(t_ad *ad, const char *l)
 	return (ret);
 }
 
-static int	populate_pa(t_ad *ad, const char *l)
+static int	populate_pa(t_ad *ad, char *l)
 {
 	int	n;
 	int	ret;
@@ -53,14 +53,30 @@ static int	populate_pa(t_ad *ad, const char *l)
 		ad->pa->is_blt = 1;
 	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
+	printf("count args [%d]\n", ft_count_args(l));
+	printf("str [%s]\n", l + ret);
+	printf("pos_n_char [%d]\n", pos_n_char(l + ret, 2, '"'));
+	printf("ft_strlen_sp [%d]\n", ft_strlen_sp(l + ret, 0));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while (*(l + ret) != '|' && *(l + ret))
 	{
-		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,
-					ft_strlen_sp(l + ret, 0)), " ");
+		if (*(l + ret) == '\'')
+		{
+			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,pos_n_char(l + ret, 2, '\'')), " ");
+			ret += pos_n_char(l + ret, 2, '\'');
+		}
+		else if (*(l + ret) == '"')
+		{
+			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,pos_n_char(l + ret, 2, '"')), "\"");
+			ret += pos_n_char(l + ret, 2, '"');
+		}
+		else
+		{
+			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
+			ret += ft_strlen_sp(l + ret, 0);
+		}
 		if (ad->pa->args[n] == NULL)
 			my_exit(ad, write(2, "Error: ad->pa->args is NULL\n", 28));
-		ret += ft_strlen_sp(l + ret, 0);
 		++n;
 		ret += populate_redir(ad, l + ret);
 	}
@@ -93,6 +109,31 @@ static int	parse_line(t_ad *ad, char *l)
 		return (1);
 	free(tmp);
 	check_dollar(ad);
+	int	n = 0;
+	ad->pa = ad->pa_head;
+	while (ad->pa)
+	{
+		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
+		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
+		while (ad->pa->args[n])
+		{
+			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
+			++n;
+		}
+		redir_lst_fst_or_lst(&ad->pa->redir, 0);
+		while (ad->pa->redir)
+		{
+			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
+			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
+			if (ad->pa->redir->next)
+				ad->pa->redir = ad->pa->redir->next;
+			else
+				break;
+		}
+		ad->pa = ad->pa->next;
+		n = 0;
+	}
+	ad->pa = ad->pa_head;
 	return (0);
 }
 /*
@@ -118,8 +159,9 @@ static int	parse_line(t_ad *ad, char *l)
 			else
 				break;
 		}
-	ad->pa = ad->pa->next;
-	n = 0;
+		ad->pa = ad->pa->next;
+		n = 0;
+	}
 */
 
 int	ms_split(t_ad *ad)

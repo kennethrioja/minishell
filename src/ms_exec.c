@@ -34,10 +34,7 @@ static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 		ms_exec_builtins(ad, pipe, n);
 	else
 	{
-//		if (!ad->pa->is_blt)
 		pipe->pid[n] = fork();
-//		else
-//			ms_exec_builtins(ad, pipe, n);
 		handle_child_signal();
 		if (pipe->pid[n] == -1)
 			my_exit(ad, write(2, "Error: fork\n", 12));
@@ -88,6 +85,7 @@ static int	find_last_blt(t_ad *ad)
 
 	ret = 0;
 	n = 0;
+	tmp = NULL;
 	pa_lst_fst_or_lst(&ad->pa, 0);
 	while (ad->pa)
 	{
@@ -102,10 +100,7 @@ static int	find_last_blt(t_ad *ad)
 	if (tmp)
 		ad->pa = tmp;
 	else
-	{
 		ad->pa = ad->pa_head;
-		return (0);
-	}
 	return (ret);
 }
 

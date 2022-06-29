@@ -41,7 +41,7 @@ static void	child_handler(int signum)
 	if (signum == SIGINT)
 		ft_printf("\n");
 	if (signum == SIGQUIT)
-		ft_printf("Quit: 3\n");
+		ft_printf("Quit: %d\n", SIGQUIT);
 }
 
 void	handle_child_signal(void)

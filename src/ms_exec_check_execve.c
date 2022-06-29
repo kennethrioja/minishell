@@ -83,7 +83,5 @@ int	ms_exec_check_execve(t_ad *ad, t_pipe *pipe, int n)
 		execve(cmd, ad->pa->args, get_env2d(ad->env));
 		free(cmd);
 	}
-	(void)pipe;
-	(void)n;
 	return (0);
 }

@@ -128,7 +128,10 @@ int	ms_exec(t_ad *ad)
 		waitpid(pipe.pid[n], &g_status_exit, 0);
 		if (WIFSIGNALED(g_status_exit))
 			g_status_exit = SIGNAL_ERR + g_status_exit;
-		ad->pa = ad->pa->next;
+		if (ad->pa->next)
+			ad->pa = ad->pa->next;
+		else
+			break ;
 		n++;
 	}
 	free_pipe(ad, &pipe);

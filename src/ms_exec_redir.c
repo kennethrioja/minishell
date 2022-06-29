@@ -36,8 +36,6 @@ static void	redir_heredoc(t_ad *ad)
 		close(fd[1]);
 		free(tmp);
 	}
-	close(fd[0]);
-	close(fd[1]);
 }
 
 static void	redir_infile(t_ad *ad)

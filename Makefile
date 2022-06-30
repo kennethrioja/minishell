@@ -18,6 +18,7 @@ SRCS		=	main.c						\
 				ms_exec_utils.c				\
 				dollar.c					\
 				ms_quote.c					\
+				ft_strsubreplace.c			\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\
 				$(B_INS_DIR)cd.c			\

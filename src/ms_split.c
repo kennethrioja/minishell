@@ -55,11 +55,14 @@ static int	populate_pa(t_ad *ad, char *l)
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	printf("count args [%d]\n", ft_count_args(l));
 	printf("str [%s]\n", l + ret);
-	printf("pos_n_char [%d]\n", pos_n_char(l + ret, 2, '"'));
+	printf("pos_n_char \"[%d]\n", pos_n_char(l + ret, 2, '"'));
+	printf("pos_n_char '[%d]\n", pos_n_char(l + ret, 2, '\''));
 	printf("ft_strlen_sp [%d]\n", ft_strlen_sp(l + ret, 0));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while (*(l + ret) != '|' && *(l + ret))
 	{
+		while (*(l + ret) == ' ')
+			ret++;
 		if (*(l + ret) == '\'')
 		{
 			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,pos_n_char(l + ret, 2, '\'')), " ");

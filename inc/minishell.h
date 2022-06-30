@@ -194,6 +194,9 @@ int		ms_exec(t_ad *ad);
 int		pos_n_char(char *str, int n, char c);
 int		check_quote(char *str, char c);
 
+//* ft_strsubreplace.c
+char	*ft_strsubreplace(const char *s, const char *set, const char *sub);
+
 //* builtins
 
 //** builtins/echo.c

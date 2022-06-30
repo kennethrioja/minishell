@@ -57,18 +57,24 @@ static void	redir_infile(t_ad *ad)
 static void	redir_outfile(t_ad *ad)
 {
 	int	outfile;
+//	int	tmp;
 
 	if (!ft_strncmp(ad->pa->redir->op, ">", 1))
 	{
+//		tmp = dup(STDOUT_FILENO);
 		if (!ft_strcmp(ad->pa->redir->op, ">>"))
 			outfile = open(ad->pa->redir->file,
 					O_RDWR | O_APPEND | O_CREAT, 0644);
 		else
 			outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
 		if (outfile == -1)
+		{
 			my_exit(ad, write(2, "Error: outfile\n", 15));
+		}
 		dup2(outfile, STDOUT_FILENO);
 		close(outfile);
+//		dup2(tmp, STDOUT_FILENO);
+//		close(tmp);
 	}
 }
 

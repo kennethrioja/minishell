@@ -31,6 +31,7 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 
 static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
+	// check si on a besoin de && !ad->pa->next
 	if (is_builtins(ad) && !ad->pa->next)
 		ms_exec_builtins(ad, pipe, n);
 	else

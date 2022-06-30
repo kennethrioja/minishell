@@ -53,11 +53,6 @@ static int	populate_pa(t_ad *ad, char *l)
 		ad->pa->is_blt = 1;
 	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
 		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
-	printf("count args [%d]\n", ft_count_args(l));
-	printf("str [%s]\n", l + ret);
-	printf("pos_n_char \"[%d]\n", pos_n_char(l + ret, 2, '"'));
-	printf("pos_n_char '[%d]\n", pos_n_char(l + ret, 2, '\''));
-	printf("ft_strlen_sp [%d]\n", ft_strlen_sp(l + ret, 0));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while (*(l + ret) != '|' && *(l + ret))
 	{
@@ -112,31 +107,6 @@ static int	parse_line(t_ad *ad, char *l)
 		return (1);
 	free(tmp);
 	check_dollar(ad);
-	int	n = 0;
-	ad->pa = ad->pa_head;
-	while (ad->pa)
-	{
-		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
-		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
-		while (ad->pa->args[n])
-		{
-			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
-			++n;
-		}
-		redir_lst_fst_or_lst(&ad->pa->redir, 0);
-		while (ad->pa->redir)
-		{
-			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
-			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
-			if (ad->pa->redir->next)
-				ad->pa->redir = ad->pa->redir->next;
-			else
-				break;
-		}
-		ad->pa = ad->pa->next;
-		n = 0;
-	}
-	ad->pa = ad->pa_head;
 	return (0);
 }
 /*

@@ -35,7 +35,7 @@ static int	exec_blt(t_ad *ad)
 int	ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n)
 {
 	if (ad->pa->next)
-		dup2(pipe->pblt[STDOUT_FILENO], STDOUT_FILENO);
+		dup2(pipe->pblt[1], STDOUT_FILENO);
 	if (ad->pa->next)
 		my_close2(pipe->fd, pipe->n_pa, n, 1);
 	ms_exec_redir(ad);

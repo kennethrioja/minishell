@@ -60,7 +60,7 @@ int	ft_strlen_sp(const char	*s, int flag)
 	return (i);
 }
 
-int	skip_between_char(const char *s, int i, char c)
+static int	skip_between_char(const char *s, int i, char c)
 {
 	if (s[i] == c)
 	{
@@ -87,15 +87,7 @@ int	ft_count_args(const char *s)
 				|| s[i + 1] == '>' || s[i + 1] == '<' || s[i + 1] == '|'))
 			++count;
 		if (s[i] == '>' || s[i] == '<')
-		{
-			while (s[i] == '>' || s[i] == '<' || ft_isspace(s[i]))
-				++i;
-			while ((!ft_isspace(s[i]) && s[i] != '>' && s[i] != '<'
-					&& s[i] != '|' && s[i] != '\0'))
-				++i;
-			while (ft_isspace(s[i]) && s[i])
-				++i;
-		}
+			i += ft_skip_op(s + i);
 		else
 			++i;
 	}

@@ -169,6 +169,7 @@ void	handle_child_signal(void);
 void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
+void	free_pa(t_ad *ad);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);

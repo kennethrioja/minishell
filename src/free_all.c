@@ -20,50 +20,51 @@ void	my_exit(t_ad *ad, int flag)
 
 static void	free_redir(t_ad *ad)
 {
-	while (ad->redir && ad->redir->next)
+	t_redir	*next;
+
+	redir_lst_fst_or_lst(&ad->pa->redir, 0);
+	while (ad->redir)
 	{
-		if (ad->redir->op)
-			free(ad->redir->op);
-		if (ad->redir->file)
-			free(ad->redir->file);
-		ad->redir = ad->redir->next;
-		free(ad->redir->prev);
+		next = ad->redir->next;
+		free(ad->redir->op);
+		free(ad->redir->file);
+		free(ad->redir);
+		ad->redir = next;
 	}
 	free(ad->redir);
 }
 
-static void	free_pa(t_ad *ad)
+void	free_pa(t_ad *ad)
 {
-	int	n;
+	int		n;
+	t_pa	*next;
 
-	while (ad->pa && ad->pa->next)
+	ad->pa = ad->pa_head;
+	while (ad->pa)
 	{
-		n = -1;
+		if (ad->pa->next)
+			next = ad->pa->next;
 		if (ad->pa->cmd)
 			free(ad->pa->cmd);
 		if (ad->pa->path)
 			free(ad->pa->path);
-		while (ad->pa->args[++n])
-			free(ad->pa->args[n]);
-		free(ad->pa->args[n]);
-		ad->pa = ad->pa->next;
-		free(ad->pa->prev);
+		n = -1;
+		if (ad->pa->args)
+			while (ad->pa->args[++n])
+				if (ad->pa->args[n])
+					free(ad->pa->args[n]);
+		free(ad->pa->args);
+		free(ad->pa);
+		ad->pa = next;
 	}
-//	n = -1;
-//	if (ad->pa->cmd)
-//		free(ad->pa->cmd);
-//	if (ad->pa->path)
-//		free(ad->pa->path);
-//	while (ad->pa->args[++n])
-//		free(ad->pa->args[n]);
-//	free(ad->pa->args[n]);
-//	free(ad->pa);
+	free(ad->pa);
 }
 
 void	free_cmd(t_ad *ad)
 {
 	free(ad->line);
-	free_redir(ad);
+	if (ad->redir)
+		free_redir(ad);
 	free_pa(ad);
 	ad->pa = NULL;
 	ad->pa_head = NULL;
@@ -73,6 +74,8 @@ void	free_cmd(t_ad *ad)
 void	free_all(t_ad *ad)
 {
 	free_env(ad);
-	free_redir(ad);
-	free_pa(ad);
+	if (ad->redir)
+		free_redir(ad);
+	if (ad->pa)
+		free_pa(ad);
 }

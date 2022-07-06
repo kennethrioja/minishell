@@ -135,6 +135,8 @@ int	ms_exec(t_ad *ad)
 			waitpid(pipe.pid[n], &g_status_exit, 0);
 			if (WIFSIGNALED(g_status_exit))
 				g_status_exit = SIGNAL_ERR + g_status_exit;
+			else if (WIFEXITED(g_status_exit))
+				g_status_exit = WEXITSTATUS(g_status_exit);
 		}
 		if (ad->pa->next)
 			ad->pa = ad->pa->next;

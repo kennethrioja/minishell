@@ -66,9 +66,13 @@ static void	redir_outfile(t_ad *ad)
 			outfile = open(ad->pa->redir->file,
 					O_RDWR | O_APPEND | O_CREAT, 0644);
 		else
-			outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
+			outfile = open(ad->pa->redir->file,
+					O_TRUNC | O_RDWR | O_CREAT, 0644);
 		if (outfile == -1)
-			my_exit(ad, write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
+		{
+			write(2, "adsh: syntax error near unexpected token `newline'\n", 51);
+			return ;
+		}
 		dup2(outfile, STDOUT_FILENO);
 		close(outfile);
 	}

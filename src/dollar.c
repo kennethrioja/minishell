@@ -17,6 +17,7 @@ void	check_dollar(t_ad *ad)
 {
 	int		i;
 	int		j;
+	char	*env;
 	char	*tmp;
 	char	*tmp2;
 
@@ -43,14 +44,16 @@ void	check_dollar(t_ad *ad)
 							free(tmp);
 							free(tmp2);
 						}
-						if (get_i_env(ad, ad->pa->args[i] + j + 1) != -1)
+						env = ft_substr(ad->pa->args[i], j + 1, ft_strlen_c(ad->pa->args[i] + j + 1, ' '));
+						if (get_i_env(ad, env) != -1)
 						{
 							tmp = ad->pa->args[i];
-							tmp2 = ft_strjoin("$", get_env(ad, get_i_env(ad, ad->pa->args[i] + j + 1))->key);
-							ad->pa->args[i] = ft_strsubreplace(ad->pa->args[i], tmp2, get_env(ad, get_i_env(ad, ad->pa->args[i] + j + 1))->value);
+							tmp2 = ft_strjoin("$", get_env(ad, get_i_env(ad, env))->key);
+							ad->pa->args[i] = ft_strsubreplace(ad->pa->args[i], tmp2, get_env(ad, get_i_env(ad, env))->value);
 							free(tmp);
 							free(tmp2);
 						}
+						free(env);
 					}
 				}
 			}

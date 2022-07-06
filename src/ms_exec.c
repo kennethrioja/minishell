@@ -48,11 +48,14 @@ static int	fake_heredoc(t_ad *ad)
 static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	// check si on a besoin de && !ad->pa->next
-	// ft_printf("adpacmd=|%s|\n",ad->pa->cmd);
+//	ft_printf("adpacmd=|%s|\n",ad->pa->cmd);
 //	ft_printf("adparedirop=|%s|\n",ad->pa->redir->op);
 //	ft_printf("adparedirfile=|%s|\n",ad->pa->redir->file);
-	if (is_builtins(ad) && !ad->pa->next)
-		return (ms_exec_builtins(ad, pipe, n));
+
+//	ft_printf("adpacmd=|%s|\n", ad->pa->cmd);
+	if (ad->pa->redir)
+		if (ad->pa->cmd && ad->pa->redir->op && !ad->pa->redir->file[0])
+			return (write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
 	if ((!ad->pa->cmd || !ad->pa->cmd[0]))
 	{
 		if (ad->pa->redir)
@@ -66,6 +69,8 @@ static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 		}
 		return (write(2, "adsh: syntax error near unexpected token `|'\n", 45));
 	}
+	if (is_builtins(ad) && !ad->pa->next)
+		return (ms_exec_builtins(ad, pipe, n));
 	else
 	{
 		pipe->pid[n] = fork();

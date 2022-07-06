@@ -45,8 +45,9 @@ void	free_pa(t_ad *ad)
 		free(ad->pa->cmd);
 		free(ad->pa->path);
 		n = -1;
-		while (ad->pa->args[++n])
-			free(ad->pa->args[n]);
+		if (ad->pa->args)
+			while (ad->pa->args[++n])
+				free(ad->pa->args[n]);
 		free(ad->pa->args);
 		free_redir(ad);
 		free(ad->pa);

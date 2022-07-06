@@ -6,13 +6,13 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:51 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/05/18 09:11:16 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:39:23 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	sig_handler(int signum)
+void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{

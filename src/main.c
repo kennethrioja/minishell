@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 16:51:07 by tpinto-m          #+#    #+#             */
-/*   Updated: 2022/06/28 12:11:55 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 18:30:49 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av, char **env)
 		tmp = ms_split(&ad);
 		if (tmp == 1)
 			break ;
-		if (tmp == 2)
+		if (tmp == 2 || tmp == 3)
 			continue ;
 		if (ms_exec(&ad))
 			break ;

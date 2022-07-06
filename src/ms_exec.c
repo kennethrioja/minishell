@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/28 13:31:33 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:56:45 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,43 @@ static void	free_pipe(t_ad *ad, t_pipe *pipe)
 	pa_lst_fst_or_lst(&ad->pa, 0);
 }
 
-static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
+static int	fake_heredoc(t_ad *ad)
+{
+	char	*tmp;
+
+	while (1)
+	{
+		tmp = readline("> ");
+		if (!ft_strcmp(ad->pa->redir->file, tmp))
+			break ;
+		if (tmp)
+			free(tmp);
+	}
+	free(tmp);
+	return (42);
+}
+
+static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 {
 	// check si on a besoin de && !ad->pa->next
+	// ft_printf("adpacmd=|%s|\n",ad->pa->cmd);
+//	ft_printf("adparedirop=|%s|\n",ad->pa->redir->op);
+//	ft_printf("adparedirfile=|%s|\n",ad->pa->redir->file);
 	if (is_builtins(ad) && !ad->pa->next)
-		ms_exec_builtins(ad, pipe, n);
+		return (ms_exec_builtins(ad, pipe, n));
+	if ((!ad->pa->cmd || !ad->pa->cmd[0]))
+	{
+		if (ad->pa->redir)
+		{
+			if (!ad->pa->redir->file[0])
+				return (write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
+			else if (!ft_strcmp(ad->pa->redir->op, ">"))
+				return (open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644));
+			else if (!ft_strcmp(ad->pa->redir->op, "<<"))
+				return (fake_heredoc(ad));
+		}
+		return (write(2, "adsh: syntax error near unexpected token `|'\n", 45));
+	}
 	else
 	{
 		pipe->pid[n] = fork();
@@ -55,6 +87,7 @@ static void	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 			}
 		}
 		my_close(ad, pipe, n);
+		return (0);
 	}
 }
 
@@ -82,43 +115,18 @@ static void	init_pipe(t_ad *ad, t_pipe *pip)
 		my_exit(ad, write(2, "Error: builtins pipe\n", 21));
 }
 
-static int	find_last_blt(t_ad *ad)
-{
-	t_pa	*tmp;
-	int		ret;
-	int		n;
-
-	ret = 0;
-	n = 0;
-	tmp = NULL;
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (ad->pa)
-	{
-		if (ad->pa->is_blt == 1)
-		{
-			tmp = ad->pa;
-			ret = n;
-		}
-		n++;
-		ad->pa = ad->pa->next;
-	}
-	if (tmp)
-		ad->pa = tmp;
-	else
-		ad->pa = ad->pa_head;
-	return (ret);
-}
-
 int	ms_exec(t_ad *ad)
 {
 	t_pipe	pipe;
 	int		n;
 
 	init_pipe(ad, &pipe);
-	n = find_last_blt(ad);
+	n = 0;
+	pa_lst_fst_or_lst(&ad->pa, 0);
 	while (ad->pa)
 	{
-		dup_exec_close(ad, &pipe, n);
+		if (dup_exec_close(ad, &pipe, n))
+			break ;
 		if (ad->pa->next)
 		{
 			++n;
@@ -127,10 +135,11 @@ int	ms_exec(t_ad *ad)
 		else
 			break ;
 	}
-	n = find_last_blt(ad);
+	n = 0;
+	pa_lst_fst_or_lst(&ad->pa, 0);
 	while (n < pipe.n_pa)
 	{
-		if (!ad->pa->is_blt)
+		if (ad->pa->cmd)
 		{
 			waitpid(pipe.pid[n], &g_status_exit, 0);
 			if (WIFSIGNALED(g_status_exit))

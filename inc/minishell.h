@@ -6,7 +6,7 @@
 /*   By: tpinto-m <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:09:16 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/28 13:01:18 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:57:46 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,13 @@ typedef struct s_ad
 
 //* get_line.c
 int		get_line(t_ad *ad);
-int	check_builtins(t_ad *ad);
+int		check_builtins(t_ad *ad);
 
 //* ms_split.c
 int		ms_split(t_ad *ad);
 
 //* ms_split_utils.c
-int		ft_strlen_op(t_ad *ad, const char *s);
+int		ft_strlen_op(const char *s);
 int		ft_count_args(const char *s);
 int		ft_strlen_sp(const char	*s, int flag);
 int		ft_skip_op(const char *s);
@@ -162,6 +162,7 @@ void	ms_lstadd_next(t_pa **pa, t_pa *panew);
 
 //* signal.c
 void	handle_signal(void);
+void	sig_handler(int signum);
 void	handle_child_signal(void);
 
 //* free_all.c

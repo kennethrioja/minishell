@@ -79,7 +79,6 @@ void	init(t_ad *ad, char	**env)
 		append_t_node(&ad->env, key, value);
 		j++;
 	}
-	ad->redir = NULL;
 	ad->pa = NULL;
 	g_status_exit = 0;
 }

@@ -16,15 +16,12 @@ int	get_line(t_ad *ad)
 {
 	struct termios	saved;
 	struct termios	attributes;
-	char			*tmp;
 
 	tcgetattr(STDIN_FILENO, &saved);
 	tcgetattr(STDIN_FILENO, &attributes);
 	attributes.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
-	tmp = ft_strjoin(SHELL_NAME, "> ");
-	ad->line = readline(tmp);
-	free(tmp);
+	ad->line = readline("adsh> ");
 	if (ad->line)
 		add_history(ad->line);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);

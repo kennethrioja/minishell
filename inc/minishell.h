@@ -119,7 +119,6 @@ typedef struct s_ad
 {
 	char			*line;
 	t_node			*env;
-	t_redir			*redir;
 	t_pa			*pa;
 	t_pa			*pa_head;
 }					t_ad;
@@ -170,6 +169,7 @@ void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
 void	free_pa(t_ad *ad);
+void	free_redir(t_ad *ad);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);

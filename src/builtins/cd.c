@@ -16,6 +16,7 @@ int	ft_cd(t_ad *ad)
 {
 	char	buf[PATH_MAX];
 
+	free(get_env(ad, get_i_env(ad, "OLDPWD"))->value);
 	add_env(ad, 0, "OLDPWD", ft_strdup(getcwd(buf, PATH_MAX)));
 	if (!ad->pa->args[1])
 	{
@@ -29,6 +30,7 @@ int	ft_cd(t_ad *ad)
 		else
 			custom_err(ad, 1, PERMISSION_MSG);
 	}
+	free(get_env(ad, get_i_env(ad, "PWD"))->value);
 	add_env(ad, 0, "PWD", ft_strdup(getcwd(buf, PATH_MAX)));
 	g_status_exit = SUCCESS;
 	return (0);

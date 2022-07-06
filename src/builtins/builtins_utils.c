@@ -14,16 +14,16 @@
 
 void	free_env(t_ad *ad)
 {
-	while (ad->env && ad->env->next)
+	t_node	*next;
+
+	while (ad->env)
 	{
+		next = ad->env->next;
 		free(ad->env->key);
 		free(ad->env->value);
-		ad->env = ad->env->next;
-		free(ad->env->prev);
+		free(ad->env);
+		ad->env = next;
 	}
-	free(ad->env->key);
-	free(ad->env->value);
-	free(ad->env);
 }
 
 int	count_t_node(t_node *node)

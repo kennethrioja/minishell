@@ -48,9 +48,9 @@ char	*ft_strsubreplace(const char *s, const char *set, const char *sub)
 	{
 		if (ft_strnstr(s, set, ft_strlen(s)) == s)
 		{
-			ft_strlcpy(&result[i], sub, ft_strlen(&result[i]));
-			i += sub_len;
 			s += set_len;
+			while (*sub)
+				result[i++] = *sub++;
 		}
 		else
 			result[i++] = *s++;

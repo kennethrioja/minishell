@@ -44,7 +44,7 @@ int	get_i_env(t_ad *ad, char *key)
 	i = 0;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->key, key, ft_strlen(tmp->key)))
+		if (!ft_strcmp(tmp->key, key))
 			return (i);
 		tmp = tmp->next;
 		i++;
@@ -79,7 +79,6 @@ void	init(t_ad *ad, char	**env)
 		append_t_node(&ad->env, key, value);
 		j++;
 	}
-	ad->redir = NULL;
 	ad->pa = NULL;
 	g_status_exit = 0;
 }

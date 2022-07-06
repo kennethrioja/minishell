@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-// test
-//   echo 12345 "67890 $? qwert $USER" $USER yuiop~ 'echo "lol" $USER' mdr
-//output: 12345 67890 0 qwert tpinto-m tpinto-m yuiop~ echo "lol" $USER mdr
 int	main(int ac, char **av, char **env)
 {
 	t_ad	ad;
@@ -33,9 +30,11 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		if (ms_exec(&ad))
 			break ;
-		free_cmd(&ad);
+		free_pa(&ad);
+		free(ad.line);
 	}
-	free_all(&ad);
+	free_env(&ad);
+	free(ad.line);
 	(void)ac;
 	(void)av;
 	(void)env;

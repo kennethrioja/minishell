@@ -14,11 +14,26 @@
 
 static int	populate_redir(t_ad *ad, const char *l)
 {
-	int	ret;
+	int		ret;
+	t_redir	*next;
 
 	ret = 0;
 	while (*(l + ret) == '>' || *(l + ret) == '<')
 	{
+//<<<<<<< fix_leaks
+//		next = redir_lstnew(NULL);
+//		next->op = ft_strtrim_f(
+//				ft_substr(l + ret, 0, ft_strlen_op(ad, l + ret)), " ");
+//		if (next->op == NULL)
+//			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->op)\n", 30));
+//		ret += ft_strlen_op(ad, l + ret);
+//		next->file = ft_strtrim_f(
+//				ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
+//		if (next->file == NULL)
+//			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->file)\n", 32));
+//		if (!next->file[0])
+//			my_exit(ad, write(2, "Error: Redir file not specified\n", 32));
+//=======
 		if (!ad->pa->redir)
 			ad->pa->redir = redir_lstnew(ad->pa->redir);
 		else
@@ -36,7 +51,9 @@ static int	populate_redir(t_ad *ad, const char *l)
 //			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->file)\n", 32));
 //		if (!ad->pa->redir->file[0])
 //			my_exit(ad, write(2, "Error: Redir file not specified\n", 32));
+//>>>>>>> main
 		ret += ft_strlen_sp(l + ret, 0);
+		redir_lstadd_next(&ad->pa->redir, next);
 	}
 	return (ret);
 }
@@ -155,15 +172,27 @@ static int	parse_line(t_ad *ad, char *l)
 		ad->pa = ad->pa->next;
 		n = 0;
 	}
+	pa_lst_fst_or_lst(&ad->pa, 0);
 */
 
 int	ms_split(t_ad *ad)
 {
+	char	*tmp;
+
 	if (!ad->line)
 		return (1);
 	if (!check_quote(ad->line, '\'') || !check_quote(ad->line, '"'))
 		return (2);
+//<<<<<<< fix_leaks
+//	tmp = ft_strtrim(ad->line, " ");
+//	if (parse_line(ad, tmp))
+//	{
+//		free(tmp);
+//		return (2);
+//	}
+//=======
 	if (parse_line(ad, ft_strtrim(ad->line, " ")))
 		return (3);
+//>>>>>>> main
 	return (0);
 }

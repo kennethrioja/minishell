@@ -71,6 +71,7 @@ static void	show_export(t_ad *ad)
 		tmp = tmp->next;
 	}
 	sort_export(&dup, count_t_node(dup.env));
+	print_node(dup.env, 1);
 	free_env(&dup);
 }
 
@@ -113,5 +114,4 @@ static void	sort_export(t_ad *ad, int count)
 			tmp = tmp->next;
 		}
 	}
-	print_node(tmp, 1);
 }

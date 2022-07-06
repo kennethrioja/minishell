@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 19:14:04 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/28 13:31:40 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:57:18 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static void	redir_infile(t_ad *ad)
 
 	if (!ft_strcmp(ad->pa->redir->op, "<"))
 	{
+		if (!ad->pa->redir->file[0])
+			my_exit(ad, write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
 		infile = open(ad->pa->redir->file, O_RDWR);
 		if (infile == -1)
 			my_exit(ad, write(2, "adsh: ", 6)
@@ -66,9 +68,7 @@ static void	redir_outfile(t_ad *ad)
 		else
 			outfile = open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644);
 		if (outfile == -1)
-		{
-			my_exit(ad, write(2, "Error: outfile\n", 15));
-		}
+			my_exit(ad, write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
 		dup2(outfile, STDOUT_FILENO);
 		close(outfile);
 	}

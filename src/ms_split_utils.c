@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 10:29:34 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/01 19:18:53 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 18:34:15 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_count_args(const char *s)
 	return (count);
 }
 
-int	ft_strlen_op(t_ad *ad, const char *s)
+int	ft_strlen_op(const char *s)
 {
 	int		i;
 	char	c;
@@ -104,10 +104,16 @@ int	ft_strlen_op(t_ad *ad, const char *s)
 	while (s[i] == '>' || s[i] == '<')
 	{
 		if (s[i] != c)
-			my_exit(ad, write(2, "Error: Reverse redirection operator\n", 36));
+		{
+			write(2, "adsh: syntax error near unexpected token `redir'\n", 49);
+			return (-1);
+		}
 		++i;
 	}
 	if (i > 2)
-		my_exit(ad, write(2, "Error: Too long redirection operator\n", 37));
+	{
+		write(2, "adsh: syntax error near unexpected token `redir'\n", 49);
+		return (-1);
+	}
 	return (i);
 }

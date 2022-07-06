@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:23:14 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/28 12:12:46 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 18:39:40 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,19 @@ static int	populate_redir(t_ad *ad, const char *l)
 			ad->pa->redir = redir_lstnew(ad->pa->redir);
 		else
 			redir_lstadd_next(&ad->pa->redir, redir_lstnew(ad->pa->redir));
+		if (ft_strlen_op(l + ret) == -1)
+			return (-1);
 		ad->pa->redir->op = ft_strtrim(
-				ft_substr(l + ret, 0, ft_strlen_op(ad, l + ret)), " ");
-		if (ad->pa->redir->op == NULL)
-			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->op)\n", 30));
-		ret += ft_strlen_op(ad, l + ret);
+				ft_substr(l + ret, 0, ft_strlen_op(l + ret)), " ");
+//		if (ad->pa->redir->op == NULL)
+//			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->op)\n", 30));
+		ret += ft_strlen_op(l + ret);
 		ad->pa->redir->file = ft_strtrim(
 				ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
-		if (ad->pa->redir->file == NULL)
-			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->file)\n", 32));
-		if (!ad->pa->redir->file[0])
-			my_exit(ad, write(2, "Error: Redir file not specified\n", 32));
+//		if (ad->pa->redir->file == NULL)
+//			my_exit(ad, write(2, "Error: Malloc (ad->pa->redir->file)\n", 32));
+//		if (!ad->pa->redir->file[0])
+//			my_exit(ad, write(2, "Error: Redir file not specified\n", 32));
 		ret += ft_strlen_sp(l + ret, 0);
 	}
 	return (ret);
@@ -47,12 +49,14 @@ static int	populate_pa(t_ad *ad, char *l)
 	n = 0;
 	ret = 0;
 	ret += populate_redir(ad, l + ret);
+	if (ret < 0)
+		return (-1);
 	ad->pa->cmd = ft_strtrim_f(ft_substr(l + ret, 0,
 				ft_strlen_sp(l + ret, 0)), " ");
 	if (is_builtins(ad))
 		ad->pa->is_blt = 1;
-	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
-		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
+//	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
+//		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while (*(l + ret) != '|' && *(l + ret))
 	{
@@ -73,8 +77,8 @@ static int	populate_pa(t_ad *ad, char *l)
 			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
 			ret += ft_strlen_sp(l + ret, 0);
 		}
-		if (ad->pa->args[n] == NULL)
-			my_exit(ad, write(2, "Error: ad->pa->args is NULL\n", 28));
+//		if (ad->pa->args[n] == NULL)
+//			my_exit(ad, write(2, "Error: ad->pa->args is NULL\n", 28));
 		++n;
 		ret += populate_redir(ad, l + ret);
 	}
@@ -85,12 +89,26 @@ static int	populate_pa(t_ad *ad, char *l)
 static int	parse_line(t_ad *ad, char *l)
 {
 	char	*tmp;
+	int		pop;
 
 	ad->pa = pa_lstnew(NULL);
 	ad->pa_head = ad->pa;
 	tmp = l;
+	pop = 0;
 	while (*l)
 	{
+		pop = populate_pa(ad, l);
+		if (pop < 0)
+			return (1);
+		l += populate_pa(ad, l);
+		if (*l == '|')
+		{
+			++l;
+			while (ft_isspace(*l) && *l)
+				++l;
+			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
+		}
+/*
 		if (*l != '|')
 			l += populate_pa(ad, l);
 		else
@@ -102,11 +120,13 @@ static int	parse_line(t_ad *ad, char *l)
 				++l;
 			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
 		}
+*/
 	}
-	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
-		return (1);
+//	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
+//		return (1);
 	free(tmp);
-	check_dollar(ad);
+	if (ad->pa->cmd)
+		check_dollar(ad);
 	return (0);
 }
 /*
@@ -144,6 +164,6 @@ int	ms_split(t_ad *ad)
 	if (!check_quote(ad->line, '\'') || !check_quote(ad->line, '"'))
 		return (2);
 	if (parse_line(ad, ft_strtrim(ad->line, " ")))
-		return (2);
+		return (3);
 	return (0);
 }

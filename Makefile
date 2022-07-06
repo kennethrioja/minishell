@@ -35,7 +35,8 @@ PRINTF_DIR	=	$(SRC_DIR)$(FT_DIR)ft_printf
 INC_PRINTF	=	-I $(PRINTF_DIR) -L $(PRINTF_DIR) -lftprintf
 
 ifeq ($(shell env | grep USER= | cut -b 6-), krioja)
-	READLINE_DIR	=	/Users/krioja/sgoinfre/krioja/.brew/Cellar/readline/8.1.2/
+#	READLINE_DIR	=	/Users/krioja/sgoinfre/krioja/.brew/Cellar/readline/8.1.2/
+	READLINE_DIR	=	/Users/krioja/goinfre/.brew/Cellar/readline/8.1.2/
 else ifeq ($(shell env | grep USER= | cut -b 6-), tpinto-m)
 	READLINE_DIR	=	~/.brew/Cellar/readline/8.1.2/
 endif

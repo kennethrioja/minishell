@@ -6,7 +6,7 @@
 /*   By: krioja <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 19:00:43 by krioja            #+#    #+#             */
-/*   Updated: 2022/06/28 13:31:33 by krioja           ###   ########.fr       */
+/*   Updated: 2022/07/06 12:55:44 by krioja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,40 +82,13 @@ static void	init_pipe(t_ad *ad, t_pipe *pip)
 		my_exit(ad, write(2, "Error: builtins pipe\n", 21));
 }
 
-static int	find_last_blt(t_ad *ad)
-{
-	t_pa	*tmp;
-	int		ret;
-	int		n;
-
-	ret = 0;
-	n = 0;
-	tmp = NULL;
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (ad->pa)
-	{
-		if (ad->pa->is_blt == 1)
-		{
-			tmp = ad->pa;
-			ret = n;
-		}
-		n++;
-		ad->pa = ad->pa->next;
-	}
-	if (tmp)
-		ad->pa = tmp;
-	else
-		ad->pa = ad->pa_head;
-	return (ret);
-}
-
 int	ms_exec(t_ad *ad)
 {
 	t_pipe	pipe;
 	int		n;
 
 	init_pipe(ad, &pipe);
-	n = find_last_blt(ad);
+	n = 0;
 	while (ad->pa)
 	{
 		dup_exec_close(ad, &pipe, n);
@@ -127,7 +100,7 @@ int	ms_exec(t_ad *ad)
 		else
 			break ;
 	}
-	n = find_last_blt(ad);
+	n = 0;
 	while (n < pipe.n_pa)
 	{
 		if (!ad->pa->is_blt)

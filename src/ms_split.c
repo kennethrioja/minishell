@@ -139,7 +139,8 @@ static int	parse_line(t_ad *ad, char *l)
 
 int	ms_split(t_ad *ad)
 {
-	char *tmp;
+	char	*tmp;
+
 	if (!ad->line)
 		return (1);
 	if (!check_quote(ad->line, '\'') || !check_quote(ad->line, '"'))

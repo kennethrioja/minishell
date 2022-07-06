@@ -44,7 +44,7 @@ int	get_i_env(t_ad *ad, char *key)
 	i = 0;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->key, key, ft_strlen(tmp->key)))
+		if (!ft_strcmp(tmp->key, key))
 			return (i);
 		tmp = tmp->next;
 		i++;

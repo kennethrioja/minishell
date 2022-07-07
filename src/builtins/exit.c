@@ -36,6 +36,5 @@ void	ft_exit(t_ad *ad)
 		}
 		exit(ft_atoi(ad->pa->args[1]));
 	}
-	free_all(ad);
 	exit(EXIT_SUCCESS);
 }

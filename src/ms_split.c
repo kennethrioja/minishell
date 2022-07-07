@@ -34,7 +34,7 @@ static int	populate_redir(t_ad *ad, const char *l)
 	return (ret);
 }
 
-static int	populate_pa(t_ad *ad, char *l)
+static int	populate_pa(t_ad *ad, char *l, int *pop)
 {
 	int	n;
 	int	ret;
@@ -43,7 +43,10 @@ static int	populate_pa(t_ad *ad, char *l)
 	ret = 0;
 	ret += populate_redir(ad, l + ret);
 	if (ret < 0)
+	{
+		*pop = -1;
 		return (-1);
+	}
 	ad->pa->cmd = ft_strtrim_f(ft_substr(l + ret, 0,
 				ft_strlen_sp(l + ret, 0)), " ");
 	if (is_builtins(ad))
@@ -90,10 +93,9 @@ static int	parse_line(t_ad *ad, char *l)
 	pop = 0;
 	while (*l)
 	{
-		pop = populate_pa(ad, l);
+		l += populate_pa(ad, l, &pop);
 		if (pop < 0)
 			return (1);
-		l += populate_pa(ad, l);
 		if (*l == '|')
 		{
 			++l;

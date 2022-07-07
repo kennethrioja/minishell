@@ -51,23 +51,37 @@ static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 //	ft_printf("adpacmd=|%s|\n",ad->pa->cmd);
 //	ft_printf("adparedirop=|%s|\n",ad->pa->redir->op);
 //	ft_printf("adparedirfile=|%s|\n",ad->pa->redir->file);
-
+//
 //	ft_printf("adpacmd=|%s|\n", ad->pa->cmd);
 	if (ad->pa->redir)
 		if (ad->pa->cmd && ad->pa->redir->op && !ad->pa->redir->file[0])
+		{
+			g_status_exit = 130;
 			return (write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
+		}
+	if (ad->pa->prev || ad->pa->next)
+	{
+		if ((!ad->pa->cmd || !ad->pa->cmd[0]))
+		{
+			g_status_exit = 2;
+			return (write(2, "adsh: syntax error near unexpected token `|'\n", 45));
+		}
+	}
 	if ((!ad->pa->cmd || !ad->pa->cmd[0]))
 	{
 		if (ad->pa->redir)
 		{
 			if (!ad->pa->redir->file[0])
+			{
+				g_status_exit = 130;
 				return (write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
+			}
 			else if (!ft_strcmp(ad->pa->redir->op, ">"))
 				return (open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644));
 			else if (!ft_strcmp(ad->pa->redir->op, "<<"))
 				return (fake_heredoc(ad));
 		}
-		return (write(2, "adsh: syntax error near unexpected token `|'\n", 45));
+		return (0);
 	}
 	if (is_builtins(ad) && !ad->pa->next)
 		return (ms_exec_builtins(ad, pipe, n));

@@ -12,14 +12,51 @@
 
 #include "minishell.h"
 
-// TODO norminette (wannacry isn't only a ransomware)
+static char	*edit_status_exit(t_ad *ad, int i)
+{
+	char	*tmp;
+	char	*tmp2;
+	char	*ret;
+
+	tmp = ad->pa->args[i];
+	tmp2 = ft_itoa(g_status_exit);
+	ret = ft_strsubreplace(ad->pa->args[i], "$?", tmp2);
+	free(tmp);
+	free(tmp2);
+	return (ret);
+}
+
+static void	check_after_dollar(t_ad *ad, int i, int j)
+{
+	char	*env;
+	char	*tmp;
+	char	*tmp2;
+
+	if (ad->pa->args[i][j] == '$')
+	{
+		if (ad->pa->args[i][j + 1] == '?')
+		{
+			ad->pa->args[i] = edit_status_exit(ad, i);
+		}
+		env = ft_substr(ad->pa->args[i], j + 1,
+				ft_strlen_c(ad->pa->args[i] + j + 1, ' '));
+		if (get_i_env(ad, env) != -1)
+		{
+			tmp = ad->pa->args[i];
+			tmp2 = ft_strjoin("$", get_env(ad, get_i_env(ad, env))->key);
+			ad->pa->args[i] = ft_strsubreplace(ad->pa->args[i], tmp2,
+					get_env(ad, get_i_env(ad, env))->value);
+			free(tmp);
+			free(tmp2);
+		}
+		free(env);
+	}
+}
+
 void	check_dollar(t_ad *ad)
 {
 	int		i;
 	int		j;
-	char	*env;
-	char	*tmp;
-	char	*tmp2;
 
 	pa_lst_fst_or_lst(&ad->pa, 0);
 	if (!ad->pa)
@@ -33,29 +70,7 @@ void	check_dollar(t_ad *ad)
 			{
 				j = -1;
 				while (ad->pa->args[i][++j])
-				{
-					if (ad->pa->args[i][j] == '$')
-					{
-						if (ad->pa->args[i][j + 1] == '?')
-						{
-							tmp = ad->pa->args[i];
-							tmp2 = ft_itoa(g_status_exit);
-							ad->pa->args[i] = ft_strsubreplace(ad->pa->args[i], "$?", tmp2);
-							free(tmp);
-							free(tmp2);
-						}
-						env = ft_substr(ad->pa->args[i], j + 1, ft_strlen_c(ad->pa->args[i] + j + 1, ' '));
-						if (get_i_env(ad, env) != -1)
-						{
-							tmp = ad->pa->args[i];
-							tmp2 = ft_strjoin("$", get_env(ad, get_i_env(ad, env))->key);
-							ad->pa->args[i] = ft_strsubreplace(ad->pa->args[i], tmp2, get_env(ad, get_i_env(ad, env))->value);
-							free(tmp);
-							free(tmp2);
-						}
-						free(env);
-					}
-				}
+					check_after_dollar(ad, i, j);
 			}
 			else
 				ad->pa->args[i] = ft_strtrim_f(ad->pa->args[i], "'");

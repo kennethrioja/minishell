@@ -34,7 +34,6 @@ static int	exec_blt(t_ad *ad)
 
 int	ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n)
 {
-	// comprendre cette condition
 	if (!ad->pa->next)
 		pipe->pblt[1] = dup(STDOUT_FILENO);
 	if (ad->pa->next)
@@ -44,7 +43,6 @@ int	ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n)
 	ms_exec_redir(ad);
 	if (!exec_blt(ad))
 	{
-		// comprendre cette condition et celle ci
 		if (!ad->pa->next)
 			dup2(pipe->pblt[1], STDOUT_FILENO);
 		return (0);

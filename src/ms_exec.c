@@ -12,61 +12,13 @@
 
 #include "minishell.h"
 
-static void	free_pipe(t_ad *ad, t_pipe *pipe)
+static int	check_exec(t_ad *ad)
 {
-	int	n;
-
-	n = -1;
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (++n < count_pa(ad) - 1)
-	{
-		free(pipe->fd[n]);
-		if (n == count_pa(ad) - 2)
-			free(pipe->fd);
-	}
-	free(pipe->pid);
-	free(pipe->pblt);
-	pa_lst_fst_or_lst(&ad->pa, 0);
-}
-
-static int	fake_heredoc(t_ad *ad)
-{
-	char	*tmp;
-
-	while (1)
-	{
-		tmp = readline("> ");
-		if (!ft_strcmp(ad->pa->redir->file, tmp))
-			break ;
-		if (tmp)
-			free(tmp);
-	}
-	free(tmp);
-	return (42);
-}
-
-static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
-{
-	// check si on a besoin de && !ad->pa->next
-//	ft_printf("adpacmd=|%s|\n",ad->pa->cmd);
-//	ft_printf("adparedirop=|%s|\n",ad->pa->redir->op);
-//	ft_printf("adparedirfile=|%s|\n",ad->pa->redir->file);
-//
-//	ft_printf("adpacmd=|%s|\n", ad->pa->cmd);
-	if (ad->pa->redir)
-		if (ad->pa->cmd && ad->pa->redir->op && !ad->pa->redir->file[0])
-		{
-			g_status_exit = 130;
-			return (write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
-		}
-	if (ad->pa->prev || ad->pa->next)
-	{
-		if ((!ad->pa->cmd || !ad->pa->cmd[0]))
-		{
-			g_status_exit = 2;
-			return (write(2, "adsh: syntax error near unexpected token `|'\n", 45));
-		}
-	}
+	if (ad->pa->redir && ad->pa->cmd && ad->pa->redir->op
+		&& !ad->pa->redir->file[0])
+		return (custom_err_ret(NL_MSG, 130, 1));
+	if ((ad->pa->prev || ad->pa->next) && (!ad->pa->cmd || !ad->pa->cmd[0]))
+		return (custom_err_ret(PIPE_MSG, 2, 1));
 	if ((!ad->pa->cmd || !ad->pa->cmd[0]))
 	{
 		if (ad->pa->redir)
@@ -74,16 +26,23 @@ static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 			if (!ad->pa->redir->file[0])
 			{
 				g_status_exit = 130;
-				return (write(2, "adsh: syntax error near unexpected token `newline'\n", 51));
+				return (write(2, NL_MSG, ft_strlen(NL_MSG)));
 			}
 			else if (!ft_strcmp(ad->pa->redir->op, ">"))
 				return (open(ad->pa->redir->file, O_RDWR | O_CREAT, 0644));
 			else if (!ft_strcmp(ad->pa->redir->op, "<<"))
 				return (fake_heredoc(ad));
 		}
-		return (0);
+		return (1);
 	}
-	if (is_builtins(ad) && !ad->pa->next)
+	return (0);
+}
+
+static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
+{
+	if (check_exec(ad))
+		return (1);
+	else if (is_builtins(ad) && !ad->pa->next)
 		return (ms_exec_builtins(ad, pipe, n));
 	else
 	{
@@ -100,10 +59,8 @@ static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 			if ((ad->pa->prev && !ad->pa->is_blt) || ad->pa->next)
 				my_close2(pipe->fd, pipe->n_pa, n, 1);
 			if (ms_exec_check_execve(ad))
-			{
-				custom_err(ad, 0, NOT_FOUND_CMD_MSG);
-				exit(EXIT_FAILURE);
-			}
+				custom_err_exit(ad, 0,
+					NOT_FOUND_CMD_MSG, EXIT_FAILURE);
 		}
 		my_close(ad, pipe, n);
 		return (0);
@@ -134,6 +91,30 @@ static void	init_pipe(t_ad *ad, t_pipe *pip)
 		my_exit(ad, write(2, "Error: builtins pipe\n", 21));
 }
 
+static void	wait_pipe(t_ad *ad, t_pipe *pip)
+{
+	int	n;
+
+	n = 0;
+	pa_lst_fst_or_lst(&ad->pa, 0);
+	while (n < pip->n_pa)
+	{
+		if (ad->pa->cmd)
+		{
+			waitpid(pip->pid[n], &g_status_exit, 0);
+			if (WIFSIGNALED(g_status_exit))
+				g_status_exit = SIGNAL_ERR + g_status_exit;
+			else if (WIFEXITED(g_status_exit))
+				g_status_exit = WEXITSTATUS(g_status_exit);
+		}
+		if (ad->pa->next)
+			ad->pa = ad->pa->next;
+		else
+			break ;
+		n++;
+	}
+}
+
 int	ms_exec(t_ad *ad)
 {
 	t_pipe	pipe;
@@ -154,24 +135,7 @@ int	ms_exec(t_ad *ad)
 		else
 			break ;
 	}
-	n = 0;
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (n < pipe.n_pa)
-	{
-		if (ad->pa->cmd)
-		{
-			waitpid(pipe.pid[n], &g_status_exit, 0);
-			if (WIFSIGNALED(g_status_exit))
-				g_status_exit = SIGNAL_ERR + g_status_exit;
-			else if (WIFEXITED(g_status_exit))
-				g_status_exit = WEXITSTATUS(g_status_exit);
-		}
-		if (ad->pa->next)
-			ad->pa = ad->pa->next;
-		else
-			break ;
-		n++;
-	}
+	wait_pipe(ad, &pipe);
 	free_pipe(ad, &pipe);
 	return (0);
 }

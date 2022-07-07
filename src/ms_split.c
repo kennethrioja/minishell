@@ -34,14 +34,35 @@ static int	populate_redir(t_ad *ad, const char *l)
 	return (ret);
 }
 
+static void	check_special_char(t_ad *ad, char *l, int *ret, int n)
+{
+	if (*(l + *ret) == '\'')
+	{
+		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + *ret, 0,
+					pos_n_char(l + *ret, 2, '\'')), " ");
+		*ret += pos_n_char(l + *ret, 2, '\'');
+	}
+	else if (*(l + *ret) == '"')
+	{
+		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + *ret, 0,
+					pos_n_char(l + *ret, 2, '"')), "\"");
+		*ret += pos_n_char(l + *ret, 2, '"');
+	}
+	else
+	{
+		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + *ret, 0,
+					ft_strlen_sp(l + *ret, 0)), " ");
+		*ret += ft_strlen_sp(l + *ret, 0);
+	}
+}
+
 static int	populate_pa(t_ad *ad, char *l, int *pop)
 {
 	int	n;
 	int	ret;
 
 	n = 0;
-	ret = 0;
-	ret += populate_redir(ad, l + ret);
+	ret = populate_redir(ad, l);
 	if (ret < 0)
 	{
 		*pop = -1;
@@ -51,30 +72,12 @@ static int	populate_pa(t_ad *ad, char *l, int *pop)
 				ft_strlen_sp(l + ret, 0)), " ");
 	if (is_builtins(ad))
 		ad->pa->is_blt = 1;
-//	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
-//		my_exit(ad, write(2, "Error: ad->pa->cmd is NULL\n", 27));
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
-	while (*(l + ret) != '|' && *(l + ret))
+	while ((*(l + ret) != '|' && *(l + ret)))
 	{
 		while (*(l + ret) == ' ')
 			ret++;
-		if (*(l + ret) == '\'')
-		{
-			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,pos_n_char(l + ret, 2, '\'')), " ");
-			ret += pos_n_char(l + ret, 2, '\'');
-		}
-		else if (*(l + ret) == '"')
-		{
-			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0,pos_n_char(l + ret, 2, '"')), "\"");
-			ret += pos_n_char(l + ret, 2, '"');
-		}
-		else
-		{
-			ad->pa->args[n] = ft_strtrim_f(ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
-			ret += ft_strlen_sp(l + ret, 0);
-		}
-//		if (ad->pa->args[n] == NULL)
-//			my_exit(ad, write(2, "Error: ad->pa->args is NULL\n", 28));
+		check_special_char(ad, l, &ret, n);
 		++n;
 		ret += populate_redir(ad, l + ret);
 	}
@@ -103,55 +106,12 @@ static int	parse_line(t_ad *ad, char *l)
 				++l;
 			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
 		}
-/*
-		if (*l != '|')
-			l += populate_pa(ad, l);
-		else
-		{
-			if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
-				return (1);
-			++l;
-			while (ft_isspace(*l) && *l)
-				++l;
-			pa_lstadd_next(&ad->pa, pa_lstnew(ad->pa));
-		}
-*/
 	}
-//	if (!ad->pa->cmd || ad->pa->cmd[0] == '\0')
-//		return (1);
 	free(tmp);
 	if (ad->pa->cmd)
 		check_dollar(ad);
 	return (0);
 }
-/*
-	to put before return (0) to check all redir structs
-	int	n = 0;
- 	pa_lst_fst_or_lst(&ad->pa, 0);
-	while (ad->pa)
-	{
-		ft_printf("--ad.pa.cmd=|%s|\n", ad->pa->cmd);
-		ft_printf("ad.pa.path=|%s|\n", ad->pa->path);
-		while (ad->pa->args[n])
-		{
-			ft_printf("ad.pa.args[%d]=|%s|\n", n, ad->pa->args[n]);
-			++n;
-		}
-		redir_lst_fst_or_lst(&ad->pa->redir, 0);
-		while (ad->pa->redir)
-		{
-			ft_printf("ad.pa.redir.op=|%s|\n", ad->pa->redir->op);
-			ft_printf("ad.pa.redir.file=|%s|\n", ad->pa->redir->file);
-			if (ad->pa->redir->next)
-				ad->pa->redir = ad->pa->redir->next;
-			else
-				break;
-		}
-		ad->pa = ad->pa->next;
-		n = 0;
-	}
-	pa_lst_fst_or_lst(&ad->pa, 0);
-*/
 
 int	ms_split(t_ad *ad)
 {

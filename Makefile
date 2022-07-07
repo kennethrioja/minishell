@@ -19,6 +19,7 @@ SRCS		=	main.c						\
 				dollar.c					\
 				ms_quote.c					\
 				ft_strsubreplace.c			\
+				ms_err.c					\
 				$(B_INS_DIR)echo.c			\
 				$(B_INS_DIR)pwd.c			\
 				$(B_INS_DIR)cd.c			\
@@ -48,7 +49,7 @@ OBJ_DIR		= 	obj/
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o) $(SRCS_GNL:.c=.o))
 
 CC			=	gcc
-LEAKS		=	#-fsanitize=address #-fsanitize=leak
+LEAKS		=	-fsanitize=address #-fsanitize=leak
 CFLAGS		=	-g -Wall -Wextra -Werror $(LEAKS)
 MAKE		=	make -C
 RM			=	rm -rf
@@ -66,7 +67,7 @@ $(OBJ_DIR)%.o :	$(GNL_DIR)%.c
 $(NAME):		$(OBJS)
 				$(MAKE) $(LIBFT_DIR)
 				$(MAKE) $(PRINTF_DIR)
-				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) $(INC_LIBFT) 
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INC_READLINE) $(INC_PRINTF) $(INC_LIBFT)
 
 l:				$(OBJS)
 				source ~/goinfre/.zshrc

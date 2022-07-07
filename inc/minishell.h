@@ -73,6 +73,9 @@
 # define ARGS_MSG "too many arguments"
 # define QUOTE_MSG "adsh: "
 # define EVEN_MSG ": not a even quote"
+# define PIPE_MSG "adsh: syntax error near unexpected token `|'\n"
+# define NL_MSG "adsh: syntax error near unexpected token `newline'\n"
+# define REDIR_MSG "adsh: syntax error near unexpected token `redir'\n"
 
 # define SHELL_NAME "adsh"
 
@@ -153,7 +156,6 @@ int		ft_strcmp(char *s1, char *s2);
 size_t	ft_arrlen(char **arr);
 size_t	ft_strlen_c(char *str, char c);
 char	*ft_strtolower(char *str);
-void	custom_err(t_ad *ad, int arg, char *str);
 
 //* lst_utils.c
 t_pa	*ms_lstnew(void *content);
@@ -166,11 +168,16 @@ void	sig_handler(int signum);
 void	handle_child_signal(void);
 
 //* free_all.c
-void	my_exit(t_ad *ad, int flag);
 void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
 void	free_pa(t_ad *ad);
 void	free_redir(t_ad *ad);
+
+//* ms_err.c
+void	custom_err(t_ad *ad, int arg, char *str);
+int		custom_err_ret(char *str, int status, int ret);
+void	custom_err_exit(t_ad *ad, int arg, char *str, int ret);
+void	my_exit(t_ad *ad, int flag);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);
@@ -188,6 +195,8 @@ void	ms_exec_redir(t_ad *ad);
 int		count_pa(t_ad *ad);
 void	my_close(t_ad *ad, t_pipe *pipe, int n);
 void	my_close2(int **fd, int n_pa, int n, int flag);
+int		fake_heredoc(t_ad *ad);
+void	free_pipe(t_ad *ad, t_pipe *pipe);
 
 //* ms_exec.c
 int		ms_exec(t_ad *ad);

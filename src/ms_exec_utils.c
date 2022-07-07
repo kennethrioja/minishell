@@ -65,3 +65,36 @@ void	my_close(t_ad *ad, t_pipe *pipe, int n)
 		close(pipe->pblt[1]);
 	}
 }
+
+int	fake_heredoc(t_ad *ad)
+{
+	char	*tmp;
+
+	while (1)
+	{
+		tmp = readline("> ");
+		if (!ft_strcmp(ad->pa->redir->file, tmp))
+			break ;
+		if (tmp)
+			free(tmp);
+	}
+	free(tmp);
+	return (42);
+}
+
+void	free_pipe(t_ad *ad, t_pipe *pipe)
+{
+	int	n;
+
+	n = -1;
+	pa_lst_fst_or_lst(&ad->pa, 0);
+	while (++n < count_pa(ad) - 1)
+	{
+		free(pipe->fd[n]);
+		if (n == count_pa(ad) - 2)
+			free(pipe->fd);
+	}
+	free(pipe->pid);
+	free(pipe->pblt);
+	pa_lst_fst_or_lst(&ad->pa, 0);
+}

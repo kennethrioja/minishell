@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-void	my_exit(t_ad *ad, int flag)
-{
-	free_all(ad);
-	exit(flag);
-}
-
 void	free_redir(t_ad *ad)
 {
 	t_redir	*next;
@@ -58,19 +52,14 @@ void	free_pa(t_ad *ad)
 void	free_cmd(t_ad *ad)
 {
 	free(ad->line);
-//	if (ad->redir)
-//		free_redir(ad);
 	free_pa(ad);
 	ad->pa = NULL;
 	ad->pa_head = NULL;
-//	ad->redir = NULL;
 }
 
 void	free_all(t_ad *ad)
 {
 	free_env(ad);
-//	if (ad->redir)
-//		free_redir(ad);
 	if (ad->pa)
 		free_pa(ad);
 }

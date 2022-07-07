@@ -105,14 +105,14 @@ int	ft_strlen_op(const char *s)
 	{
 		if (s[i] != c)
 		{
-			write(2, "adsh: syntax error near unexpected token `redir'\n", 49);
+			write(2, REDIR_MSG, ft_strlen(REDIR_MSG));
 			return (-1);
 		}
 		++i;
 	}
 	if (i > 2)
 	{
-		write(2, "adsh: syntax error near unexpected token `redir'\n", 49);
+		write(2, REDIR_MSG, ft_strlen(REDIR_MSG));
 		return (-1);
 	}
 	return (i);

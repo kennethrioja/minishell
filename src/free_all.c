@@ -63,3 +63,13 @@ void	free_all(t_ad *ad)
 	if (ad->pa)
 		free_pa(ad);
 }
+
+void	free_tab(char **tabs)
+{
+	int	i;
+
+	i = -1;
+	while (tabs[++i])
+			free(tabs[i]);
+		free(tabs);
+}

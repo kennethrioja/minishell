@@ -31,35 +31,33 @@ static char	**get_env2d(t_node *env)
 	return (env2d);
 }
 
-static char	*create_cmd(char **path, char *cmd)
+static int	create_cmd(char **path, char **cmd)
 {
-	char	*ncmd;
 	char	*npath;
 	int		i;
 	int		arr_i;
 
-	arr_i = ft_arrlen(path);
-	while (arr_i-- > 0)
+	arr_i = -1;
+	while (++arr_i < (int)ft_arrlen(path))
 	{
 		i = ft_strlen(path[arr_i]);
-		if (path[arr_i][i - 1] != '/' && cmd[0] != '/')
+		if (path[arr_i][i - 1] != '/' && *cmd[0] != '/')
 		{
 			npath = ft_strjoin(path[arr_i], "/");
-			ncmd = ft_strjoin(npath, cmd);
-			free(npath);
-			if (access(ncmd, X_OK) == 0)
-				return (ncmd);
+			*cmd = ft_strjoin_f(npath, *cmd, 3);
+			if (access(*cmd, X_OK) == 0)
+				return (1);
 		}
-		if (access(cmd, X_OK) == 0)
-			return (cmd);
+		if (access(*cmd, X_OK) == 0)
+			return (1);
 	}
-	return (NULL);
+	return (0);
 }
 
 int	ms_exec_check_execve(t_ad *ad)
 {
 	char	**path;
-	char	*cmd;
+	int		is_cmd;
 
 	if (access(ad->pa->cmd, X_OK) == 0)
 	{
@@ -71,12 +69,12 @@ int	ms_exec_check_execve(t_ad *ad)
 	else
 	{
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
-		cmd = create_cmd(path, ad->pa->cmd);
-		if (!cmd)
+		is_cmd = create_cmd(path, &ad->pa->cmd);
+		free_tab(path);
+		if (is_cmd == 0)
 			return (1);
 		ms_exec_redir(ad);
-		execve(cmd, ad->pa->args, get_env2d(ad->env));
-		free(cmd);
+		execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
 	}
 	return (0);
 }

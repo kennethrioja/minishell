@@ -73,12 +73,20 @@ int	fake_heredoc(t_ad *ad)
 	while (1)
 	{
 		tmp = readline("> ");
+		if (!tmp)
+		{
+			write(2, "adsh: warning: here-document end-of-file (wanted `", 50);
+			write(2, ad->pa->redir->file, ft_strlen(ad->pa->redir->file));
+			write(2, "')\n", 3);
+			break ;
+		}
 		if (!ft_strcmp(ad->pa->redir->file, tmp))
 			break ;
 		if (tmp)
 			free(tmp);
 	}
-	free(tmp);
+	if (tmp)
+		free(tmp);
 	return (42);
 }
 

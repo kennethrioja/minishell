@@ -55,6 +55,9 @@ contenant le délimiteur. Cependant, l’historique n’a pas à être mis à jo
 - [ ] Cree fichier a la racine
 - [ ] echo "'$USER'"
 
+- [ ]  segvf printf("args[%s]\n", ad->pa->args[n]);
+
+
 ## Bonus
 - [ ] && et || avec des parenthèses pour les priorités.
 - [ ] Les wildcards * doivent fonctionner pour le répertoire courant.

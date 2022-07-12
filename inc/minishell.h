@@ -172,6 +172,7 @@ void	free_all(t_ad *ad);
 void	free_cmd(t_ad *ad);
 void	free_pa(t_ad *ad);
 void	free_redir(t_ad *ad);
+void	free_tab(char **tabs);
 
 //* ms_err.c
 void	custom_err(t_ad *ad, int arg, char *str);

@@ -60,7 +60,14 @@ static void	redir_outfile(t_ad *ad)
 {
 	int	outfile;
 
-	if (!ft_strncmp(ad->pa->redir->op, ">", 1))
+	if (access(ad->pa->redir->file, W_OK) == -1)
+	{
+		g_status_exit = GENERAL_ERR;
+		write(2, "adsh: ", 6);
+		write(2, ad->pa->redir->file, ft_strlen(ad->pa->redir->file));
+		write(2, ": "PERMISSION_MSG"\n", ft_strlen(PERMISSION_MSG) + 3);
+	}
+	else if (!ft_strncmp(ad->pa->redir->op, ">", 1))
 	{
 		if (!ft_strcmp(ad->pa->redir->op, ">>"))
 			outfile = open(ad->pa->redir->file,

@@ -59,8 +59,7 @@ static int	dup_exec_close(t_ad *ad, t_pipe *pipe, int n)
 			if ((ad->pa->prev && !ad->pa->is_blt) || ad->pa->next)
 				my_close2(pipe->fd, pipe->n_pa, n, 1);
 			if (ms_exec_check_execve(ad))
-				custom_err_exit(ad, 0,
-					NOT_FOUND_CMD_MSG, EXIT_FAILURE);
+				custom_err_exit(ad, 0, NOT_FOUND_CMD_MSG, NOT_FOUND_ERR);
 		}
 		my_close(ad, pipe, n);
 		return (0);
@@ -102,9 +101,9 @@ static void	wait_pipe(t_ad *ad, t_pipe *pip)
 		if (ad->pa->cmd)
 		{
 			waitpid(pip->pid[n], &g_status_exit, 0);
-			if (WIFSIGNALED(g_status_exit))
+			if (WIFSIGNALED(g_status_exit) && !ad->pa->is_blt)
 				g_status_exit = SIGNAL_ERR + g_status_exit;
-			else if (WIFEXITED(g_status_exit))
+			if (WIFEXITED(g_status_exit))
 				g_status_exit = WEXITSTATUS(g_status_exit);
 		}
 		if (ad->pa->next)

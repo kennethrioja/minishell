@@ -12,29 +12,40 @@
 
 #include "minishell.h"
 
-void	ft_exit(t_ad *ad)
+void static	exit_no_arg(t_ad *ad)
 {
 	int	i;
 
-	ft_printf("exit\n");
 	i = ft_arrlen(ad->pa->args);
-	if (i > 2)
+	if (i == 1)
+		exit(EXIT_SUCCESS);
+}
+
+void	ft_exit(t_ad *ad)
+{
+	int	i;
+	int	j;
+
+	ft_printf("exit\n");
+	exit_no_arg(ad);
+	i = 0;
+	while (++i < (int)ft_arrlen(ad->pa->args))
 	{
-		custom_err(ad, 0, ARGS_MSG);
-		exit(EXIT_ERR);
-	}
-	if (i == 2)
-	{
-		i = -1;
-		while (ad->pa->args[1][++i])
+		j = -1;
+		while (ad->pa->args[1][++j])
 		{
-			if (!ft_isdigit(ad->pa->args[1][i]))
+			if (!ft_isdigit(ad->pa->args[1][j]))
 			{
 				custom_err(ad, 1, EXIT_MSG);
 				exit(EXIT_ERR);
 			}
 		}
-		exit(ft_atoi(ad->pa->args[1]));
 	}
-	exit(EXIT_SUCCESS);
+	if (i > 2)
+	{
+		custom_err(ad, 0, ARGS_MSG);
+		g_status_exit = GENERAL_ERR;
+		return ;
+	}
+	exit(ft_atoi(ad->pa->args[1]));
 }

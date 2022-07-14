@@ -34,10 +34,12 @@ static char	**get_env2d(t_node *env)
 static int	create_cmd(char **path, char **cmd)
 {
 	char	*npath;
+	char	*tmp_cmd;
 	int		i;
 	int		arr_i;
 
 	arr_i = -1;
+	tmp_cmd = ft_strdup(*cmd);
 	while (++arr_i < (int)ft_arrlen(path))
 	{
 		i = ft_strlen(path[arr_i]);
@@ -45,11 +47,13 @@ static int	create_cmd(char **path, char **cmd)
 		{
 			npath = ft_strjoin(path[arr_i], "/");
 			*cmd = ft_strjoin_f(npath, *cmd, 3);
-			if (access(*cmd, X_OK) == 0)
-				return (1);
 		}
+		else
+			*cmd = ft_strjoin_f(path[arr_i], *cmd, 3);
 		if (access(*cmd, X_OK) == 0)
 			return (1);
+		free(*cmd);
+		*cmd = ft_strdup(tmp_cmd);
 	}
 	return (0);
 }
@@ -61,8 +65,8 @@ int	ms_exec_check_execve(t_ad *ad)
 
 	if (access(ad->pa->cmd, X_OK) == 0)
 	{
-		ms_exec_redir(ad);
-		execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
+		if (!ms_exec_redir(ad))
+			execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
 	}
 	else if (get_i_env(ad, "PATH") == -1)
 		return (1);
@@ -70,11 +74,12 @@ int	ms_exec_check_execve(t_ad *ad)
 	{
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
 		is_cmd = create_cmd(path, &ad->pa->cmd);
+//		printf("cmd[%s]\n", ad->pa->cmd);
 		free_tab(path);
 		if (is_cmd == 0)
 			return (1);
-		ms_exec_redir(ad);
-		execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
+		if (!ms_exec_redir(ad))
+			execve(ad->pa->cmd, ad->pa->args, get_env2d(ad->env));
 	}
 	return (0);
 }

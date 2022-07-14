@@ -190,7 +190,7 @@ int		ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n);
 int		ms_exec_check_execve(t_ad *ad);
 
 //* ms_exec_redir.c
-void	ms_exec_redir(t_ad *ad);
+int	ms_exec_redir(t_ad *ad);
 
 //* ms_exec_utils.c
 int		count_pa(t_ad *ad);

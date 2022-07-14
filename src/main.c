@@ -12,6 +12,28 @@
 
 #include "minishell.h"
 
+void	printf_arg(t_ad ad)
+{
+	int	i;
+
+	while (ad.pa)
+	{
+		printf("cmd[%s]\n", ad.pa->cmd);
+		i = -1;
+		while (ad.pa->args[++i])
+			printf("arg%d[%s]\n", i, ad.pa->args[i]);
+		while (ad.pa->redir)
+		{
+			printf("redir op[%s] file[%s]\n", ad.pa->redir->op,
+				ad.pa->redir->file);
+			ad.pa->redir = ad.pa->redir->next;
+		}
+		redir_lst_fst_or_lst(&ad.pa->redir, 0);
+		ad.pa = ad.pa->next;
+	}
+	ad.pa = ad.pa_head;
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_ad	ad;

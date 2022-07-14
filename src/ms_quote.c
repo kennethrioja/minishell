@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-//TODO check function and echo | echo not working any more
 int	pos_n_char(char *str, int n, char c)
 {
 	int	i;
@@ -60,4 +59,32 @@ int	check_quote(char *str, char c)
 	write(2, EVEN_MSG, ft_strlen(EVEN_MSG));
 	write(2, "\n", 1);
 	return (0);
+}
+
+void	trim_quote(t_ad *ad)
+{
+	int	i;
+
+	while (ad->pa)
+	{
+		if (!ad->pa->cmd)
+			break ;
+		if (ad->pa->cmd[0] == '"')
+			ad->pa->cmd = ft_strtrim_f(ad->pa->cmd, "\"");
+		else if (ad->pa->cmd[0] == '\'')
+			ad->pa->cmd = ft_strtrim_f(ad->pa->cmd, "'");
+		i = -1;
+		while (ad->pa->args[++i])
+		{
+			if (ad->pa->args[i][0] != '\'')
+			{
+				ad->pa->args[i] = ft_strtrim_f(ad->pa->args[i], "\"");
+				check_dollar(ad, i);
+			}
+			else if (ad->pa->args[i][0] == '\'')
+				ad->pa->args[i] = ft_strtrim_f(ad->pa->args[i], "'");
+		}
+		ad->pa = ad->pa->next;
+	}
+	ad->pa = ad->pa_head;
 }

@@ -35,11 +35,10 @@ static void	check_after_dollar(t_ad *ad, int i, int j)
 	if (ad->pa->args[i][j] == '$')
 	{
 		if (ad->pa->args[i][j + 1] == '?')
-		{
 			ad->pa->args[i] = edit_status_exit(ad, i);
-		}
 		env = ft_substr(ad->pa->args[i], j + 1,
 				ft_strlen_c(ad->pa->args[i] + j + 1, ' '));
+		env = ft_strtrim_f(env, "'");
 		if (get_i_env(ad, env) != -1)
 		{
 			tmp = ad->pa->args[i];
@@ -53,29 +52,13 @@ static void	check_after_dollar(t_ad *ad, int i, int j)
 	}
 }
 
-void	check_dollar(t_ad *ad)
+void	check_dollar(t_ad *ad, int n)
 {
 	int		i;
-	int		j;
 
-	pa_lst_fst_or_lst(&ad->pa, 0);
-	if (!ad->pa)
-		return ;
-	while (ad->pa)
+	i = -1;
+	while (ad->pa->args[n][++i])
 	{
-		i = -1;
-		while (++i < (int)ft_arrlen(ad->pa->args))
-		{
-			if (ad->pa->args[i][0] != '\'')
-			{
-				j = -1;
-				while (ad->pa->args[i][++j])
-					check_after_dollar(ad, i, j);
-			}
-			else
-				ad->pa->args[i] = ft_strtrim_f(ad->pa->args[i], "'");
-		}
-		ad->pa = ad->pa->next;
+		check_after_dollar(ad, n, i);
 	}
-	ad->pa = ad->pa_head;
 }

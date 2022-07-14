@@ -65,8 +65,14 @@ static int	skip_between_char(const char *s, int i, char c)
 	if (s[i] == c)
 	{
 		i++;
-		while (s[i] != c)
+		while (s[i])
+		{
 			i++;
+			if (s[i] == c)
+				return (i);
+		}
+		write(2, EVEN_MSG, ft_strlen(EVEN_MSG));
+		return (-1);
 	}
 	return (i);
 }
@@ -81,7 +87,11 @@ int	ft_count_args(const char *s)
 	while (s[i] && s[i] != '|')
 	{
 		i = skip_between_char(s, i, '\'');
+		if (i == -1)
+			return (-1);
 		i = skip_between_char(s, i, '"');
+		if (i == -1)
+			return (-1);
 		if (!ft_isspace(s[i]) && s[i] != '>' && s[i] != '<'
 			&& (ft_isspace(s[i + 1]) || s[i + 1] == '\0'
 				|| s[i + 1] == '>' || s[i + 1] == '<' || s[i + 1] == '|'))

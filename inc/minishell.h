@@ -182,7 +182,7 @@ void	my_exit(t_ad *ad, int flag);
 void	custom_err_redir(t_ad *ad, char *msg, int status);
 
 //* dollar.c
-void	check_dollar(t_ad *ad);
+void	check_dollar(t_ad *ad, int n);
 
 //* ms_exec_builtins.c
 int		ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n);
@@ -206,6 +206,7 @@ int		ms_exec(t_ad *ad);
 //* ms_quote.c
 int		pos_n_char(char *str, int n, char c);
 int		check_quote(char *str, char c);
+void	trim_quote(t_ad *ad);
 
 //* ft_strsubreplace.c
 char	*ft_strsubreplace(const char *s, const char *set, const char *sub);

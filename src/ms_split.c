@@ -17,6 +17,8 @@ static int	populate_redir(t_ad *ad, const char *l)
 	int	ret;
 
 	ret = 0;
+	while (*(l + ret) == ' ')
+		ret++;
 	while (*(l + ret) == '>' || *(l + ret) == '<')
 	{
 		if (!ad->pa->redir)
@@ -33,26 +35,33 @@ static int	populate_redir(t_ad *ad, const char *l)
 	return (ret);
 }
 
-static void	check_special_char(t_ad *ad, char *l, int *ret, int n)
+static void	check_special_char(t_ad *ad, char *l, int *ret, int *n)
 {
-	if (*(l + *ret) == '\'')
+	while (*(l + (*ret)) == ' ')
+		(*ret)++;
+	if (*(l + *ret))
 	{
-		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + *ret, 0,
-					pos_n_char(l + *ret, 2, '\'')), " ");
-		*ret += pos_n_char(l + *ret, 2, '\'');
+		if (*(l + *ret) == '\'')
+		{
+			ad->pa->args[*n] = ft_substr(l + *ret, 0,
+					pos_n_char(l + *ret, 2, '\''));
+			*ret += pos_n_char(l + *ret, 2, '\'');
+		}
+		else if (*(l + *ret) == '"')
+		{
+			ad->pa->args[*n] = ft_substr(l + *ret, 0,
+					pos_n_char(l + *ret, 2, '"'));
+			*ret += pos_n_char(l + *ret, 2, '"');
+		}
+		else
+		{
+			ad->pa->args[*n] = ft_strtrim_f(ft_substr(l + *ret, 0,
+						ft_strlen_sp(l + *ret, 0)), " ");
+			*ret += ft_strlen_sp(l + *ret, 0);
+		}
 	}
-	else if (*(l + *ret) == '"')
-	{
-		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + *ret, 0,
-					pos_n_char(l + *ret, 2, '"')), "\"");
-		*ret += pos_n_char(l + *ret, 2, '"');
-	}
-	else
-	{
-		ad->pa->args[n] = ft_strtrim_f(ft_substr(l + *ret, 0,
-					ft_strlen_sp(l + *ret, 0)), " ");
-		*ret += ft_strlen_sp(l + *ret, 0);
-	}
+	*n = *n + 1;
+	*ret += populate_redir(ad, l + (*ret));
 }
 
 static int	populate_pa(t_ad *ad, char *l, int *pop)
@@ -72,15 +81,14 @@ static int	populate_pa(t_ad *ad, char *l, int *pop)
 				ft_strlen_sp(l + ret, 0)), " ");
 	if (is_builtins(ad))
 		ad->pa->is_blt = 1;
+	if (ft_count_args(l) == -1)
+	{
+		*pop = -1;
+		return (-1);
+	}
 	ad->pa->args = malloc(sizeof(char *) * (ft_count_args(l) + 1));
 	while ((*(l + ret) != '|' && *(l + ret)))
-	{
-		while (*(l + ret) == ' ')
-			ret++;
-		check_special_char(ad, l, &ret, n);
-		++n;
-		ret += populate_redir(ad, l + ret);
-	}
+		check_special_char(ad, l, &ret, &n);
 	ad->pa->args[n] = NULL;
 	return (ret);
 }
@@ -108,8 +116,6 @@ static int	parse_line(t_ad *ad, char *l)
 		}
 	}
 	free(tmp);
-	if (ad->pa->cmd)
-		check_dollar(ad);
 	return (0);
 }
 
@@ -119,13 +125,12 @@ int	ms_split(t_ad *ad)
 
 	if (!ad->line)
 		return (1);
-	if (!check_quote(ad->line, '\'') || !check_quote(ad->line, '"'))
-		return (2);
-	tmp = ft_strtrim(ad->line, " ");
+	tmp = ft_strtrim(ad->line, " \t\n\f\r\v");
 	if (parse_line(ad, tmp))
 	{
 		free(tmp);
 		return (3);
 	}
+	trim_quote(ad);
 	return (0);
 }

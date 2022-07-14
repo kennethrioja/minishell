@@ -65,6 +65,7 @@ static int	populate_pa(t_ad *ad, char *l, int *pop)
 	if (ret < 0)
 	{
 		*pop = -1;
+		write(2, REDIR_MSG, ft_strlen(REDIR_MSG));
 		return (-1);
 	}
 	ad->pa->cmd = ft_strtrim_f(ft_substr(l + ret, 0,

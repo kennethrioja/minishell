@@ -97,23 +97,11 @@ int	ft_count_args(const char *s)
 int	ft_strlen_op(const char *s)
 {
 	int		i;
-	char	c;
 
 	i = 0;
-	c = s[0];
 	while (s[i] == '>' || s[i] == '<')
 	{
-		if (s[i] != c)
-		{
-			write(2, REDIR_MSG, ft_strlen(REDIR_MSG));
-			return (-1);
-		}
 		++i;
-	}
-	if (i > 2)
-	{
-		write(2, REDIR_MSG, ft_strlen(REDIR_MSG));
-		return (-1);
 	}
 	return (i);
 }

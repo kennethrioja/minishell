@@ -70,6 +70,6 @@ void	free_tab(char **tabs)
 
 	i = -1;
 	while (tabs[++i])
-			free(tabs[i]);
-		free(tabs);
+		free(tabs[i]);
+	free(tabs);
 }

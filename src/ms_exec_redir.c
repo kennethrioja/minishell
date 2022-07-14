@@ -68,15 +68,11 @@ static int	redir_outfile(t_ad *ad)
 		else
 			outfile = open(ad->pa->redir->file,
 					O_TRUNC | O_RDWR | O_CREAT, 0644);
-		printf("%s=%d\n", ad->pa->redir->file, outfile);
 		if (outfile == -1)
 		{
 			if (access(ad->pa->redir->file, W_OK) == -1)
 			{
-				g_status_exit = GENERAL_ERR;
-				write(2, "adsh: ", 6);
-				write(2, ad->pa->redir->file, ft_strlen(ad->pa->redir->file));
-				write(2, ": "PERMISSION_MSG"\n", ft_strlen(PERMISSION_MSG) + 3);
+				custom_err_redir(ad, PERMISSION_MSG, GENERAL_ERR);
 				return (1);
 			}
 			else
@@ -92,12 +88,9 @@ int	ms_exec_redir(t_ad *ad)
 {
 	if (ad->pa->redir)
 	{
-		printf("redir is : |%s|\n", ad->pa->redir->file);
 		redir_lst_fst_or_lst(&ad->pa->redir, 0);
-		printf("redir fst is : |%s|\n", ad->pa->redir->file);
 		while (ad->pa->redir)
 		{
-			printf("redir is in : |%s|\n", ad->pa->redir->file);
 			if (redir_outfile(ad))
 				return (1);
 			redir_infile(ad);

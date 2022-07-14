@@ -55,3 +55,13 @@ void	my_exit(t_ad *ad, int flag)
 	free_all(ad);
 	exit(flag);
 }
+
+void	custom_err_redir(t_ad *ad, char *msg, int status)
+{
+	g_status_exit = status;
+	write(2, "adsh: ", 6);
+	write(2, ad->pa->redir->file, ft_strlen(ad->pa->redir->file));
+	write(2, ": ", 3);
+	write(2, msg, ft_strlen(msg));
+	write(2, "\n", 1);
+}

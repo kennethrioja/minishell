@@ -74,7 +74,6 @@ int	ms_exec_check_execve(t_ad *ad)
 	{
 		path = ft_split(get_env(ad, get_i_env(ad, "PATH"))->value, ':');
 		is_cmd = create_cmd(path, &ad->pa->cmd);
-//		printf("cmd[%s]\n", ad->pa->cmd);
 		free_tab(path);
 		if (is_cmd == 0)
 			return (1);

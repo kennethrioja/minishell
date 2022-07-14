@@ -14,22 +14,21 @@
 
 static int	populate_redir(t_ad *ad, const char *l)
 {
-	int		ret;
-	t_redir	*next;
+	int	ret;
 
 	ret = 0;
 	while (*(l + ret) == '>' || *(l + ret) == '<')
 	{
-		next = redir_lstnew(NULL);
-		if (ft_strlen_op(l + ret) == -1)
-			return (-1);
-		next->op = ft_strtrim_f(
+		if (!ad->pa->redir)
+			ad->pa->redir = redir_lstnew(NULL);
+		else
+			redir_lstadd_next(&ad->pa->redir, redir_lstnew(ad->pa->redir));
+		ad->pa->redir->op = ft_strtrim_f(
 				ft_substr(l + ret, 0, ft_strlen_op(l + ret)), " ");
 		ret += ft_strlen_op(l + ret);
-		next->file = ft_strtrim_f(
+		ad->pa->redir->file = ft_strtrim_f(
 				ft_substr(l + ret, 0, ft_strlen_sp(l + ret, 0)), " ");
 		ret += ft_strlen_sp(l + ret, 0);
-		redir_lstadd_next(&ad->pa->redir, next);
 	}
 	return (ret);
 }

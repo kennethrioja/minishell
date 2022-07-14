@@ -179,6 +179,7 @@ void	custom_err(t_ad *ad, int arg, char *str);
 int		custom_err_ret(char *str, int status, int ret);
 void	custom_err_exit(t_ad *ad, int arg, char *str, int ret);
 void	my_exit(t_ad *ad, int flag);
+void	custom_err_redir(t_ad *ad, char *msg, int status);
 
 //* dollar.c
 void	check_dollar(t_ad *ad);
@@ -190,7 +191,7 @@ int		ms_exec_builtins(t_ad *ad, t_pipe *pipe, int n);
 int		ms_exec_check_execve(t_ad *ad);
 
 //* ms_exec_redir.c
-int	ms_exec_redir(t_ad *ad);
+int		ms_exec_redir(t_ad *ad);
 
 //* ms_exec_utils.c
 int		count_pa(t_ad *ad);

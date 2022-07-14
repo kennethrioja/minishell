@@ -92,8 +92,8 @@ void	add_env(t_ad *ad, int arg, char *name, char *value)
 		name = ft_substr(ad->pa->args[arg], 0,
 				ft_strlen_c(ad->pa->args[arg], '='));
 	if (!value)
-		value = ft_strdup(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg],
-					'=') + 1);
+		value = ft_strtrim(ad->pa->args[arg] + ft_strlen_c(ad->pa->args[arg],
+					'=') + 1, "\"");
 	i = get_i_env(ad, name);
 	if (i == -1)
 		append_t_node(&ad->env, name, value);

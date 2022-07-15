@@ -12,6 +12,21 @@
 
 #include "minishell.h"
 
+static int	ft_isunset(const char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')
+			|| str[i] == '_')
+			continue ;
+		return (0);
+	}
+	return (1);
+}
+
 int	ft_unset(t_ad *ad)
 {
 	t_node	*tmp;
@@ -23,7 +38,7 @@ int	ft_unset(t_ad *ad)
 	status = SUCCESS;
 	while (ad->pa->args[++i])
 	{
-		if (ft_isexport(ad->pa->args[i]))
+		if (ft_isunset(ad->pa->args[i]))
 		{
 			size = get_i_env(ad, ad->pa->args[i]);
 			if (size == -1)

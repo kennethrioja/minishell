@@ -72,7 +72,7 @@
 # define EXIT_MSG "numeric argument required"
 # define ARGS_MSG "too many arguments"
 # define QUOTE_MSG "adsh: "
-# define EVEN_MSG ": not a even quote"
+# define EVEN_MSG ": not a even quote\n"
 # define PIPE_MSG "adsh: syntax error near unexpected token `|'\n"
 # define NL_MSG "adsh: syntax error near unexpected token `newline'\n"
 # define REDIR_MSG "adsh: syntax error near unexpected token `redir'\n"

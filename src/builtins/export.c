@@ -49,13 +49,16 @@ int	ft_isexport(const char *str)
 	int	i;
 
 	i = -1;
+	if (str[0] == '=')
+		return (0);
 	while (str[++i])
 	{
 		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')
 			|| str[i] == '=' || str[i] == '_')
-			return (1);
+			continue ;
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 static void	show_export(t_ad *ad)

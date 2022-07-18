@@ -105,7 +105,7 @@ static void	sort_export(t_ad *ad, int count)
 		tmp = ad->env;
 		while (j++ < count)
 		{
-			if (strcmp(tmp->key, tmp->next->key) > 0)
+			if (ft_strcmp(tmp->key, tmp->next->key) > 0)
 			{
 				tmps = tmp->value;
 				tmp->value = tmp->next->value;

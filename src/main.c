@@ -18,13 +18,13 @@ void	printf_arg(t_ad ad)
 
 	while (ad.pa)
 	{
-		printf("cmd[%s]\n", ad.pa->cmd);
+		ft_printf("cmd[%s]\n", ad.pa->cmd);
 		i = -1;
 		while (ad.pa->args[++i])
-			printf("arg%d[%s]\n", i, ad.pa->args[i]);
+			ft_printf("arg%d[%s]\n", i, ad.pa->args[i]);
 		while (ad.pa->redir)
 		{
-			printf("redir op[%s] file[%s]\n", ad.pa->redir->op,
+			ft_printf("redir op[%s] file[%s]\n", ad.pa->redir->op,
 				ad.pa->redir->file);
 			ad.pa->redir = ad.pa->redir->next;
 		}

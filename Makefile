@@ -39,7 +39,7 @@ ifeq ($(shell env | grep USER= | cut -b 6-), krioja)
 #	READLINE_DIR	=	/Users/krioja/sgoinfre/krioja/.brew/Cellar/readline/8.1.2/
 	READLINE_DIR	=	/Users/krioja/goinfre/.brew/Cellar/readline/8.1.2/
 else
-	READLINE_DIR	=	~/brew/opt/readline/
+	READLINE_DIR	=	~/.brew/opt/readline/
 endif
 READLINE_LIB=	$(READLINE_DIR)lib
 READLINE_INC=	$(READLINE_DIR)include
